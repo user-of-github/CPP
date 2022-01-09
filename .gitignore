@@ -8,6 +8,11 @@
 .idea
 /cmake-build-debug
 cmake-build-debug
+
+/CMakeFiles
+CMakeFiles/
+CMakeFiles
+
 *.s
 *.gcno
 .gcno
@@ -21,3 +26,7 @@ cmake-build-debug
 
 *.TR
 *.TD
+
+.vscode
+/.vscode
+.vscode/

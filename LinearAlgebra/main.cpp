@@ -1,8 +1,11 @@
-#include "test.h"
+#include <iostream>
+#include "./Tester/test_vector.h"
 
 
 int main()
 {
-    test();
+    TestVector();
+
+
     return 0;
 }
