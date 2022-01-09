@@ -1,30 +1,52 @@
 ## Simple Linear Algebra Library
-###### For personal needs, educational use & portfolio
+###### Educational projects for practice & portfolio | Educational purposes
 
 
 ### _Description:_
-The first project in my C++ Repo. 
-Hope not the last :).
-Project to repeat some linear algebra topics, program them and practice Modern C++ with STL, lambdas and so on
+_The first project in my C++ Repo.   
+Hope not the last :)  
+Project's aim — to repeat some linear algebra topics, code them and practice modern C++ with STL, lambdas and so on_
 
-### _Functionality:_  
-* _Vector_
-  * _Base operations_
-  * _Normalization_
-* _Matrix_
-&nbsp;  
 
-### _To Do:_
 
-- [ ] MakeFile
+### _Functionality / To Do:_
+
+- [x] __Vector Class__
+    - [x] Operators
+      - [ ] Tests
+    - [ ] Istream, ostream operators 
+    - [x] Norm  
+      - [ ] Tests
+    - [x] Normalization
+      - [ ] Tests
+- [ ] __Matrix Class__ (can also represent vector)
+    - [ ] Operators
+    - [ ] Istream, ostream operators
+    - [ ] Multiplication
+        - [ ] Tests
+    - [ ] Minor 
+        - [ ] Tests
+    - [ ] Determinant
+      - [ ] Tests
+    - [ ] Transposing
+      - [ ] Tests
+    - [ ] Converting to upper/lower triangled 
+      - [ ] Tests
+    - [ ] Rank (rang ?) and other measures
+      - [ ] Tests
+    - [ ] Inverse matrix
+      - [ ] Tests
+    - [ ] Equations systems solvers (?)
+        - [ ] Gauss
+        - [ ] Other
+        - [ ] ...
+- [ ] __MakeFile__
   - [ ] Cmake (?)
-- [ ] Link to CodeCov or Google tests
-  - [ ] Or at least make tests with __assert.h__
-- [ ] Vector Class
-    - [ ] Operators, Tests
-    - [ ] Norm + Tests  
-    - [ ] Normalization, test
-- [ ] Matrix Class
+- [ ] __Tests: Link to `CodeCov` or `Google tests`__
+  - [x] Or at least start testing with `assert.h`  
+### _Features:_  
+* Template classes
+* Google C++ code style (style guide)
 
 #### _Developed with:_
 * JetBrains Clion
