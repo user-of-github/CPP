@@ -1,4 +1,4 @@
-#include "Vector.h"
+#include "vector.h"
 
 
 namespace LinearAlgebra
@@ -49,13 +49,13 @@ namespace LinearAlgebra
     template<typename ValueType>
     ValueType &Vector<ValueType>::operator[](const std::size_t index)
     {
-        return this->values_[index];
+        return this->values_.at(index);
     }
 
     template<typename ValueType>
     Vector<ValueType>::Vector(const Vector<ValueType> &rhs)
     {
-        this->CopyFullStdVector(rhs);
+        this->CopyFullStdVector(rhs.values_);
     }
 
     template<typename ValueType>
@@ -79,8 +79,8 @@ namespace LinearAlgebra
     Vector<ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
     {
         Vector<ValueType> response(*this);
-        for (std::size_t counter = 0; counter < response.Size(); ++counter)
-            response[counter] *= scalar;
+        for (auto &item : response.values_)
+            item *= scalar;
         return response;
     }
 
@@ -96,7 +96,7 @@ namespace LinearAlgebra
     Vector<ValueType> Vector<ValueType>::operator+(const ValueType &scalar) const
     {
         Vector<ValueType> response(*this);
-        for (auto &item : response)
+        for (auto &item : response.values_)
             item += scalar;
         return response;
     }
@@ -113,7 +113,7 @@ namespace LinearAlgebra
     Vector<ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
     {
         Vector<ValueType> response(*this);
-        for (auto &item : response)
+        for (auto &item : response.values_)
             item -= scalar;
         return response;
     }
@@ -130,7 +130,7 @@ namespace LinearAlgebra
     Vector<ValueType> Vector<ValueType>::operator/(const ValueType &scalar) const
     {
         Vector<ValueType> response(*this);
-        for (auto &item : response)
+        for (auto &item : response.values_)
             item /= scalar;
         return response;
     }
@@ -138,11 +138,10 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> &Vector<ValueType>::operator+=(const Vector<ValueType> &scalar)
     {
-        if (scalar.Size() != this->Size())
-            throw std::runtime_error("Vectors' sizes aren't equal");
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
-            this->values_.at(counter) += scalar[counter];
+            this->values_.at(counter) += scalar.values_.at(counter);
 
         return *this;
     }
@@ -150,13 +149,12 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator+(const Vector<ValueType> &scalar)
     {
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
+
         Vector<ValueType> response(*this);
 
-        if (scalar.Size() != this->Size())
-            throw std::runtime_error("Vectors' sizes aren't equal");
-
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
-            response[counter] += scalar[counter];
+            response.values_.at(counter) += scalar.values_.at(counter);
 
         return response;
     }
@@ -164,11 +162,10 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> &Vector<ValueType>::operator-=(const Vector<ValueType> &scalar)
     {
-        if (scalar.Size() != this->Size())
-            throw std::runtime_error("Vectors' sizes aren't equal");
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
-            this->values_.at(counter) -= scalar[counter];
+            this->values_.at(counter) -= scalar.values_.at(counter);
 
         return *this;
     }
@@ -176,14 +173,48 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator-(const Vector<ValueType> &scalar)
     {
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
+
         auto response = Vector<ValueType>(*this);
 
-        if (scalar.Size() != this->Size())
-            throw std::runtime_error("Vectors' sizes aren't equal");
-
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
-            response[counter] -= scalar[counter];
+            response.values_.at(counter) -= scalar.values_.at(counter);
 
         return response;
+    }
+
+    template<typename ValueType>
+    void Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
+                                                    const std::vector<ValueType> &second)
+    {
+        if (first.size() != second.size())
+            throw std::runtime_error("Runtime Error: Vectors' sizes incompatible");
+    }
+
+    template<typename ValueType>
+    Vector<ValueType> &Vector<ValueType>::operator=(const Vector<ValueType> &rhs)
+    {
+        Vector<ValueType>::CopyFullStdVector(rhs.values_);
+        return *this;
+    }
+
+    template<typename ValueType>
+    bool Vector<ValueType>::operator==(const Vector<ValueType> &rhs) const
+    {
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, rhs.values_);
+        for (std::size_t counter = 0; counter < this->values_.size(); ++counter)
+            if (this->values_.at(counter) != rhs.values_.at(counter))
+                return false;
+        return true;
+    }
+
+    template<typename ValueType1>
+    std::ostream & operator<<(std::ostream &stream, const Vector<ValueType1> &obj)
+    {
+        stream << "Vector (" << obj.Size() << "): [ ";
+        for (const auto &item : obj.values_)
+            stream << item << ' ';
+        stream << ' ' << ']' << '\n';
+        return stream;
     }
 }

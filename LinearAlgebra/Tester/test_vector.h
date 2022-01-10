@@ -1,10 +1,8 @@
 #ifndef LINEARALGEBRA_TEST_VECTOR_H
 #define LINEARALGEBRA_TEST_VECTOR_H
 
-#pragma once
-
-#include "../Library/Matrix/Vector/Vector.cc"
-#include "../Library/Matrix/Vector/Vector.h"
+#include "../Library/Matrix/Vector/vector.cpp"
+#include "../Library/Matrix/Vector/vector.h"
 #include <cassert>
 
 

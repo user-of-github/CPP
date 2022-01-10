@@ -12,14 +12,16 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
 ### _Functionality / To Do:_
 
 - [x] __Vector Class__
+    - [x] Copy constructor and = operator
+      - [x] Tests
     - [x] Operators
-      - [ ] Tests
-    - [ ] Istream, ostream operators 
+      - [x] Tests
+    - [x] Ostream operator
     - [x] Norm  
       - [ ] Tests
     - [x] Normalization
       - [ ] Tests
-- [ ] __Matrix Class__ (can also represent vector)
+- [ ] __Matrix Class__ (can also represent Vector)
     - [ ] Operators
     - [ ] Istream, ostream operators
     - [ ] Multiplication

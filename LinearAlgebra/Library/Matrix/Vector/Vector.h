@@ -4,6 +4,7 @@
 #pragma once
 
 
+#include <iostream>
 #include <vector>
 #include <exception>
 #include <cmath>
@@ -58,10 +59,21 @@ namespace LinearAlgebra
 
         Vector<ValueType> operator-(const Vector<ValueType> &);
 
+        Vector<ValueType> &operator=(const Vector<ValueType> &);
+
+        Vector<ValueType> &operator=(Vector<ValueType> &&) noexcept = default;
+
+        bool operator == (const Vector<ValueType> &) const;
+
+        template<typename ValueType1>
+        friend std::ostream & operator << (std::ostream &, const Vector<ValueType1> &);
+
     private:
         std::vector<ValueType> values_;
 
         void CopyFullStdVector(const std::vector<ValueType> &);
+
+        static void CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &);
     };
 }
 #endif //LINEARALGEBRA_VECTOR_H
