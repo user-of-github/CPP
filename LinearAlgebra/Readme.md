@@ -11,6 +11,8 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
 
 ### _Functionality / To Do:_
 
+// Make Matrix as friend class for Vector
+
 - [x] __Vector Class__
     - [x] Copy constructor and = operator
       - [x] Tests
@@ -21,10 +23,13 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
       - [ ] Tests
     - [x] Normalization
       - [ ] Tests
+    - [ ] Convert / Transform (with lambda as argument)
+    - [ ] Sum
 - [ ] __Matrix Class__ (can also represent Vector)
-    - [ ] Operators
+    - [ ] Operators (via already realized Vector's ones)
     - [ ] Istream, ostream operators
     - [ ] Multiplication
+        - [ ] Pow
         - [ ] Tests
     - [ ] Minor 
         - [ ] Tests
