@@ -14,20 +14,22 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
 // Make Matrix as friend class for Vector
 
 - [x] __Vector Class__
+    - [x] Template
     - [x] Copy constructor and = operator
       - [x] Tests
     - [x] Operators
       - [x] Tests
     - [x] Ostream operator
     - [x] Norm  
-      - [ ] Tests
+      - [x] Tests
     - [x] Normalization
-      - [ ] Tests
+      - [x] Tests
     - [ ] Convert / Transform (with lambda as argument)
-    - [ ] Sum
-- [ ] __Matrix Class__ (can also represent Vector)
+    - [x] Sum
+    - [x] Friend class for Matrix class
+- [x] __Matrix Class__ (can also represent Vector)
     - [ ] Operators (via already realized Vector's ones)
-    - [ ] Istream, ostream operators
+    - [x] Ostream operator
     - [ ] Multiplication
         - [ ] Pow
         - [ ] Tests
@@ -51,9 +53,13 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
   - [ ] Cmake (?)
 - [ ] __Tests: Link to `CodeCov` or `Google tests`__
   - [x] Or at least start testing with `assert.h`  
+    
+
+
 ### _Features:_  
 * Template classes
 * Google C++ code style (style guide)
+* Modern STD functions, auto lambda expressions
 
 #### _Developed with:_
 * JetBrains Clion

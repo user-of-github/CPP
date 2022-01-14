@@ -3,21 +3,28 @@
 
 #pragma once
 
-
 #include <iostream>
 #include <vector>
 #include <exception>
 #include <cmath>
 #include <stdexcept>
+#include <numeric>
+#include <functional>
 
 
 namespace LinearAlgebra
 {
     template<typename ValueType>
+    class Matrix;
+
+
+    template<typename ValueType>
     class Vector
     {
     public:
-        explicit Vector(const std::size_t = 0, const ValueType = 0);
+        friend class Matrix<ValueType>;
+
+        explicit Vector(const std::size_t, const ValueType);
 
         Vector(const std::initializer_list<ValueType> &);
 
@@ -31,7 +38,7 @@ namespace LinearAlgebra
 
         void Normalize();
 
-        ValueType &operator[](const std::size_t) const;
+        const ValueType operator[](const std::size_t) const;
 
         ValueType &operator[](const std::size_t);
 
@@ -63,10 +70,15 @@ namespace LinearAlgebra
 
         Vector<ValueType> &operator=(Vector<ValueType> &&) noexcept = default;
 
-        bool operator == (const Vector<ValueType> &) const;
+        bool operator==(const Vector<ValueType> &) const;
 
         template<typename ValueType1>
-        friend std::ostream & operator << (std::ostream &, const Vector<ValueType1> &);
+        friend std::ostream &operator<<(std::ostream &, const Vector<ValueType1> &);
+
+        ValueType Sum() const;
+
+        /*template<typename Functor>
+        void Transform(Functor &);*/
 
     private:
         std::vector<ValueType> values_;
@@ -74,6 +86,8 @@ namespace LinearAlgebra
         void CopyFullStdVector(const std::vector<ValueType> &);
 
         static void CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &);
+
+        void PrintVectorRowByStream(std::ostream &) const;
     };
 }
 #endif //LINEARALGEBRA_VECTOR_H

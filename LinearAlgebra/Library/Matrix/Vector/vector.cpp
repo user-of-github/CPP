@@ -1,10 +1,12 @@
+#pragma once
+
 #include "vector.h"
 
 
 namespace LinearAlgebra
 {
     template<typename ValueType>
-    Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value_): values_(size, default_value_)
+    Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value): values_(size, default_value)
     {}
 
     template<typename ValueType>
@@ -41,7 +43,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    ValueType &Vector<ValueType>::operator[](const std::size_t index) const
+    const ValueType Vector<ValueType>::operator[](const std::size_t index) const
     {
         return this->values_.at(index);
     }
@@ -78,7 +80,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        Vector <ValueType> response(*this);
         for (auto &item : response.values_)
             item *= scalar;
         return response;
@@ -95,7 +97,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator+(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        Vector <ValueType> response(*this);
         for (auto &item : response.values_)
             item += scalar;
         return response;
@@ -112,7 +114,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        Vector <ValueType> response(*this);
         for (auto &item : response.values_)
             item -= scalar;
         return response;
@@ -129,7 +131,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType> Vector<ValueType>::operator/(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        Vector <ValueType> response(*this);
         for (auto &item : response.values_)
             item /= scalar;
         return response;
@@ -151,7 +153,7 @@ namespace LinearAlgebra
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
-        Vector<ValueType> response(*this);
+        Vector <ValueType> response(*this);
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
             response.values_.at(counter) += scalar.values_.at(counter);
@@ -209,12 +211,35 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType1>
-    std::ostream & operator<<(std::ostream &stream, const Vector<ValueType1> &obj)
+    std::ostream &operator<<(std::ostream &stream, const Vector<ValueType1> &obj)
     {
         stream << "Vector (" << obj.Size() << "): [ ";
-        for (const auto &item : obj.values_)
-            stream << item << ' ';
+        obj.PrintVectorRowByStream(stream);
         stream << ' ' << ']' << '\n';
         return stream;
+    }
+
+    template<typename ValueType>
+    ValueType Vector<ValueType>::Sum() const
+    {
+        return std::accumulate(
+                std::begin(this->values_),
+                std::end(this->values_),
+                ValueType()
+        );
+    }
+
+    /*template<typename ValueType>
+    template<typename Functor>
+    void Vector<ValueType>::Transform(Functor &changer)
+    {
+        for (std::size_t counter = 0; const auto &item : this->values_)
+            changer(item, counter++);
+    }*/
+    template<typename ValueType>
+    void Vector<ValueType>::PrintVectorRowByStream(std::ostream &os) const
+    {
+        for (const auto &item : this->values_)
+            os << item << ' ';
     }
 }

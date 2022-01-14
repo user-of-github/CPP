@@ -4,7 +4,7 @@
 #include <cmath>
 
 
-namespace Utils
+namespace LinearAlgebra::Utils
 {
     template<typename ValueType>
     bool IsInEpsilonNeighborHood(const ValueType &, const ValueType &, const ValueType &);
