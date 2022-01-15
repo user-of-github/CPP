@@ -195,7 +195,7 @@ namespace LinearAlgebra
                                                     const std::vector<ValueType> &second)
     {
         if (first.size() != second.size())
-            throw std::runtime_error("Runtime Error: Vectors' sizes incompatible");
+            throw std::runtime_error("Vectors' sizes incompatible");
     }
 
     template<typename ValueType>

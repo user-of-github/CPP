@@ -9,7 +9,7 @@ namespace LinearAlgebra
     {}
 
     template<typename ValueType2>
-    std::ostream &operator<<(std::ostream &stream, const Matrix<ValueType2> &to_print)
+    std::ostream &operator<<(std::ostream &stream, const Matrix <ValueType2> &to_print)
     {
         stream << "Matrix (" << to_print.vectors_.size() << " x " << to_print.vectors_.at(1).Size() << "):\n";
 
@@ -30,14 +30,48 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Matrix<ValueType>::operator[](const std::size_t index)
+    Vector <ValueType> &Matrix<ValueType>::operator[](const std::size_t index)
     {
         return this->vectors_.at(index);
     }
 
     template<typename ValueType>
-    const Vector<ValueType> &Matrix<ValueType>::operator[](const std::size_t index) const
+    const Vector <ValueType> &Matrix<ValueType>::operator[](const std::size_t index) const
     {
         return this->vectors_.at(index);
+    }
+
+    template<typename ValueType>
+    void Matrix<ValueType>::CheckMatricesCompatibility(const Matrix <ValueType> &first,
+                                                       const Matrix <ValueType> &second)
+    {
+        if (first.vectors_.size() != second.vectors_.size() ||
+            first.vectors_.at(0).values_.size() != second.vectors_.at(0).values_.size())
+            throw std::runtime_error("Matrices' sizes incompatible");
+    }
+
+    template<typename ValueType>
+    const std::tuple<std::size_t, std::size_t> Matrix<ValueType>::Sizes() const
+    {
+        return std::tuple<std::size_t, std::size_t>(this->vectors_.size(), this->vectors_.at(0).values_.size());
+    }
+
+    template<typename ValueType>
+    ValueType Matrix<ValueType>::Sum() const
+    {
+        return std::accumulate(
+                std::begin(this->vectors_),
+                std::end(this->vectors_),
+                0,
+                [](ValueType response, const Vector<ValueType> & current) -> ValueType {
+                    return response + current.Sum();
+                });
+    }
+
+    template<typename ValueType>
+    void Matrix<ValueType>::Resize(const std::size_t new_rows, const std::size_t new_cols)
+    {
+        if (new_cols == 0 || new_cols == 0) // if (Matrix<ValueType>::CheckValidityOfDimensions()...)
+            throw std::runtime_error("Sizes invalid");
     }
 }

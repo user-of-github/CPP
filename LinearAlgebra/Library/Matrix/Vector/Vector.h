@@ -24,7 +24,7 @@ namespace LinearAlgebra
     public:
         friend class Matrix<ValueType>;
 
-        explicit Vector(const std::size_t, const ValueType);
+        explicit Vector(const std::size_t, const ValueType = 0);
 
         Vector(const std::initializer_list<ValueType> &);
 
