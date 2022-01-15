@@ -5,7 +5,8 @@
 ### _Description:_
 _The first project in my C++ Repo.   
 Hope not the last :)  
-Project's aim — repeat some linear algebra topics, code them practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake_
+Project's aim — repeat some linear algebra topics, code them, practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake  
+Here for the first time using Cmake myself and gtests_
 
 ### _To Run tests:_
 1. `cd Tester`
@@ -13,19 +14,20 @@ Project's aim — repeat some linear algebra topics, code them practice modern C
 3. `cmake --build build`
 4. `cd build && ctest`
 
+### _To run user's code in "sandbox" file - `demo.cpp`:_
+1. From `root` folder: `cmake -S . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
+2. `cmake --build build`
+3. `cd build`, `demo(.exe)`
+
 ### _Functionality / To Do:_
 
 - [x] __Vector Class__
     - [x] Template
     - [x] Copy constructor and = operator
-      - [x] Tests
     - [x] Operators
-      - [x] Tests
     - [x] Ostream operator
     - [x] Norm  
-      - [x] Tests
     - [x] Normalization
-      - [x] Tests
     - [ ] Convert / Transform (with lambda as argument)
     - [x] Sum
     - [x] Friend class for Matrix class
@@ -36,23 +38,17 @@ Project's aim — repeat some linear algebra topics, code them practice modern C
         - [ ] Pow
         - [ ] Tests
     - [ ] Minor 
-        - [ ] Tests
     - [ ] Determinant
-      - [ ] Tests
     - [ ] Transposing
-      - [ ] Tests
     - [ ] Converting to upper/lower triangled 
-      - [ ] Tests
     - [ ] Rank (rang ?) and other measures
-      - [ ] Tests
     - [ ] Inverse matrix
-      - [ ] Tests
     - [ ] Equations systems solvers (?)
         - [ ] Gauss
         - [ ] Other
         - [ ] ...
 - [ ] __MakeFile__
-  - [ ] Cmake (?)
+  - [x] Cmake (?)
 - [x] __Tests: Connect to `CodeCov` or `Google tests` ([gtest](https://google.github.io/googletest/quickstart-cmake.html))__
   - [x] Or at least start testing with `assert.h`  
     

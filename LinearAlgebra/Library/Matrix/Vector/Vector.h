@@ -87,6 +87,8 @@ namespace LinearAlgebra
 
         static void CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &);
 
+        void CheckIndexCompatibility(const std::size_t) const;
+
         void PrintVectorRowByStream(std::ostream &) const;
     };
 }

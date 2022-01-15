@@ -38,6 +38,9 @@ namespace LinearAlgebra
     void Vector<ValueType>::Normalize()
     {
         const auto norm = this->GetNorm();
+        if (norm == 0)
+            throw std::runtime_error("Can't normalize vector. Attempted to divide by Zero");
+
         for (auto &item : this->values_)
             item /= norm;
     }
@@ -45,17 +48,19 @@ namespace LinearAlgebra
     template<typename ValueType>
     const ValueType Vector<ValueType>::operator[](const std::size_t index) const
     {
+        this->CheckIndexCompatibility(index);
         return this->values_.at(index);
     }
 
     template<typename ValueType>
     ValueType &Vector<ValueType>::operator[](const std::size_t index)
     {
+        this->CheckIndexCompatibility(index);
         return this->values_.at(index);
     }
 
     template<typename ValueType>
-    Vector<ValueType>::Vector(const Vector<ValueType> &rhs)
+    Vector<ValueType>::Vector(const Vector <ValueType> &rhs)
     {
         this->CopyFullStdVector(rhs.values_);
     }
@@ -70,7 +75,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator*=(const ValueType &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator*=(const ValueType &scalar)
     {
         for (auto &item : this->values_)
             item *= scalar;
@@ -78,16 +83,16 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
+    Vector <ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
     {
-        Vector <ValueType> response(*this);
+        Vector<ValueType> response(*this);
         for (auto &item : response.values_)
             item *= scalar;
         return response;
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator+=(const ValueType &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator+=(const ValueType &scalar)
     {
         for (auto &item : this->values_)
             item += scalar;
@@ -95,16 +100,16 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator+(const ValueType &scalar) const
+    Vector <ValueType> Vector<ValueType>::operator+(const ValueType &scalar) const
     {
-        Vector <ValueType> response(*this);
+        Vector<ValueType> response(*this);
         for (auto &item : response.values_)
             item += scalar;
         return response;
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator-=(const ValueType &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator-=(const ValueType &scalar)
     {
         for (auto &item : this->values_)
             item -= scalar;
@@ -112,16 +117,16 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
+    Vector <ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
     {
-        Vector <ValueType> response(*this);
+        Vector<ValueType> response(*this);
         for (auto &item : response.values_)
             item -= scalar;
         return response;
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
     {
         for (auto &item : this->values_)
             item /= scalar;
@@ -131,14 +136,14 @@ namespace LinearAlgebra
     template<typename ValueType>
     const Vector<int> Vector<ValueType>::operator/(const ValueType &scalar)
     {
-        Vector <ValueType> response(*this);
+        Vector<ValueType> response(*this);
         for (auto &item : response.values_)
             item /= scalar;
         return response;
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator+=(const Vector<ValueType> &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator+=(const Vector <ValueType> &scalar)
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
@@ -149,11 +154,11 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator+(const Vector<ValueType> &scalar)
+    Vector <ValueType> Vector<ValueType>::operator+(const Vector <ValueType> &scalar)
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
-        Vector <ValueType> response(*this);
+        Vector<ValueType> response(*this);
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
             response.values_.at(counter) += scalar.values_.at(counter);
@@ -162,7 +167,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator-=(const Vector<ValueType> &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator-=(const Vector <ValueType> &scalar)
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
@@ -173,7 +178,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator-(const Vector<ValueType> &scalar)
+    Vector <ValueType> Vector<ValueType>::operator-(const Vector <ValueType> &scalar)
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
@@ -194,14 +199,22 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> &Vector<ValueType>::operator=(const Vector<ValueType> &rhs)
+    void Vector<ValueType>::CheckIndexCompatibility(const std::size_t index) const
+    {
+        if (index >= this->values_.size() || index < 0)
+            throw std::runtime_error("Index is less than zero or greater than vector's size");
+    }
+
+
+    template<typename ValueType>
+    Vector <ValueType> &Vector<ValueType>::operator=(const Vector <ValueType> &rhs)
     {
         Vector<ValueType>::CopyFullStdVector(rhs.values_);
         return *this;
     }
 
     template<typename ValueType>
-    bool Vector<ValueType>::operator==(const Vector<ValueType> &rhs) const
+    bool Vector<ValueType>::operator==(const Vector <ValueType> &rhs) const
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, rhs.values_);
         for (std::size_t counter = 0; counter < this->values_.size(); ++counter)
@@ -211,7 +224,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType1>
-    std::ostream &operator<<(std::ostream &stream, const Vector<ValueType1> &obj)
+    std::ostream &operator<<(std::ostream &stream, const Vector <ValueType1> &obj)
     {
         stream << "Vector (" << obj.Size() << "): [ ";
         obj.PrintVectorRowByStream(stream);
