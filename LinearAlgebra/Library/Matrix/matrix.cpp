@@ -11,8 +11,7 @@ namespace LinearAlgebra
     template<typename ValueType2>
     std::ostream &operator<<(std::ostream &stream, const Matrix<ValueType2> &to_print)
     {
-        stream << "Matrix (" << to_print.vectors_.size() << " x " << to_print.vectors_.at(1).Size() << ')' << ':'
-               << '\n';
+        stream << "Matrix (" << to_print.vectors_.size() << " x " << to_print.vectors_.at(1).Size() << "):\n";
 
         for (std::size_t counter = 0; counter < to_print.vectors_.size(); ++counter)
         {

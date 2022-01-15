@@ -11,8 +11,6 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
 
 ### _Functionality / To Do:_
 
-// Make Matrix as friend class for Vector
-
 - [x] __Vector Class__
     - [x] Template
     - [x] Copy constructor and = operator
@@ -51,7 +49,7 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
         - [ ] ...
 - [ ] __MakeFile__
   - [ ] Cmake (?)
-- [ ] __Tests: Link to `CodeCov` or `Google tests`__
+- [x] __Tests: Link to `CodeCov` or `Google tests`__ ([Google tests tutorial](https://google.github.io/googletest/quickstart-cmake.html))
   - [x] Or at least start testing with `assert.h`  
     
 
@@ -60,6 +58,13 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
 * Template classes
 * Google C++ code style (style guide)
 * Modern STD functions, auto lambda expressions
+
+
+### _To Run tests:_
+1. `cd Tester`  
+2. `cmake -S . -B build -G "MinGW Makefiles"`
+3. `cmake --build build`  
+4. `cd build && ctest`
 
 #### _Developed with:_
 * JetBrains Clion
