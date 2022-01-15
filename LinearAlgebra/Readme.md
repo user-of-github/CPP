@@ -1,13 +1,17 @@
 ## Simple Linear Algebra Library
-###### Educational projects for practice & portfolio | Educational purposes
+###### Educational purposes
 
 
 ### _Description:_
 _The first project in my C++ Repo.   
 Hope not the last :)  
-Project's aim — to repeat some linear algebra topics, code them and practice modern C++ with STL, lambdas and so on_
+Project's aim — repeat some linear algebra topics, code them practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake_
 
-
+### _To Run tests:_
+1. `cd Tester`
+2. `cmake -S . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
+3. `cmake --build build`
+4. `cd build && ctest`
 
 ### _Functionality / To Do:_
 
@@ -49,25 +53,21 @@ Project's aim — to repeat some linear algebra topics, code them and practice m
         - [ ] ...
 - [ ] __MakeFile__
   - [ ] Cmake (?)
-- [x] __Tests: Link to `CodeCov` or `Google tests`__ ([Google tests tutorial](https://google.github.io/googletest/quickstart-cmake.html))
+- [x] __Tests: Connect to `CodeCov` or `Google tests` ([gtest](https://google.github.io/googletest/quickstart-cmake.html))__
   - [x] Or at least start testing with `assert.h`  
     
 
 
-### _Features:_  
+### _Some more features:_  
 * Template classes
 * Google C++ code style (style guide)
 * Modern STD functions, auto lambda expressions
+* Google Tests
 
-
-### _To Run tests:_
-1. `cd Tester`  
-2. `cmake -S . -B build -G "MinGW Makefiles"`
-3. `cmake --build build`  
-4. `cd build && ctest`
 
 #### _Developed with:_
 * JetBrains Clion
+* Google Tests
 &nbsp;  
 
 ###### © 2022 | All Rights Reserved

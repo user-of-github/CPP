@@ -56,7 +56,7 @@ namespace LinearAlgebra
 
         Vector<ValueType> &operator/=(const ValueType &);
 
-        Vector<ValueType> operator/(const ValueType &) const;
+        const Vector<int> operator/(const ValueType &);
 
         Vector<ValueType> &operator+=(const Vector<ValueType> &);
 

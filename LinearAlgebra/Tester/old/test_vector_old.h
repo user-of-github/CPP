@@ -3,7 +3,6 @@
 
 #pragma once
 
-
 #include "../Library/Utils/utils.h"
 #include "../Library/Utils/utils.cpp"
 #include "../Library/Matrix/Vector/vector.cpp"

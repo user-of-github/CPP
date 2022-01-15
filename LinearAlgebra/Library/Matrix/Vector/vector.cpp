@@ -129,7 +129,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> Vector<ValueType>::operator/(const ValueType &scalar) const
+    const Vector<int> Vector<ValueType>::operator/(const ValueType &scalar)
     {
         Vector <ValueType> response(*this);
         for (auto &item : response.values_)

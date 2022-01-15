@@ -1,18 +1,27 @@
-
 */.idea
 */cmake-build-debug
-*.exe
-*.o
-
-/.idea
-.idea
-/cmake-build-debug
 cmake-build-debug
+/cmake-build-debug
+cmake-build-debug/
+
+.vscode
+/.vscode
+.vscode/
+
+build
+/build
+/build
 
 /CMakeFiles
 CMakeFiles/
 CMakeFiles
 
+cmake-build-debug-coverage/
+/cmake-build-debug-coverage
+cmake-build-debug-coverage
+
+*.exe
+*.o
 *.s
 *.gcno
 .gcno
@@ -23,10 +32,13 @@ CMakeFiles
 *.obj
 *.OBJ
 *.OVL
-
 *.TR
 *.TD
 
-.vscode
-/.vscode
-.vscode/
+CMakeCache.txt
+./CMakeCache.txt
+*/CMakeCache.txt
+
+
+
+
