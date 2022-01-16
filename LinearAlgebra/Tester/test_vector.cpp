@@ -1,7 +1,7 @@
 #include <gtest/gtest.h>
-#include "../Library/Matrix/Vector/vector.h"
+#include "../Library/Matrix/Vector/vector.hpp"
 #include "../Library/Matrix/Vector/vector.cpp"
-#include "../Library/Utils/utils.h"
+#include "../Library/Utils/utils.hpp"
 #include "../Library/Utils/utils.cpp"
 
 

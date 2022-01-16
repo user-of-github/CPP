@@ -1,5 +1,5 @@
 #include <gtest/gtest.h>
-#include "../Library/Matrix/matrix.h"
+#include "../Library/Matrix/matrix.hpp"
 #include "../Library/Matrix/matrix.cpp"
 
 

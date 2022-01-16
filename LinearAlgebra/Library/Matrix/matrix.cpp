@@ -1,4 +1,4 @@
-#include "matrix.h"
+#include "matrix.hpp"
 
 
 namespace LinearAlgebra
@@ -63,7 +63,7 @@ namespace LinearAlgebra
                 std::begin(this->vectors_),
                 std::end(this->vectors_),
                 0,
-                [](ValueType response, const Vector<ValueType> & current) -> ValueType {
+                [](ValueType response, const Vector<ValueType> &current) -> ValueType {
                     return response + current.Sum();
                 });
     }
@@ -71,7 +71,16 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Matrix<ValueType>::Resize(const std::size_t new_rows, const std::size_t new_cols)
     {
-        if (new_cols == 0 || new_cols == 0) // if (Matrix<ValueType>::CheckValidityOfDimensions()...)
-            throw std::runtime_error("Sizes invalid");
+        Matrix<ValueType>::CheckValidityOfDimensions(new_rows, new_cols);
+        this->vectors_.resize(new_rows, Vector<ValueType>(new_cols, 0));
+        for (auto &row : this->vectors_)
+            row.Resize(new_cols, 0);
+    }
+
+    template<typename ValueType>
+    void Matrix<ValueType>::CheckValidityOfDimensions(const std::size_t rows_count, const std::size_t cols_count)
+    {
+        if (rows_count <= 0 || cols_count <= 0)
+            throw std::runtime_error("Sizes are invalid");
     }
 }

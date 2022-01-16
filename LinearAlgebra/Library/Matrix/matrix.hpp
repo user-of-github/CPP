@@ -4,7 +4,7 @@
 #pragma once
 
 #include <ostream>
-#include "./Vector/vector.h"
+#include "./Vector/vector.hpp"
 #include "./Vector/vector.cpp"
 #include <tuple>
 
@@ -37,7 +37,7 @@ namespace LinearAlgebra
 
         static void CheckMatricesCompatibility(const Matrix<ValueType> &, const Matrix<ValueType> &);
 
-        static bool CheckValidityOfDimensions(const std::size_t, const std::size_t);
+        static void CheckValidityOfDimensions(const std::size_t, const std::size_t);
     };
 }
 #endif //LINEARALGEBRA_MATRIX_H
