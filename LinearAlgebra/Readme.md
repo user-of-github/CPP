@@ -37,7 +37,9 @@ Here for the first time using Cmake myself and gtests_
     - [ ] Multiplication
         - [ ] Pow
         - [ ] Tests
-    - [ ] Minor 
+    - [ ] Minor
+    - [ ] Spur / Track (след)
+    - [ ] Rang
     - [ ] Determinant
     - [ ] Transposing
     - [ ] Converting to upper/lower triangled 

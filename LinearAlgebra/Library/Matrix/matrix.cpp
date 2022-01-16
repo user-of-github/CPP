@@ -4,9 +4,39 @@
 namespace LinearAlgebra
 {
     template<typename ValueType>
-    Matrix<ValueType>::Matrix(const std::size_t rows, const std::size_t cols, const ValueType default_value):
-            vectors_(rows, Vector<ValueType>(cols, default_value))
+    Matrix<ValueType>::Matrix(const std::size_t rows, const std::size_t cols, const ValueType default_value)
+    {
+        Matrix<ValueType>::CheckValidityOfDimensions(rows, cols);
+        this->vectors_.resize(rows, Vector<ValueType>(cols, default_value));
+    }
+
+    template<typename ValueType>
+    Matrix<ValueType>::Matrix(const ValueType **array, std::size_t rows, const std::size_t cols): vectors_(rows,
+                                                                                                           Vector<ValueType>(
+                                                                                                                   cols,
+                                                                                                                   0))
+    {
+        Matrix<ValueType>::CheckValidityOfDimensions(rows, cols);
+        for (std::size_t row = 0; row < rows; ++row)
+            for (std::size_t col = 0; col < cols; ++col)
+                this->vectors_.at(row).values_.at(col) = array[row][col];
+    }
+
+    template<typename ValueType>
+    Matrix<ValueType>::Matrix(const Vector <ValueType> &vector): vectors_(1, Vector<ValueType>(vector))
     {}
+
+    template<typename ValueType>
+    Matrix<ValueType>::Matrix(const Matrix <ValueType> &rhs):
+            vectors_(rhs.vectors_.size(), Vector<ValueType>(rhs.vectors_.at(0).values_.size(), 0))
+    {
+        for (std::size_t row_index = 0; auto &row : this->vectors_)
+        {
+            for (std::size_t col_index = 0; auto &item : row)
+                item = rhs[row_index][row_index++];
+            ++row_index;
+        }
+    }
 
     template<typename ValueType2>
     std::ostream &operator<<(std::ostream &stream, const Matrix <ValueType2> &to_print)
@@ -32,6 +62,9 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> &Matrix<ValueType>::operator[](const std::size_t index)
     {
+        if (index >= vectors_.size() || index < 0)
+            throw std::runtime_error("Index is less than zero or greater than vector's size");
+
         return this->vectors_.at(index);
     }
 
@@ -69,12 +102,12 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    void Matrix<ValueType>::Resize(const std::size_t new_rows, const std::size_t new_cols)
+    void Matrix<ValueType>::Resize(const std::size_t new_rows, const std::size_t new_cols, const ValueType fill_with)
     {
         Matrix<ValueType>::CheckValidityOfDimensions(new_rows, new_cols);
         this->vectors_.resize(new_rows, Vector<ValueType>(new_cols, 0));
         for (auto &row : this->vectors_)
-            row.Resize(new_cols, 0);
+            row.Resize(new_cols, fill_with);
     }
 
     template<typename ValueType>
@@ -82,5 +115,34 @@ namespace LinearAlgebra
     {
         if (rows_count <= 0 || cols_count <= 0)
             throw std::runtime_error("Sizes are invalid");
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> &Matrix<ValueType>::operator*=(const ValueType ratio)
+    {
+        for (auto &row : this->vectors_)
+            row *= ratio;
+        return *this;
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> &Matrix<ValueType>::operator/=(const ValueType ratio)
+    {
+        if (ratio == 0)
+            throw std::runtime_error("Division by zero is not allowed");
+
+        for (auto &row : this->vectors_)
+            row *= ratio;
+        return *this;
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> &Matrix<ValueType>::operator+(const Matrix <ValueType> &rhs)
+    {
+        Matrix<ValueType>::CheckMatricesCompatibility(*this, rhs);
+        Matrix<ValueType> response(*this);
+        for (std::size_t counter = 0; auto &row : this->vectors_)
+            row += rhs[counter];
+        return response;
     }
 }

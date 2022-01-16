@@ -17,6 +17,12 @@ namespace LinearAlgebra
     public:
         Matrix(const std::size_t, const std::size_t, const ValueType = 0);
 
+        Matrix(const ValueType **, const std::size_t, const std::size_t);
+
+        Matrix(const Vector<ValueType> &);
+
+        Matrix(const Matrix<ValueType> &);
+
         template<typename ValueType2>
         friend std::ostream &operator<<(std::ostream &, const Matrix<ValueType2> &);
 
@@ -28,7 +34,15 @@ namespace LinearAlgebra
 
         ValueType Sum() const;
 
-        void Resize(const std::size_t, const std::size_t);
+        void Resize(const std::size_t, const std::size_t, const ValueType);
+
+        Matrix<ValueType> & operator *= (const ValueType);
+
+        Matrix<ValueType> & operator /= (const ValueType);
+
+        Matrix<ValueType> & operator + (const Matrix<ValueType> &);
+
+        Matrix<ValueType> & operator - (const Matrix<ValueType> &);
 
     private:
         std::vector<Vector<ValueType>> vectors_;

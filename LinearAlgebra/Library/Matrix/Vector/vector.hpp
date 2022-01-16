@@ -28,6 +28,10 @@ namespace LinearAlgebra
 
         Vector(const std::initializer_list<ValueType> &);
 
+        Vector(const std::vector<ValueType> &);
+
+        Vector(const ValueType *, const std::size_t);
+
         Vector(const Vector<ValueType> &);
 
         constexpr std::size_t Size() const;
@@ -86,6 +90,8 @@ namespace LinearAlgebra
         void CopyFullStdVector(const std::vector<ValueType> &);
 
         static void CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &);
+
+        static void CheckValidityOfSize(const std::size_t);
 
         void CheckIndexCompatibility(const std::size_t) const;
 

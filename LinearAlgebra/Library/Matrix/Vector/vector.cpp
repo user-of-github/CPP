@@ -1,17 +1,41 @@
 #pragma once
 
-#include "vector.hpp"
-
 
 namespace LinearAlgebra
 {
-    template<typename ValueType>
-    Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value): values_(size, default_value)
-    {}
+
+    #include "vector.hpp"
 
     template<typename ValueType>
-    Vector<ValueType>::Vector(const std::initializer_list<ValueType> &initial_values_): values_(initial_values_)
-    {}
+    Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value): values_(0)
+    {
+        Vector<ValueType>::CheckValidityOfSize(size);
+        this->values_.resize(size, default_value);
+    }
+
+    template<typename ValueType>
+    Vector<ValueType>::Vector(const std::initializer_list<ValueType> &initial_values): values_(0)
+    {
+        Vector<ValueType>::CheckValidityOfSize(initial_values.size());
+        for (const auto item : initial_values)
+            this->values_.push_back(item);
+    }
+
+    template<typename ValueType>
+    Vector<ValueType>::Vector(const std::vector<ValueType> &initial_values)
+    {
+        Vector<ValueType>::CheckValidityOfSize(initial_values.size());
+        for (const auto item : initial_values)
+            this->values_.push_back(item);
+    }
+
+    template<typename ValueType>
+    Vector<ValueType>::Vector(const ValueType *initial_values, const std::size_t size):values_(0)
+    {
+        Vector<ValueType>::CheckValidityOfSize(size);
+        for (std::size_t counter = 0; counter < size; ++counter)
+            this->values_.push_back(initial_values[counter]);
+    }
 
     template<typename ValueType>
     constexpr std::size_t Vector<ValueType>::Size() const
@@ -22,6 +46,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Vector<ValueType>::Resize(const std::size_t new_size, const ValueType fill_with)
     {
+        Vector<ValueType>::CheckValidityOfSize(new_size);
         this->values_.resize(new_size, fill_with);
     }
 
@@ -128,6 +153,9 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
     {
+        if (scalar == 0)
+            throw std::runtime_error("Division by zero is not allowed");
+
         for (auto &item : this->values_)
             item /= scalar;
         return *this;
@@ -136,6 +164,9 @@ namespace LinearAlgebra
     template<typename ValueType>
     const Vector<int> Vector<ValueType>::operator/(const ValueType &scalar)
     {
+        if (scalar == 0)
+            throw std::runtime_error("Division by zero is not allowed");
+
         Vector<ValueType> response(*this);
         for (auto &item : response.values_)
             item /= scalar;
@@ -254,5 +285,12 @@ namespace LinearAlgebra
     {
         for (const auto &item : this->values_)
             os << item << ' ';
+    }
+
+    template<typename ValueType>
+    void Vector<ValueType>::CheckValidityOfSize(const std::size_t size)
+    {
+        if ((int) size <= 0)
+            throw std::runtime_error("Size is invalid");
     }
 }

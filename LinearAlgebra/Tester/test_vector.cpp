@@ -20,14 +20,20 @@ TEST(Vector, Size)
     EXPECT_EQ(LinearAlgebra::Vector<double>({1, 2, 2, -201}).Size(), 4);
     EXPECT_EQ(LinearAlgebra::Vector<double>({1}).Size(), 1);
     EXPECT_EQ(LinearAlgebra::Vector<double>({1, 1, 1, 1, 1, 1, 1}).Size(), 7);
-    EXPECT_EQ(LinearAlgebra::Vector<double>({}).Size(), 0);
+    EXPECT_EQ(LinearAlgebra::Vector<double>({-20220116}).Size(), 1);
 
     LinearAlgebra::Vector<int> to_test2({2, 3, 4});
-    for (std::size_t counter = std::rand() % 100; counter < std::rand() % 1000 + 100; ++counter)
+    for (std::size_t counter = std::rand() % 100 + 100; counter < std::rand() % 1000 + 100; ++counter)
     {
         EXPECT_NO_THROW(to_test2.Resize(counter, counter));
         EXPECT_EQ(to_test2.Size(), counter);
     }
+
+    EXPECT_THROW(to_test2.Resize(0), std::runtime_error);
+    EXPECT_THROW(LinearAlgebra::Vector<std::string>(-1, ""), std::runtime_error);
+    int initial[] = {1, 2, 3, -2000};
+
+    EXPECT_EQ(LinearAlgebra::Vector<int>(initial, sizeof(initial) / sizeof(int)).Sum(), -1994);
 }
 
 TEST(Vector, Operators)
