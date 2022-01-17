@@ -55,6 +55,8 @@ namespace LinearAlgebra
 
         Matrix<ValueType> &operator=(const Matrix<ValueType> &);
 
+        void Transpose();
+
     private:
         std::vector<Vector<ValueType>> vectors_;
 
@@ -63,6 +65,8 @@ namespace LinearAlgebra
         void PrintVectorsRowForOstream(std::ostream &, const std::size_t) const;
 
         static bool CheckMatricesCompatibility(const Matrix<ValueType> &, const Matrix<ValueType> &, const bool = true);
+
+        static bool CheckMatrixsSquareness(const Matrix<ValueType> &, const bool = true);
 
         static void CheckValidityOfDimensions(const std::size_t, const std::size_t);
     };

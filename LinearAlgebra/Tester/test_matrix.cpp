@@ -81,8 +81,32 @@ TEST(Matrix, Operators)
     tester1.Resize(4, 4);
 
     LinearAlgebra::Matrix<int> testerSum = tester1 + tester2;
-    //EXPECT_NE(testerSum.Sum(), tester1.Sum());
-   // EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(tester1 + tester2).Sum());
-    //EXPECT_EQ(testerSum.Sum(), tester1.Sum() + tester2.Sum());
+    EXPECT_NE(testerSum.Sum(), tester1.Sum());
+    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(tester1 + tester2).Sum());
+    EXPECT_EQ(testerSum.Sum(), tester1.Sum() + tester2.Sum());
+    EXPECT_EQ((tester1 - tester2).Sum(), tester1.Sum() - tester2.Sum());
+    EXPECT_EQ((tester2 - tester2).Sum(), 0);
+}
 
+TEST(Matrix, Transpose)
+{
+    const int initial[4][4] = {{1,  2,  3,  4},
+                               {5,  6,  7,  8},
+                               {9,  10, 11, 12},
+                               {13, 14, 15, 16}};
+
+    const int initial_transposed[4][4] = {{1, 5, 9,  13},
+                                          {2, 6, 10, 14},
+                                          {3, 7, 11, 15},
+                                          {4, 8, 12, 16}};
+    auto tester = LinearAlgebra::Matrix<int>((int *) initial, 4, 4);
+    auto tester_transposed = LinearAlgebra::Matrix<int>((int *) initial_transposed, 4, 4);
+    EXPECT_NO_THROW(tester.Transpose());
+    EXPECT_TRUE(tester == tester_transposed);
+    EXPECT_NO_THROW(tester_transposed.Transpose());
+    EXPECT_TRUE(tester_transposed == LinearAlgebra::Matrix<int>((int *) initial, 4, 4));
+
+    auto tester0 = LinearAlgebra::Matrix<unsigned short>(4, 4, 2022);
+    EXPECT_NO_THROW(tester0.Transpose());
+    EXPECT_TRUE(tester0 == LinearAlgebra::Matrix<unsigned short>(4, 4, 2022));
 }

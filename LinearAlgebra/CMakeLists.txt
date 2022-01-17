@@ -4,7 +4,7 @@ project(demo_library)
 # GoogleTest requires at least C++11
 set(CMAKE_CXX_STANDARD 20)
 
-add_executable(demo demo.cpp ./Library/Matrix/Vector/vector.cpp ./Library/Matrix/matrix.cpp)
+add_executable(demo sandbox.cpp ./Library/Matrix/Vector/vector.cpp ./Library/Matrix/matrix.cpp)
 
 
 # to build lib ?

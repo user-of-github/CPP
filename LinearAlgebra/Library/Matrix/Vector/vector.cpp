@@ -89,10 +89,10 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Vector<ValueType>::CopyFullStdVector(const std::vector<ValueType> &rhs)
     {
-        this->values_.resize(0);
+        this->values_.resize(rhs.size());
         this->values_.shrink_to_fit();
-        for (const auto &item : rhs)
-            this->values_.push_back(item);
+        for (std::size_t counter = 0; const auto &item : rhs)
+            this->values_.at(counter++) = item;
     }
 
     template<typename ValueType>

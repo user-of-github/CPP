@@ -42,7 +42,7 @@ Here for the first time using Cmake myself and gtests_
     - [ ] Spur / Track (след)
     - [ ] Rang
     - [ ] Determinant
-    - [ ] Transposing
+    - [x] Transposing
     - [ ] Converting to upper/lower triangled 
     - [ ] Rank (rang ?) and other measures
     - [ ] Inverse matrix

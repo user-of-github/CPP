@@ -27,9 +27,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Matrix<ValueType>::Matrix(const Matrix <ValueType> &rhs):
-            vectors_(rhs.vectors_.size(), Vector<ValueType>(rhs.vectors_.at(0).values_.size()))
+    Matrix<ValueType>::Matrix(const Matrix <ValueType> &rhs)
     {
+        *this = Matrix(rhs.vectors_.size(), rhs.vectors_.at(0).values_.size());
         this->CopyItems(rhs);
     }
 
@@ -168,8 +168,8 @@ namespace LinearAlgebra
     Matrix <ValueType> Matrix<ValueType>::operator-(const Matrix <ValueType> &rhs) const
     {
         Matrix<ValueType>::CheckMatricesCompatibility(*this, rhs);
-        Matrix<ValueType> response(*this);
-        for (std::size_t counter = 0; auto &row : this->vectors_)
+        auto response = Matrix<ValueType>(*this);
+        for (std::size_t counter = 0; auto &row : response.vectors_)
             row -= rhs.vectors_.at(counter++);
         return response;
     }
@@ -190,11 +190,9 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Matrix<ValueType>::CopyItems(const Matrix <ValueType> &rhs)
     {
-        this->vectors_.resize(rhs.vectors_.size());
-        this->vectors_.shrink_to_fit();
-
-        for (std::size_t counter = 0; const Vector<ValueType> &row : rhs.vectors_)
-            this->vectors_.at(counter) = row;
+        for (std::size_t row = 0; row < this->vectors_.size(); ++row)
+            for (std::size_t col = 0; col < this->vectors_.at(row).values_.size(); ++col)
+                this->vectors_.at(row).values_.at(col) = rhs.vectors_.at(row).values_.at(col);
     }
 
     template<typename ValueType>
@@ -210,5 +208,38 @@ namespace LinearAlgebra
         auto response = Matrix<ValueType>(*this);
         response *= scalar;
         return response;
+    }
+
+    template<typename ValueType>
+    void Matrix<ValueType>::Transpose()
+    {
+        if (!(Matrix<ValueType>::CheckMatrixsSquareness(*this, true)))
+            return;
+
+        const auto[rows, cols] = this->Sizes();
+
+        for (std::size_t row = 0; row < rows; ++row)
+        {
+            for (std::size_t col = 0; col < row; ++col)
+            {
+                const auto temp = this->vectors_.at(row).values_.at(col);
+                this->vectors_.at(row).values_.at(col) = this->vectors_.at(col).values_.at(row);
+                this->vectors_.at(col).values_.at(row) = temp;
+            }
+        }
+    }
+
+    template<typename ValueType>
+    bool Matrix<ValueType>::CheckMatrixsSquareness(const Matrix <ValueType> &matrix, const bool should_throw)
+    {
+        const auto[row, col] = matrix.Sizes();
+        if (row != col)
+        {
+            if (should_throw)
+                throw std::runtime_error("Unable to perform operation with non-square matrix");
+
+            return false;
+        }
+        return true;
     }
 }
