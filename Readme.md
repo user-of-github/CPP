@@ -1,5 +1,5 @@
 ## C++ Practice
-#### Educational projects for portfolio | Educational purposes
+#### Educational projects | Educational purposes
 
 &nbsp;  
 

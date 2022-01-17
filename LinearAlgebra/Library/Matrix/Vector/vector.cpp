@@ -1,11 +1,7 @@
-#pragma once
-
+#include "vector.hpp"
 
 namespace LinearAlgebra
 {
-
-    #include "vector.hpp"
-
     template<typename ValueType>
     Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value): values_(0)
     {
@@ -154,7 +150,10 @@ namespace LinearAlgebra
     Vector <ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
     {
         if (scalar == 0)
+        {
             throw std::runtime_error("Division by zero is not allowed");
+            return *this;
+        }
 
         for (auto &item : this->values_)
             item /= scalar;
@@ -222,11 +221,17 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    void Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
-                                                    const std::vector<ValueType> &second)
+    bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
+                                                    const std::vector<ValueType> &second,
+                                                    const bool to_throw_exception)
     {
         if (first.size() != second.size())
-            throw std::runtime_error("Vectors' sizes incompatible");
+        {
+            if (to_throw_exception)
+                throw std::runtime_error("Vectors' sizes incompatible");
+            return false;
+        }
+        return true;
     }
 
     template<typename ValueType>
@@ -240,18 +245,8 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> &Vector<ValueType>::operator=(const Vector <ValueType> &rhs)
     {
-        Vector<ValueType>::CopyFullStdVector(rhs.values_);
+        this->CopyFullStdVector(rhs.values_);
         return *this;
-    }
-
-    template<typename ValueType>
-    bool Vector<ValueType>::operator==(const Vector <ValueType> &rhs) const
-    {
-        Vector<ValueType>::CheckSizesCompatibility(this->values_, rhs.values_);
-        for (std::size_t counter = 0; counter < this->values_.size(); ++counter)
-            if (this->values_.at(counter) != rhs.values_.at(counter))
-                return false;
-        return true;
     }
 
     template<typename ValueType1>
@@ -259,7 +254,7 @@ namespace LinearAlgebra
     {
         stream << "Vector (" << obj.Size() << "): [ ";
         obj.PrintVectorRowByStream(stream);
-        stream << ' ' << ']' << '\n';
+        stream << ']' << '\n';
         return stream;
     }
 
@@ -273,13 +268,6 @@ namespace LinearAlgebra
         );
     }
 
-    /*template<typename ValueType>
-    template<typename Functor>
-    void Vector<ValueType>::Transform(Functor &changer)
-    {
-        for (std::size_t counter = 0; const auto &item : this->values_)
-            changer(item, counter++);
-    }*/
     template<typename ValueType>
     void Vector<ValueType>::PrintVectorRowByStream(std::ostream &os) const
     {
@@ -293,4 +281,20 @@ namespace LinearAlgebra
         if ((int) size <= 0)
             throw std::runtime_error("Size is invalid");
     }
+
+    template<typename ValueType1>
+    bool operator==(const Vector <ValueType1> &first, const Vector <ValueType1> &second)
+    {
+        if (!Vector<ValueType1>::CheckSizesCompatibility(first.values_, second.values_, false))
+            return false;
+
+        for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
+            if (first.values_.at(counter) != second.values_.at(counter))
+                return false;
+        return true;
+    }
+
+    template<typename ValueType>
+    Vector<ValueType>::Vector(): values_(0)
+    {}
 }

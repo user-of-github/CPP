@@ -17,12 +17,13 @@ namespace LinearAlgebra
     template<typename ValueType>
     class Matrix;
 
-
     template<typename ValueType>
     class Vector
     {
     public:
         friend class Matrix<ValueType>;
+
+        Vector();
 
         explicit Vector(const std::size_t, const ValueType = 0);
 
@@ -74,22 +75,20 @@ namespace LinearAlgebra
 
         Vector<ValueType> &operator=(Vector<ValueType> &&) noexcept = default;
 
-        bool operator==(const Vector<ValueType> &) const;
+        template<typename ValueType1>
+        friend bool operator==(const Vector<ValueType1> &, const Vector<ValueType1> &);
 
         template<typename ValueType1>
         friend std::ostream &operator<<(std::ostream &, const Vector<ValueType1> &);
 
         ValueType Sum() const;
 
-        /*template<typename Functor>
-        void Transform(Functor &);*/
-
     private:
         std::vector<ValueType> values_;
 
         void CopyFullStdVector(const std::vector<ValueType> &);
 
-        static void CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &);
+        static bool CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &, const bool = true);
 
         static void CheckValidityOfSize(const std::size_t);
 

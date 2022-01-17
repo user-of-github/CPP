@@ -10,7 +10,7 @@ TEST(Vector, Size)
     const std::size_t size = 10;
     const double default_value = 2022.05;
 
-    LinearAlgebra::Vector<double> to_test(size, default_value);
+    const auto to_test = LinearAlgebra::Vector<double>(size, default_value);
 
     EXPECT_EQ(to_test.Size(), size);
 
@@ -31,14 +31,14 @@ TEST(Vector, Size)
 
     EXPECT_THROW(to_test2.Resize(0), std::runtime_error);
     EXPECT_THROW(LinearAlgebra::Vector<std::string>(-1, ""), std::runtime_error);
-    int initial[] = {1, 2, 3, -2000};
 
+    int initial[] = {1, 2, 3, -2000};
     EXPECT_EQ(LinearAlgebra::Vector<int>(initial, sizeof(initial) / sizeof(int)).Sum(), -1994);
 }
 
 TEST(Vector, Operators)
 {
-    LinearAlgebra::Vector<int> tester(10, 0);
+    auto tester = LinearAlgebra::Vector<int>(10, 0);
     for (std::size_t counter = 0; counter < tester.Size(); ++counter)
     {
         tester[counter] = counter;
@@ -87,12 +87,16 @@ TEST(Vector, Operators)
     EXPECT_NO_THROW(tester + (std::rand() % 255));
     EXPECT_NO_THROW(tester - (std::rand() % 255));
 
-    LinearAlgebra::Vector<int> tester3(tester);
+    auto tester3 = LinearAlgebra::Vector<int>(tester);
     EXPECT_TRUE(tester3 == tester);
     EXPECT_NO_THROW(tester3 += 6);
     EXPECT_FALSE(tester3 == tester);
     EXPECT_NO_THROW(tester.Resize(100, 0));
-    EXPECT_THROW(tester == tester3, std::runtime_error);
+    EXPECT_FALSE(tester == tester3);
+
+    EXPECT_TRUE(LinearAlgebra::Vector<int>({1, 2, 3}) == LinearAlgebra::Vector<int>({1, 2, 3}));
+    EXPECT_FALSE(LinearAlgebra::Vector<int>({1, 2, 4}) == LinearAlgebra::Vector<int>({1, 2, 3}));
+    EXPECT_FALSE(LinearAlgebra::Vector<int>({1, 2}) == LinearAlgebra::Vector<int>({1, 2, 3}));
 }
 
 TEST(Vector, Norm)
@@ -103,7 +107,7 @@ TEST(Vector, Norm)
     ASSERT_EQ(LinearAlgebra::Vector<int>({0, 0, 0, 0, 0, 0, 1}).GetNorm(), 1);
     ASSERT_EQ(LinearAlgebra::Vector<int>({3, 4, 0, 0, 0, 0, 0}).GetNorm(), 5);
 
-    LinearAlgebra::Vector<double> tester(10, 0);
+    auto tester = LinearAlgebra::Vector<double>(10, 0);
     double to_check = 0;
     for (std::size_t counter = 0; counter < 10; ++counter)
     {
@@ -126,7 +130,7 @@ TEST(Vector, Norm)
 TEST(Vector, Sum)
 {
     const std::size_t size = std::rand() % 200 + 100; // 100 ... 300
-    LinearAlgebra::Vector<int> tester(size, 0);
+    auto tester = LinearAlgebra::Vector<int>(size, 0);
     EXPECT_EQ(tester.Sum(), 0);
     EXPECT_EQ(tester.Size(), size);
     EXPECT_ANY_THROW(tester.Normalize());
@@ -144,7 +148,7 @@ TEST(Vector, Sum)
 
     EXPECT_EQ(tester.Sum(), to_check);
 
-    LinearAlgebra::Vector<double> tester2({5.0, 6, 7, 8});
+    auto tester2 = LinearAlgebra::Vector<double>({5.0, 6, 7, 8});
     const auto sum_previous = tester2.Sum();
     const auto norm_previous = tester2.GetNorm();
     EXPECT_NO_THROW(tester2.Normalize());

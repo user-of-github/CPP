@@ -19,6 +19,8 @@ namespace LinearAlgebra
 
         Matrix(const ValueType **, const std::size_t, const std::size_t);
 
+        Matrix(const ValueType *, const std::size_t, const std::size_t);
+
         Matrix(const Vector<ValueType> &);
 
         Matrix(const Matrix<ValueType> &);
@@ -34,22 +36,33 @@ namespace LinearAlgebra
 
         ValueType Sum() const;
 
-        void Resize(const std::size_t, const std::size_t, const ValueType);
+        void Resize(const std::size_t, const std::size_t, const ValueType = ValueType());
 
-        Matrix<ValueType> & operator *= (const ValueType);
+        Matrix<ValueType> &operator*=(const ValueType);
 
-        Matrix<ValueType> & operator /= (const ValueType);
+        Matrix<ValueType> &operator/=(const ValueType);
 
-        Matrix<ValueType> & operator + (const Matrix<ValueType> &);
+        Matrix<ValueType> operator*(const ValueType) const;
 
-        Matrix<ValueType> & operator - (const Matrix<ValueType> &);
+        Matrix<ValueType> operator+(const Matrix<ValueType> &) const;
+
+        Matrix<ValueType> operator-(const Matrix<ValueType> &) const;
+
+        template<typename ValueType1>
+        friend bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);
+
+        Matrix<ValueType> &operator=(Matrix<ValueType> &&) noexcept = default;
+
+        Matrix<ValueType> &operator=(const Matrix<ValueType> &);
 
     private:
         std::vector<Vector<ValueType>> vectors_;
 
+        void CopyItems(const Matrix<ValueType> &);
+
         void PrintVectorsRowForOstream(std::ostream &, const std::size_t) const;
 
-        static void CheckMatricesCompatibility(const Matrix<ValueType> &, const Matrix<ValueType> &);
+        static bool CheckMatricesCompatibility(const Matrix<ValueType> &, const Matrix<ValueType> &, const bool = true);
 
         static void CheckValidityOfDimensions(const std::size_t, const std::size_t);
     };

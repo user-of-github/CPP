@@ -31,6 +31,7 @@ Here for the first time using Cmake myself and gtests_
     - [ ] Convert / Transform (with lambda as argument)
     - [x] Sum
     - [x] Friend class for Matrix class
+    - [ ] Cast to Matrix
 - [x] __Matrix Class__ (can also represent Vector)
     - [ ] Operators (via already realized Vector's ones)
     - [x] Ostream operator
@@ -49,6 +50,7 @@ Here for the first time using Cmake myself and gtests_
         - [ ] Gauss
         - [ ] Other
         - [ ] ...
+    - [ ] Cast to Vector (if 1 row)
 - [ ] __MakeFile__
   - [x] Cmake (?)
 - [x] __Tests: Connect to `CodeCov` or `Google tests` ([gtest](https://google.github.io/googletest/quickstart-cmake.html))__
