@@ -25,18 +25,23 @@ namespace LinearAlgebra
 
         Matrix(const Matrix<ValueType> &);
 
-        template<typename ValueType2>
-        friend std::ostream &operator<<(std::ostream &, const Matrix<ValueType2> &);
+
+        constexpr ValueType Sum() const;
+
+        constexpr std::tuple<std::size_t, std::size_t> Sizes() const;
+
+        void Transpose();
+
+        void Resize(const std::size_t, const std::size_t, const ValueType = ValueType());
+
 
         Vector<ValueType> &operator[](const size_t);
 
         const Vector<ValueType> &operator[](const std::size_t) const;
 
-        const std::tuple<std::size_t, std::size_t> Sizes() const;
+        Matrix<ValueType> &operator+=(const ValueType);
 
-        ValueType Sum() const;
-
-        void Resize(const std::size_t, const std::size_t, const ValueType = ValueType());
+        Matrix<ValueType> &operator-=(const ValueType);
 
         Matrix<ValueType> &operator*=(const ValueType);
 
@@ -48,14 +53,15 @@ namespace LinearAlgebra
 
         Matrix<ValueType> operator-(const Matrix<ValueType> &) const;
 
-        template<typename ValueType1>
-        friend bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);
-
         Matrix<ValueType> &operator=(Matrix<ValueType> &&) noexcept = default;
 
         Matrix<ValueType> &operator=(const Matrix<ValueType> &);
 
-        void Transpose();
+        template<typename ValueType1>
+        friend bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);
+
+        template<typename ValueType2>
+        friend std::ostream &operator<<(std::ostream &, const Matrix<ValueType2> &);
 
     private:
         std::vector<Vector<ValueType>> vectors_;
@@ -64,9 +70,11 @@ namespace LinearAlgebra
 
         void PrintVectorsRowForOstream(std::ostream &, const std::size_t) const;
 
-        static bool CheckMatricesCompatibility(const Matrix<ValueType> &, const Matrix<ValueType> &, const bool = true);
+        static constexpr bool CheckMatricesCompatibility(const Matrix<ValueType> &,
+                                                        const Matrix<ValueType> &,
+                                                        const bool = true);
 
-        static bool CheckMatrixsSquareness(const Matrix<ValueType> &, const bool = true);
+        static constexpr bool IsMatrixSquare(const Matrix<ValueType> &, const bool = true);
 
         static void CheckValidityOfDimensions(const std::size_t, const std::size_t);
     };

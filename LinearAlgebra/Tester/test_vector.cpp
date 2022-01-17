@@ -29,10 +29,10 @@ TEST(Vector, Size)
         EXPECT_EQ(to_test2.Size(), counter);
     }
 
-    EXPECT_THROW(to_test2.Resize(0), std::runtime_error);
-    EXPECT_THROW(LinearAlgebra::Vector<std::string>(-1, ""), std::runtime_error);
+    EXPECT_THROW(to_test2.Resize(0), std::invalid_argument);
+    EXPECT_THROW(LinearAlgebra::Vector<std::string>(-1, ""), std::invalid_argument);
 
-    int initial[] = {1, 2, 3, -2000};
+    const int initial[] = {1, 2, 3, -2000};
     EXPECT_EQ(LinearAlgebra::Vector<int>(initial, sizeof(initial) / sizeof(int)).Sum(), -1994);
 }
 
@@ -41,7 +41,7 @@ TEST(Vector, Operators)
     auto tester = LinearAlgebra::Vector<int>(10, 0);
     for (std::size_t counter = 0; counter < tester.Size(); ++counter)
     {
-        tester[counter] = counter;
+        tester[counter] = (int) counter;
         EXPECT_EQ(tester[counter], counter);
     }
     EXPECT_ANY_THROW(tester[tester.Size()]);
@@ -97,6 +97,11 @@ TEST(Vector, Operators)
     EXPECT_TRUE(LinearAlgebra::Vector<int>({1, 2, 3}) == LinearAlgebra::Vector<int>({1, 2, 3}));
     EXPECT_FALSE(LinearAlgebra::Vector<int>({1, 2, 4}) == LinearAlgebra::Vector<int>({1, 2, 3}));
     EXPECT_FALSE(LinearAlgebra::Vector<int>({1, 2}) == LinearAlgebra::Vector<int>({1, 2, 3}));
+
+    auto tester4 = LinearAlgebra::Vector<int>(6, 2022);
+    const auto sum4 = tester4.Sum();
+    tester4 /= 2;
+    EXPECT_EQ(sum4 / 2, tester4.Sum());
 }
 
 TEST(Vector, Norm)

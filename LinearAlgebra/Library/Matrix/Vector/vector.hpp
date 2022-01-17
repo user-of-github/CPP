@@ -23,6 +23,7 @@ namespace LinearAlgebra
     public:
         friend class Matrix<ValueType>;
 
+
         Vector();
 
         explicit Vector(const std::size_t, const ValueType = 0);
@@ -35,41 +36,45 @@ namespace LinearAlgebra
 
         Vector(const Vector<ValueType> &);
 
+
         constexpr std::size_t Size() const;
+
+        constexpr ValueType GetNorm() const;
+
+        constexpr ValueType Sum() const;
+
+        void Normalize();
 
         void Resize(const std::size_t, const ValueType fill_with_ = 0);
 
-        ValueType GetNorm() const;
-
-        void Normalize();
 
         const ValueType operator[](const std::size_t) const;
 
         ValueType &operator[](const std::size_t);
 
-        Vector<ValueType> &operator*=(const ValueType &);
-
-        Vector<ValueType> operator*(const ValueType &) const;
-
         Vector<ValueType> &operator+=(const ValueType &);
-
-        Vector<ValueType> operator+(const ValueType &) const;
 
         Vector<ValueType> &operator-=(const ValueType &);
 
-        Vector<ValueType> operator-(const ValueType &) const;
+        Vector<ValueType> &operator*=(const ValueType &);
 
         Vector<ValueType> &operator/=(const ValueType &);
 
-        const Vector<int> operator/(const ValueType &);
+        Vector<ValueType> operator+(const ValueType &) const;
+
+        Vector<ValueType> operator-(const ValueType &) const;
+
+        Vector<ValueType> operator*(const ValueType &) const;
+
+        Vector<ValueType> operator/(const ValueType &) const;
 
         Vector<ValueType> &operator+=(const Vector<ValueType> &);
 
-        Vector<ValueType> operator+(const Vector<ValueType> &);
-
         Vector<ValueType> &operator-=(const Vector<ValueType> &);
 
-        Vector<ValueType> operator-(const Vector<ValueType> &);
+        Vector<ValueType> operator+(const Vector<ValueType> &) const;
+
+        Vector<ValueType> operator-(const Vector<ValueType> &) const;
 
         Vector<ValueType> &operator=(const Vector<ValueType> &);
 
@@ -81,14 +86,14 @@ namespace LinearAlgebra
         template<typename ValueType1>
         friend std::ostream &operator<<(std::ostream &, const Vector<ValueType1> &);
 
-        ValueType Sum() const;
-
     private:
         std::vector<ValueType> values_;
 
         void CopyFullStdVector(const std::vector<ValueType> &);
 
-        static bool CheckSizesCompatibility(const std::vector<ValueType> &, const std::vector<ValueType> &, const bool = true);
+        static bool CheckSizesCompatibility(const std::vector<ValueType> &,
+                                            const std::vector<ValueType> &,
+                                            const bool = true);
 
         static void CheckValidityOfSize(const std::size_t);
 
@@ -97,4 +102,5 @@ namespace LinearAlgebra
         void PrintVectorRowByStream(std::ostream &) const;
     };
 }
+
 #endif //LINEARALGEBRA_VECTOR_H

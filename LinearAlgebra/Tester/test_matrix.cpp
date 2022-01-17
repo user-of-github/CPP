@@ -2,6 +2,11 @@
 #include "../Library/Matrix/matrix.hpp"
 #include "../Library/Matrix/matrix.cpp"
 
+TEST(Matrix, Constructors)
+{
+    EXPECT_EQ(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>({1, 2, 3})).Sum(), 6);
+    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>({1, 2, 3})));
+}
 
 TEST(Matrix, Size)
 {
@@ -18,7 +23,7 @@ TEST(Matrix, Size)
                                 {0, 0, 1, 0},
                                 {0, 0, 0, 1}};
     auto tester = LinearAlgebra::Matrix<int>((int *) (initial2), 4, 4);
-    EXPECT_THROW(std::cout << tester[4][2] << '\n', std::runtime_error);
+    EXPECT_THROW(std::cout << tester[4][2] << '\n', std::invalid_argument);
 
     EXPECT_ANY_THROW(tester.Resize(0, 1));
 
@@ -76,7 +81,7 @@ TEST(Matrix, Operators)
     auto sum2 = tester2.Sum();
     EXPECT_NO_THROW(tester2.Resize(5, 5, 1));
     EXPECT_EQ(sum2 + 9, tester2.Sum());
-    EXPECT_THROW(tester2 /= 0, std::runtime_error);
+    EXPECT_THROW(tester2 /= 0, std::invalid_argument);
     tester2.Resize(4, 4);
     tester1.Resize(4, 4);
 
@@ -106,7 +111,12 @@ TEST(Matrix, Transpose)
     EXPECT_NO_THROW(tester_transposed.Transpose());
     EXPECT_TRUE(tester_transposed == LinearAlgebra::Matrix<int>((int *) initial, 4, 4));
 
-    auto tester0 = LinearAlgebra::Matrix<unsigned short>(4, 4, 2022);
-    EXPECT_NO_THROW(tester0.Transpose());
-    EXPECT_TRUE(tester0 == LinearAlgebra::Matrix<unsigned short>(4, 4, 2022));
+    auto tester2 = LinearAlgebra::Matrix<unsigned short>(4, 4, 2022);
+    EXPECT_NO_THROW(tester2.Transpose());
+    EXPECT_TRUE(tester2 == LinearAlgebra::Matrix<unsigned short>(4, 4, 2022));
+
+    auto tester3 = LinearAlgebra::Matrix<int>(5, 6, 2022);
+    const auto sum3 = tester3.Sum();
+    tester3 /= 2;
+    EXPECT_EQ(tester3.Sum(), ((5 * 6 * 2022) / 2));
 }

@@ -3,6 +3,10 @@
 namespace LinearAlgebra
 {
     template<typename ValueType>
+    Vector<ValueType>::Vector(): values_(0)
+    {}
+
+    template<typename ValueType>
     Vector<ValueType>::Vector(const std::size_t size, const ValueType default_value): values_(0)
     {
         Vector<ValueType>::CheckValidityOfSize(size);
@@ -34,25 +38,35 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
+    Vector<ValueType>::Vector(const Vector <ValueType> &rhs)
+    {
+        this->CopyFullStdVector(rhs.values_);
+    }
+
+
+    template<typename ValueType>
     constexpr std::size_t Vector<ValueType>::Size() const
     {
         return this->values_.size();
     }
 
     template<typename ValueType>
-    void Vector<ValueType>::Resize(const std::size_t new_size, const ValueType fill_with)
-    {
-        Vector<ValueType>::CheckValidityOfSize(new_size);
-        this->values_.resize(new_size, fill_with);
-    }
-
-    template<typename ValueType>
-    ValueType Vector<ValueType>::GetNorm() const
+    constexpr ValueType Vector<ValueType>::GetNorm() const
     {
         ValueType response{};
         for (const auto &item : this->values_)
             response += item * item;
         return sqrt(response);
+    }
+
+    template<typename ValueType>
+    constexpr ValueType Vector<ValueType>::Sum() const
+    {
+        return std::accumulate(
+                std::begin(this->values_),
+                std::end(this->values_),
+                ValueType()
+        );
     }
 
     template<typename ValueType>
@@ -65,6 +79,14 @@ namespace LinearAlgebra
         for (auto &item : this->values_)
             item /= norm;
     }
+
+    template<typename ValueType>
+    void Vector<ValueType>::Resize(const std::size_t new_size, const ValueType fill_with)
+    {
+        Vector<ValueType>::CheckValidityOfSize(new_size);
+        this->values_.resize(new_size, fill_with);
+    }
+
 
     template<typename ValueType>
     const ValueType Vector<ValueType>::operator[](const std::size_t index) const
@@ -81,18 +103,19 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType>::Vector(const Vector <ValueType> &rhs)
+    Vector <ValueType> &Vector<ValueType>::operator+=(const ValueType &scalar)
     {
-        this->CopyFullStdVector(rhs.values_);
+        for (auto &item : this->values_)
+            item += scalar;
+        return *this;
     }
 
     template<typename ValueType>
-    void Vector<ValueType>::CopyFullStdVector(const std::vector<ValueType> &rhs)
+    Vector <ValueType> &Vector<ValueType>::operator-=(const ValueType &scalar)
     {
-        this->values_.resize(rhs.size());
-        this->values_.shrink_to_fit();
-        for (std::size_t counter = 0; const auto &item : rhs)
-            this->values_.at(counter++) = item;
+        for (auto &item : this->values_)
+            item -= scalar;
+        return *this;
     }
 
     template<typename ValueType>
@@ -104,19 +127,16 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
+    Vector <ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
     {
-        Vector<ValueType> response(*this);
-        for (auto &item : response.values_)
-            item *= scalar;
-        return response;
-    }
+        if (scalar == 0)
+        {
+            throw std::invalid_argument("Division by zero is not allowed");
+            return *this;
+        }
 
-    template<typename ValueType>
-    Vector <ValueType> &Vector<ValueType>::operator+=(const ValueType &scalar)
-    {
         for (auto &item : this->values_)
-            item += scalar;
+            item /= scalar;
         return *this;
     }
 
@@ -130,14 +150,6 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType> &Vector<ValueType>::operator-=(const ValueType &scalar)
-    {
-        for (auto &item : this->values_)
-            item -= scalar;
-        return *this;
-    }
-
-    template<typename ValueType>
     Vector <ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
     {
         Vector<ValueType> response(*this);
@@ -147,24 +159,19 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType> &Vector<ValueType>::operator/=(const ValueType &scalar)
+    Vector <ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
     {
-        if (scalar == 0)
-        {
-            throw std::runtime_error("Division by zero is not allowed");
-            return *this;
-        }
-
-        for (auto &item : this->values_)
-            item /= scalar;
-        return *this;
+        Vector<ValueType> response(*this);
+        for (auto &item : response.values_)
+            item *= scalar;
+        return response;
     }
 
     template<typename ValueType>
-    const Vector<int> Vector<ValueType>::operator/(const ValueType &scalar)
+    Vector <ValueType> Vector<ValueType>::operator/(const ValueType &scalar) const
     {
         if (scalar == 0)
-            throw std::runtime_error("Division by zero is not allowed");
+            throw std::invalid_argument("Division by zero is not allowed");
 
         Vector<ValueType> response(*this);
         for (auto &item : response.values_)
@@ -184,7 +191,18 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType> Vector<ValueType>::operator+(const Vector <ValueType> &scalar)
+    Vector <ValueType> &Vector<ValueType>::operator-=(const Vector <ValueType> &scalar)
+    {
+        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
+
+        for (std::size_t counter = 0; counter < this->Size(); ++counter)
+            this->values_.at(counter) -= scalar.values_.at(counter);
+
+        return *this;
+    }
+
+    template<typename ValueType>
+    Vector <ValueType> Vector<ValueType>::operator+(const Vector <ValueType> &scalar) const
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
@@ -197,18 +215,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType> &Vector<ValueType>::operator-=(const Vector <ValueType> &scalar)
-    {
-        Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
-
-        for (std::size_t counter = 0; counter < this->Size(); ++counter)
-            this->values_.at(counter) -= scalar.values_.at(counter);
-
-        return *this;
-    }
-
-    template<typename ValueType>
-    Vector <ValueType> Vector<ValueType>::operator-(const Vector <ValueType> &scalar)
+    Vector <ValueType> Vector<ValueType>::operator-(const Vector <ValueType> &scalar) const
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
@@ -218,6 +225,44 @@ namespace LinearAlgebra
             response.values_.at(counter) -= scalar.values_.at(counter);
 
         return response;
+    }
+
+    template<typename ValueType>
+    Vector <ValueType> &Vector<ValueType>::operator=(const Vector <ValueType> &rhs)
+    {
+        this->CopyFullStdVector(rhs.values_);
+        return *this;
+    }
+
+    template<typename ValueType1>
+    bool operator==(const Vector <ValueType1> &first, const Vector <ValueType1> &second)
+    {
+        if (!Vector<ValueType1>::CheckSizesCompatibility(first.values_, second.values_, false))
+            return false;
+
+        for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
+            if (first.values_.at(counter) != second.values_.at(counter))
+                return false;
+        return true;
+    }
+
+    template<typename ValueType1>
+    std::ostream &operator<<(std::ostream &stream, const Vector <ValueType1> &obj)
+    {
+        stream << "Vector (" << obj.Size() << "): [ ";
+        obj.PrintVectorRowByStream(stream);
+        stream << ']' << '\n';
+        return stream;
+    }
+
+
+    template<typename ValueType>
+    void Vector<ValueType>::CopyFullStdVector(const std::vector<ValueType> &rhs)
+    {
+        this->values_.resize(rhs.size());
+        this->values_.shrink_to_fit();
+        for (std::size_t counter = 0; const auto &item : rhs)
+            this->values_.at(counter++) = item;
     }
 
     template<typename ValueType>
@@ -235,37 +280,17 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
+    void Vector<ValueType>::CheckValidityOfSize(const std::size_t size)
+    {
+        if ((int) size <= 0)
+            throw std::invalid_argument("Size is invalid");
+    }
+
+    template<typename ValueType>
     void Vector<ValueType>::CheckIndexCompatibility(const std::size_t index) const
     {
         if (index >= this->values_.size() || index < 0)
-            throw std::runtime_error("Index is less than zero or greater than vector's size");
-    }
-
-
-    template<typename ValueType>
-    Vector <ValueType> &Vector<ValueType>::operator=(const Vector <ValueType> &rhs)
-    {
-        this->CopyFullStdVector(rhs.values_);
-        return *this;
-    }
-
-    template<typename ValueType1>
-    std::ostream &operator<<(std::ostream &stream, const Vector <ValueType1> &obj)
-    {
-        stream << "Vector (" << obj.Size() << "): [ ";
-        obj.PrintVectorRowByStream(stream);
-        stream << ']' << '\n';
-        return stream;
-    }
-
-    template<typename ValueType>
-    ValueType Vector<ValueType>::Sum() const
-    {
-        return std::accumulate(
-                std::begin(this->values_),
-                std::end(this->values_),
-                ValueType()
-        );
+            throw std::invalid_argument("Index is less than zero or greater than vector's size");
     }
 
     template<typename ValueType>
@@ -274,27 +299,4 @@ namespace LinearAlgebra
         for (const auto &item : this->values_)
             os << item << ' ';
     }
-
-    template<typename ValueType>
-    void Vector<ValueType>::CheckValidityOfSize(const std::size_t size)
-    {
-        if ((int) size <= 0)
-            throw std::runtime_error("Size is invalid");
-    }
-
-    template<typename ValueType1>
-    bool operator==(const Vector <ValueType1> &first, const Vector <ValueType1> &second)
-    {
-        if (!Vector<ValueType1>::CheckSizesCompatibility(first.values_, second.values_, false))
-            return false;
-
-        for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
-            if (first.values_.at(counter) != second.values_.at(counter))
-                return false;
-        return true;
-    }
-
-    template<typename ValueType>
-    Vector<ValueType>::Vector(): values_(0)
-    {}
 }

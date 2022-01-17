@@ -5,8 +5,8 @@
 ### _Description:_
 _The first project in my C++ Repo.   
 Hope not the last :)  
-Project's aim — repeat some linear algebra topics, code them, practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake  
-Here for the first time using Cmake myself and gtests_
+Project's aim — repeat some linear algebra topics, code them, practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake. Maybe even GitHub Actions (?)  
+Here for the first time using CMake myself and Gtests_
 
 ### _To Run tests:_
 1. `cd Tester`
@@ -14,7 +14,7 @@ Here for the first time using Cmake myself and gtests_
 3. `cmake --build build`
 4. `cd build && ctest`
 
-### _To run user's code in "sandbox" file - `demo.cpp`:_
+### _To run custom user's code - `sandbox.cpp`:_
 1. From `root` folder: `cmake -S . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
 2. `cmake --build build`
 3. `cd build`, `demo(.exe)`
@@ -33,11 +33,10 @@ Here for the first time using Cmake myself and gtests_
     - [x] Friend class for Matrix class
     - [ ] Cast to Matrix
 - [x] __Matrix Class__ (can also represent Vector)
-    - [ ] Operators (via already realized Vector's ones)
+    - [x] Operators (via already realized Vector's ones)
     - [x] Ostream operator
     - [ ] Multiplication
         - [ ] Pow
-        - [ ] Tests
     - [ ] Minor
     - [ ] Spur / Track (след)
     - [ ] Rang
@@ -53,8 +52,10 @@ Here for the first time using Cmake myself and gtests_
     - [ ] Cast to Vector (if 1 row)
 - [ ] __MakeFile__
   - [x] Cmake (?)
-- [x] __Tests: Connect to `CodeCov` or `Google tests` ([gtest](https://google.github.io/googletest/quickstart-cmake.html))__
+- [x] __Tests: Connect to `CodeCov` or `Google tests` ([Gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))__
   - [x] Or at least start testing with `assert.h`  
+- [ ] __GitHub Actions__ (for what ?? -- don't know, but maybe useful)
+- [ ] __Bage with tests in Readme.md__
     
 
 
