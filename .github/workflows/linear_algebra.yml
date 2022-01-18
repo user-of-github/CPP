@@ -3,16 +3,7 @@ name: CI CMake
 env:
   CMAKE_GENERATOR: MinGW Makefiles
 
-on:
-  push:
-  - "**/CMakeLists.txt"
-  - "**.cmake"
-  - "**.cmake.in"
-  - "**.cpp"
-  - "**.hpp"
-  - "**.h.in"
-  - ".github/workflows/linear_algebra.yml"
-  pull_request:
+on: [push]
 
 jobs:
 
