@@ -20,7 +20,8 @@ jobs:
           git
           mingw-w64-x86_64-cmake
           mingw-w64-x86_64-msmpi
-
+    - name: Move to folder
+      run: cd ./LinearAlgebra/Tester
     - name: CMake configure
       run: cmake -B build -G "MinGW Makefiles"
 
