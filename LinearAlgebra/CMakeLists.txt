@@ -8,4 +8,4 @@ add_executable(demo sandbox.cpp ./Library/Matrix/Vector/vector.cpp ./Library/Mat
 
 
 # to build lib ?
-add_library(LinearAlgebraLib ./Library/Matrix/Vector/vector.cpp Library/Matrix/Vector/vector.cpp)
+add_library(LinearAlgebraLib ./Library/Matrix/Vector/vector.cpp Library/Matrix/Vector/vector.cpp ./Library/Utils/utils.cpp)

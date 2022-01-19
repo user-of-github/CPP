@@ -91,6 +91,87 @@ namespace LinearAlgebra
             row.Resize(new_cols, fill_with);
     }
 
+    template<typename ValueType>
+    constexpr std::size_t Matrix<ValueType>::Triangulate()
+    {
+        const auto sizes = this->Sizes();
+        const auto rows = std::get<0>(sizes), cols = std::get<1>(sizes);
+
+        const auto get_similar_matrix_of_double = [&]() -> double ** {
+            auto response = new double *[rows];
+            for (std::size_t row = 0; row < rows; ++row)
+                response[row] = new double[cols];
+
+            for (std::size_t row = 0; row < rows; ++row)
+                for (std::size_t col = 0; col < cols; ++col)
+                    response[row][col] = static_cast<double>((*this)[row][col]);
+
+            return response;
+        };
+
+        const auto gauss = [&](double **matrix) -> const std::size_t {
+            // http://hardfire.ru/gauss
+            const auto find_row_with_max_first_element = [&](const int from) -> const std::size_t {
+                std::size_t response = from;
+                for (std::size_t row = from + 1; row < rows; ++row)
+                    if (std::abs(matrix[row][from]) > std::abs(matrix[response][from]))
+                        response = row;
+                return response;
+            };
+
+            const auto swap_rows = [&](const std::size_t row1, const std::size_t row2) -> void {
+                if (row1 == row2) return;
+                for (std::size_t col = 0; col < cols; ++col)
+                    std::swap(matrix[row1][col], matrix[row2][col]);
+            };
+
+            std::size_t number_of_swaps = 0;
+            for (std::size_t row = 0; row < rows; ++row)
+            {
+                // находим строку с максимальным первым элементом
+                const auto row_with_max_first_item = find_row_with_max_first_element(row);
+
+                if (Utils::IsInEpsilonNeighborHood(0.0, 0.1, matrix[row_with_max_first_item][row])) continue;
+
+                swap_rows(row_with_max_first_item, row);
+
+                number_of_swaps += (row_with_max_first_item == row) ? 1 : 0;
+
+                //  вычитаем текущую строку из всех остальных
+                for (std::size_t j = row + 1; j < rows; ++j)
+                {
+                    const auto q = (-1) * (double) (matrix[j][row]) / (double) (matrix[row][row]);
+                    for (std::size_t k = cols - 1; k >= row; --k)
+                    {
+                        matrix[j][k] += (q * (double) matrix[row][k]);
+                        if (k == 0) break; // because std::size_t === unsigned long long => overflow
+                    }
+                }
+            }
+
+            return number_of_swaps;
+        };
+
+        const auto copy_transformed_matrix_to_original = [&](const double **instance) -> void {
+            for (std::size_t row = 0; row < rows; ++row)
+                for (std::size_t col = 0; col < cols; ++col)
+                    (*this)[row][col] = (ValueType) (instance[row][col]);
+        };
+
+        const auto free_matrix = [&](double **instance) -> void {
+            for (std::size_t row = 0; row < rows; ++row)
+                delete[] instance[row];
+            delete[] instance;
+        };
+
+        auto to_count = get_similar_matrix_of_double();
+        const auto number_of_swaps = gauss(to_count);
+        copy_transformed_matrix_to_original((const double **) to_count); // <warning> casting to const ?</warning>
+        free_matrix(to_count);
+
+        return number_of_swaps;
+    }
+
 
     template<typename ValueType>
     Vector <ValueType> &Matrix<ValueType>::operator[](const std::size_t index)

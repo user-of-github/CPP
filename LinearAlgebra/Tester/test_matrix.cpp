@@ -120,3 +120,13 @@ TEST(Matrix, Transpose)
     tester3 /= 2;
     EXPECT_EQ(tester3.Sum(), ((5 * 6 * 2022) / 2));
 }
+
+
+TEST(Matrix, Triangulate)
+{
+    int initial1[3][4] = {{6,  5,  4,  3},
+                                {6,  3,  0,  -3},
+                                {-2, -3, -4, -5}};
+    auto tester = LinearAlgebra::Matrix<int>((int *)initial1, 3, 4);
+    tester.Triangulate();
+}

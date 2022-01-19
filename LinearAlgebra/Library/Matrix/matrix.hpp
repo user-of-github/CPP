@@ -7,6 +7,8 @@
 #include "./Vector/vector.hpp"
 #include "./Vector/vector.cpp"
 #include <tuple>
+#include "../Utils/utils.hpp"
+#include "../Utils/utils.cpp"
 
 
 namespace LinearAlgebra
@@ -33,6 +35,8 @@ namespace LinearAlgebra
         void Transpose();
 
         void Resize(const std::size_t, const std::size_t, const ValueType = ValueType());
+
+        constexpr std::size_t Triangulate(); // not void => to keep number of swaps
 
 
         Vector<ValueType> &operator[](const size_t);
@@ -71,8 +75,8 @@ namespace LinearAlgebra
         void PrintVectorsRowForOstream(std::ostream &, const std::size_t) const;
 
         static constexpr bool CheckMatricesCompatibility(const Matrix<ValueType> &,
-                                                        const Matrix<ValueType> &,
-                                                        const bool = true);
+                                                         const Matrix<ValueType> &,
+                                                         const bool = true);
 
         static constexpr bool IsMatrixSquare(const Matrix<ValueType> &, const bool = true);
 
