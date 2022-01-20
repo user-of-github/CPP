@@ -17,6 +17,8 @@ namespace LinearAlgebra
     class Matrix
     {
     public:
+        Matrix() = delete;
+
         Matrix(const std::size_t, const std::size_t, const ValueType = 0);
 
         Matrix(const ValueType **, const std::size_t, const std::size_t);
@@ -38,7 +40,7 @@ namespace LinearAlgebra
 
         constexpr std::size_t Triangulate();
 
-        constexpr ValueType Determinant() const;
+        constexpr double Determinant() const;
 
 
         Vector<ValueType> &operator[](const size_t);
@@ -83,6 +85,12 @@ namespace LinearAlgebra
         static constexpr bool IsMatrixSquare(const Matrix<ValueType> &, const bool = true);
 
         static void CheckValidityOfDimensions(const std::size_t, const std::size_t);
+
+        static constexpr std::size_t Gauss(double **, const std::size_t, const std::size_t);
+
+        double **GetSimilarMatrixOfDouble() const;
+
+        void FreeTemporaryMatrix(double **) const;
     };
 }
 #endif //LINEARALGEBRA_MATRIX_H
