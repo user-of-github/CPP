@@ -36,7 +36,9 @@ namespace LinearAlgebra
 
         void Resize(const std::size_t, const std::size_t, const ValueType = ValueType());
 
-        constexpr std::size_t Triangulate(); // not void => to keep number of swaps
+        constexpr std::size_t Triangulate();
+
+        constexpr ValueType Determinant() const;
 
 
         Vector<ValueType> &operator[](const size_t);

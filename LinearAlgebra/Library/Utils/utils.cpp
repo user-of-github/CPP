@@ -1,5 +1,8 @@
 #include "utils.hpp"
 
+#pragma once
+
+
 namespace LinearAlgebra::Utils
 {
     template<typename ValueType>

@@ -42,7 +42,7 @@ Here for the first time using CMake myself and Gtests_
     - [ ] Rang
     - [ ] Determinant
     - [x] Transposing
-    - [ ] Converting to upper/lower triangled 
+    - [x] Triangulation (Gauss-method, Upper)
     - [ ] Rank (rang ?) and other measures
     - [ ] Inverse matrix
     - [ ] Equations systems solvers (?)

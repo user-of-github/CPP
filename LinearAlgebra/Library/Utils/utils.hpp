@@ -1,6 +1,9 @@
 #ifndef LINEARALGEBRA_UTILS_H
 #define LINEARALGEBRA_UTILS_H
 
+#pragma once
+
+
 #include <cmath>
 
 

@@ -135,7 +135,7 @@ namespace LinearAlgebra
 
                 swap_rows(row_with_max_first_item, row);
 
-                number_of_swaps += (row_with_max_first_item == row) ? 1 : 0;
+                number_of_swaps += (row_with_max_first_item != row) ? 1 : 0;
 
                 //  вычитаем текущую строку из всех остальных
                 for (std::size_t j = row + 1; j < rows; ++j)
@@ -165,11 +165,31 @@ namespace LinearAlgebra
         };
 
         auto to_count = get_similar_matrix_of_double();
+
         const auto number_of_swaps = gauss(to_count);
         copy_transformed_matrix_to_original((const double **) to_count); // <warning> casting to const ?</warning>
         free_matrix(to_count);
 
         return number_of_swaps;
+    }
+
+    template<typename ValueType>
+    constexpr ValueType Matrix<ValueType>::Determinant() const
+    {
+        Matrix<ValueType>::IsMatrixSquare(*this, true);
+        const auto rows = std::get<0>(this->Sizes());
+
+
+        ValueType response = (ValueType) (1);
+        auto triangled_matrix = Matrix<ValueType>(*this);
+        const auto number_of_permutations = triangled_matrix.Triangulate();
+        for (std::size_t row = 0; row < rows; ++row)
+            response *= (*this)[row][row];
+
+        if (number_of_permutations % 2 == 1)
+            response *= -1;
+
+        return response;
     }
 
 

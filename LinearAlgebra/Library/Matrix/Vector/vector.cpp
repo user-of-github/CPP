@@ -240,9 +240,24 @@ namespace LinearAlgebra
         if (!Vector<ValueType1>::CheckSizesCompatibility(first.values_, second.values_, false))
             return false;
 
+        const auto value_type_id = std::string(typeid(ValueType1).name());
+        const auto double_id = std::string(typeid(double).name());
+        const auto float_id = std::string(typeid(float).name());
+
+        const auto is_integer_type = !((value_type_id.compare(double_id) == 0) ||
+                                       (value_type_id.compare(float_id) == 0));
+
         for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
+        {
             if (first.values_.at(counter) != second.values_.at(counter))
-                return false;
+            {
+                if (is_integer_type)
+                    return false;
+
+                if (!(Utils::IsInEpsilonNeighborHood((double)first.values_.at(counter), 0.01, (double)second.values_.at(counter))))
+                    return false;
+            }
+        }
         return true;
     }
 

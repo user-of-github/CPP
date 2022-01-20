@@ -9,7 +9,8 @@
 #include <cmath>
 #include <stdexcept>
 #include <numeric>
-#include <functional>
+#include "../../Utils/utils.hpp"
+#include "../../Utils/utils.cpp"
 
 
 namespace LinearAlgebra
