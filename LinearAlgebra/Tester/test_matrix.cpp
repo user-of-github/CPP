@@ -205,22 +205,27 @@ TEST(Matrix, Determinant)
                                 {2, 1, 2, 3},
                                 {3, 2, 1, 2},
                                 {4, 3, 2, 1}};
-    EXPECT_EQ(LinearAlgebra::Matrix<int>((const int *) initial1, 4, 4).Determinant(), -20);
+    auto tester1 = LinearAlgebra::Matrix<int>((const int *) initial1, 4, 4);
+    EXPECT_EQ(tester1.Determinant(), -20);
+    EXPECT_NO_THROW(tester1.Transpose());
+    EXPECT_EQ(tester1.Determinant(), -20);
 
     const int initial2[3][3] = {{0, 1, 2},
                                 {1, 0, 3},
                                 {0, 0, 2}};
-    EXPECT_EQ(LinearAlgebra::Matrix<int>((const int *) initial2, 2, 2).Determinant(), -2);
+    auto tester2 = LinearAlgebra::Matrix<int>((const int *) initial2, 2, 2);
+    EXPECT_EQ(tester2.Determinant(), -2);
+    EXPECT_NO_THROW(tester2.Transpose());
+    EXPECT_EQ(tester2.Determinant(), -2);
 
     const int initial3[4][4] = {{1, 2,  3, 1},
                                 {1, -1, 1, 4},
                                 {2, 1,  0, 1},
                                 {1, 1,  2, 4}};
-    EXPECT_EQ(LinearAlgebra::Utils::IsInEpsilonNeighborHood(
-            LinearAlgebra::Matrix<int>((const int *) initial3, 4, 4).Determinant(),
-            0.01,
-            28.0
-    ), true);
+    auto tester3 = LinearAlgebra::Matrix<int>((const int *) initial3, 4, 4);
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester3.Determinant(), 0.01, 28.0));
+    EXPECT_NO_THROW(tester3.Transpose());
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester3.Determinant(), 0.01, 28.0));
 
     EXPECT_THROW(LinearAlgebra::Matrix<int>(2, 3, 5).Determinant(), std::invalid_argument);
     EXPECT_THROW(LinearAlgebra::Matrix<int>(100, 2).Determinant(), std::invalid_argument);
@@ -235,12 +240,62 @@ TEST(Matrix, Determinant)
                                    {25, -26, 27, -28, 29, 30},
                                    {11, 11,  11, -11, 10, -10}};
 
-    std::cout <<  LinearAlgebra::Matrix<double>((const double *) initial4, 6, 6).Determinant() << '\n';
 
-    EXPECT_EQ(LinearAlgebra::Utils::IsInEpsilonNeighborHood(
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(
             LinearAlgebra::Matrix<double>((const double *) initial4, 6, 6).Determinant(),
             0.5,
-            -4344000.0
-    ), true);
+            -4344000.0));
 
+    const short initial5[2][2] = {{1,  3},
+                                  {-2, 5}};
+    auto tester5 = LinearAlgebra::Matrix<short>((const short *) initial5, 2, 2);
+    EXPECT_EQ(tester5.Determinant(), 11);
+    EXPECT_NO_THROW(tester5.Transpose());
+    EXPECT_EQ(tester5.Determinant(), 11);
+
+    const float initial6[3][3] = {{1,   0, -2},
+                                  {0.5, 3, 1},
+                                  {0,   2, -1}};
+    auto tester6 = LinearAlgebra::Matrix<float>((const float *) initial6, 3, 3);
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester6.Determinant(), 0.1, -7.0));
+    EXPECT_NO_THROW(tester6.Transpose());
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester6.Determinant(), 0.1, -7.0));
+
+    const float initial7[3][3] = {{0, -1, 0},
+                                  {1, 3,  -2},
+                                  {2, 5,  -1}};
+    auto tester7 = LinearAlgebra::Matrix<float>((const float *) initial7, 3, 3);
+    EXPECT_EQ(tester7.Determinant(), 3);
+    EXPECT_NO_THROW(tester7.Transpose());
+    EXPECT_EQ(tester7.Determinant(), 3);
+    EXPECT_NO_THROW(tester7.Transpose());
+    EXPECT_EQ(tester7.Determinant(), 3);
+    const float to_change_sign7 = tester7.Triangulate() % 2 == 1 ? -1.0 : 1.0;
+
+    EXPECT_EQ(tester7.Determinant() * to_change_sign7, 3.0);
+
+    const short initial8[4][4] = {{2, 3,  0,  5},
+                                  {4, -3, -1, 1},
+                                  {2, 5,  1,  3},
+                                  {2, 7,  2,  -2}};
+    auto tester8 = LinearAlgebra::Matrix<short>((const short *) initial8, 4, 4);
+    auto tester8_copy = tester8;
+    EXPECT_NO_THROW(tester8.Transpose());
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester8_copy.Determinant(), 0.01, 42.0));
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester8.Determinant(), 0.01, 42.0));
+    EXPECT_NO_THROW(tester8_copy.Transpose());
+    EXPECT_TRUE(tester8_copy == tester8);
+    EXPECT_NO_THROW(tester8_copy.Resize(6, 10, 0));
+    EXPECT_THROW(tester8_copy.Determinant(), std::invalid_argument);
+
+
+    for (std::size_t rows = 1; rows < 10; ++rows)
+    {
+        for (std::size_t cols = 1; cols < 10; ++cols)
+        {
+            const auto tester = LinearAlgebra::Matrix<int>(rows, cols, std::rand() % 15 - 5);
+            if (rows != cols)
+                EXPECT_THROW(tester.Determinant(), std::invalid_argument);
+        }
+    }
 }

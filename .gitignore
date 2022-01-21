@@ -35,6 +35,9 @@ cmake-build-debug-coverage
 *.TR
 *.TD
 
+.zip
+*.zip
+
 CMakeCache.txt
 ./CMakeCache.txt
 */CMakeCache.txt

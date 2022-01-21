@@ -37,12 +37,12 @@ Here for the first time using CMake myself and Gtests_
     - [x] Ostream operator
     - [ ] Multiplication
         - [ ] Pow
+    - [x] Determinant
+    - [x] Transposing
+    - [x] Triangulation (Gauss-method, Upper)
     - [ ] Minor
     - [ ] Spur / Track (след)
     - [ ] Rang
-    - [ ] Determinant
-    - [x] Transposing
-    - [x] Triangulation (Gauss-method, Upper)
     - [ ] Rank (rang ?) and other measures
     - [ ] Inverse matrix
     - [ ] Equations systems solvers (?)
@@ -52,18 +52,21 @@ Here for the first time using CMake myself and Gtests_
     - [ ] Cast to Vector (if 1 row)
 - [ ] __MakeFile__
   - [x] Cmake (?)
-- [x] __Tests: Connect to `CodeCov` or `Google tests` ([Gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))__
+- [x] __Tests:__
+  - [ ] Connect to `CodeCov`
+  - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
   - [x] Or at least start testing with `assert.h`  
+  - [ ] Bage with tests in Readme.md
 - [ ] __GitHub Actions__ (for what ?? -- don't know, but maybe useful)
-- [ ] __Bage with tests in Readme.md__
     
 
 
 ### _Some more features:_  
 * Template classes
 * Google C++ code style (style guide)
-* Modern STD functions, auto lambda expressions
+* Modern features: STD functions, auto lambda expressions, constexpr and so on
 * Google Tests
+* CMake
 
 
 #### _Developed with:_
