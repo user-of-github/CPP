@@ -42,6 +42,8 @@ namespace LinearAlgebra
 
         constexpr double Determinant() const;
 
+        static Matrix<short> IdentityMatrix(const std::size_t);
+
 
         Vector<ValueType> &operator[](const size_t);
 
@@ -91,6 +93,8 @@ namespace LinearAlgebra
         double **GetSimilarMatrixOfDouble() const;
 
         void FreeTemporaryMatrix(double **) const;
+
+        void CheckGenericType() const;
     };
 }
 #endif //LINEARALGEBRA_MATRIX_H

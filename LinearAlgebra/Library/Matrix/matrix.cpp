@@ -6,6 +6,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Matrix<ValueType>::Matrix(const std::size_t rows, const std::size_t cols, const ValueType default_value)
     {
+        this->CheckGenericType();
         Matrix<ValueType>::CheckValidityOfDimensions(rows, cols);
         this->vectors_.resize(rows, Vector<ValueType>(cols, default_value));
     }
@@ -14,6 +15,7 @@ namespace LinearAlgebra
     Matrix<ValueType>::Matrix(const ValueType **array, std::size_t rows, const std::size_t cols):
             vectors_(rows, Vector<ValueType>(cols, ValueType()))
     {
+        this->CheckGenericType();
         Matrix<ValueType>::CheckValidityOfDimensions(rows, cols);
         for (std::size_t row = 0; row < rows; ++row)
             for (std::size_t col = 0; col < cols; ++col)
@@ -24,6 +26,7 @@ namespace LinearAlgebra
     Matrix<ValueType>::Matrix(const ValueType *array, const std::size_t rows, const std::size_t cols):
             vectors_(rows, Vector<ValueType>(cols, 0))
     {
+        this->CheckGenericType();
         Matrix<ValueType>::CheckValidityOfDimensions(rows, cols);
         for (std::size_t row = 0; row < rows; ++row)
             for (std::size_t col = 0; col < cols; ++col)
@@ -33,12 +36,14 @@ namespace LinearAlgebra
     template<typename ValueType>
     Matrix<ValueType>::Matrix(const Vector <ValueType> &vector): vectors_(1, Vector<ValueType>(vector))
     {
+        this->CheckGenericType();
         this->vectors_.at(0) = vector;
     }
 
     template<typename ValueType>
     Matrix<ValueType>::Matrix(const Matrix <ValueType> &rhs)
     {
+        this->CheckGenericType();
         *this = Matrix(rhs.vectors_.size(), rhs.vectors_.at(0).values_.size());
         this->CopyItems(rhs);
     }
@@ -130,6 +135,16 @@ namespace LinearAlgebra
 
         this->FreeTemporaryMatrix(to_triangulate);
 
+        return response;
+    }
+
+    template<typename ValueType>
+    Matrix<short> Matrix<ValueType>::IdentityMatrix(const std::size_t size)
+    {
+        Matrix<ValueType>::CheckValidityOfDimensions(size, size);
+        auto response = LinearAlgebra::Matrix<short>(size, size, 0);
+        for (std::size_t index = 0; index < size; ++index)
+            response[index][index] = 1;
         return response;
     }
 
@@ -371,5 +386,23 @@ namespace LinearAlgebra
         for (std::size_t row = 0; row < rows; ++row)
             delete[] instance[row];
         delete[] instance;
+    }
+
+    template<typename ValueType>
+    void Matrix<ValueType>::CheckGenericType() const
+    {
+        if (!std::is_same<ValueType, char>::value &&
+            !std::is_same<ValueType, unsigned char>::value &&
+            !std::is_same<ValueType, short>::value &&
+            !std::is_same<ValueType, unsigned short>::value &&
+            !std::is_same<ValueType, int>::value &&
+            !std::is_same<ValueType, unsigned int>::value &&
+            !std::is_same<ValueType, long long>::value &&
+            !std::is_same<ValueType, unsigned long long>::value &&
+            !std::is_same<ValueType, float>::value &&
+            !std::is_same<ValueType, double>::value &&
+            !std::is_same<ValueType, long double>::value &&
+            !std::is_same<ValueType, std::size_t>::value)
+            throw new std::invalid_argument("Class Matrix<ValueType> does not support generic for required type");
     }
 }
