@@ -1,9 +1,19 @@
 #include <gtest/gtest.h>
-#include "../Library/Matrix/Vector/vector.hpp"
-#include "../Library/Matrix/Vector/vector.cpp"
-#include "../Library/Utils/utils.hpp"
-#include "../Library/Utils/utils.cpp"
+#include "../Library/Matrix/matrix.hpp"
+#include "../Library/Matrix/matrix.cpp"
 
+
+TEST(Vector, Constructors)
+{
+    auto tester1_matrix = LinearAlgebra::Matrix<int>(1, 6, 5);
+    const auto tester1 = LinearAlgebra::Vector<int>(tester1_matrix);
+    EXPECT_EQ(tester1.Sum(), 6 * 5);
+    LinearAlgebra::Vector<int> tester2 = LinearAlgebra::Matrix<int>(1, 2, 3);
+    EXPECT_EQ(tester2.Sum(), 6);
+    EXPECT_THROW(tester2 = LinearAlgebra::Matrix<int>(2, 2, 1), std::runtime_error);
+    EXPECT_NO_THROW(tester1_matrix.Resize(2, 6, 5));
+    EXPECT_ANY_THROW((LinearAlgebra::Vector<int>)tester1_matrix);
+}
 
 TEST(Vector, Size)
 {

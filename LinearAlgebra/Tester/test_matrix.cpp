@@ -2,6 +2,7 @@
 #include "../Library/Matrix/matrix.hpp"
 #include "../Library/Matrix/matrix.cpp"
 
+
 TEST(Matrix, Constructors)
 {
     EXPECT_EQ(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>({1, 2, 3})).Sum(), 6);
@@ -9,6 +10,15 @@ TEST(Matrix, Constructors)
     auto tester = LinearAlgebra::Matrix<int>(5, 6, 7);
     EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(tester).Sum());
     EXPECT_ANY_THROW(LinearAlgebra::Matrix<std::string>(5, 6, ""));
+
+    LinearAlgebra::Matrix<int> tester2 = LinearAlgebra::Vector<int>({1, 2, 3, 4});
+    EXPECT_EQ(tester2.Sum(), 10);
+
+    const auto vec = LinearAlgebra::Vector<int>(5, 6);
+    auto matr = LinearAlgebra::Matrix<int>(1, 5, 6);
+    EXPECT_NO_THROW((LinearAlgebra::Matrix<int>)vec + matr);
+    EXPECT_NO_THROW(matr.Resize(2, 5, 6));
+    EXPECT_ANY_THROW(  (LinearAlgebra::Vector<int>)matr + vec);
 }
 
 TEST(Matrix, Size)

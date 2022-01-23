@@ -47,11 +47,14 @@ Here for the first time using CMake myself and Gtests_
     - [x] Is symmetric  
     - [x] Track (Spur)
     - [ ] Rank (rang ?) and other measures
+    - [ ] Norm (?)
     - [x] Inverse matrix
     - [ ] Equations systems solvers (?)
-        - [ ] Gauss ?
-        - [ ] Other ?
-        - [ ] ... ?
+        - [ ] Gauss 
+        - [ ] Jacobi
+        - [ ] Simple iterations
+        - [ ] Zeidel
+        - [ ] Kramer 
     - [ ] Cast to Vector (if 1 row)
 - [ ] __MakeFile__
   - [x] Cmake

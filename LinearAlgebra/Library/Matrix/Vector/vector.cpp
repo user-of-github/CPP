@@ -43,6 +43,13 @@ namespace LinearAlgebra
         this->CopyFullStdVector(rhs.values_);
     }
 
+    template<typename ValueType>
+    Vector<ValueType>::Vector(const Matrix <ValueType> &rhs)
+    {
+        Vector::CheckRhsMatrixDimensions(std::get<0>(rhs.Sizes()));
+        this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+    }
+
 
     template<typename ValueType>
     constexpr std::size_t Vector<ValueType>::Size() const
@@ -234,6 +241,14 @@ namespace LinearAlgebra
         return *this;
     }
 
+    template<typename ValueType>
+    Vector <ValueType> &Vector<ValueType>::operator=(const Matrix <ValueType> &rhs)
+    {
+        Vector::CheckRhsMatrixDimensions(std::get<0>(rhs.Sizes()));
+        this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+        return *this;
+    }
+
     template<typename ValueType1>
     bool operator==(const Vector <ValueType1> &first, const Vector <ValueType1> &second)
     {
@@ -248,9 +263,6 @@ namespace LinearAlgebra
         const auto is_integer_type = !((value_type_id.compare(double_id) == 0) ||
                                        (value_type_id.compare(float_id) == 0) ||
                                        (value_type_id.compare(long_double_id) == 0));
-
-        if (!is_integer_type)
-            std::cout << "FLOAT COMPARISON\n";
 
         for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
         {
@@ -319,5 +331,17 @@ namespace LinearAlgebra
     {
         for (const auto &item : this->values_)
             os << item << ' ';
+    }
+
+    template<typename ValueType>
+    bool Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const bool should_throw)
+    {
+        if (rows_count != 1)
+        {
+            if (should_throw)
+                throw std::runtime_error("Unable to create Vector from not 1-rowed Matrix");
+            return false;
+        }
+        return true;
     }
 }

@@ -17,6 +17,9 @@ namespace LinearAlgebra
     class Matrix
     {
     public:
+        friend class Vector<ValueType>;
+
+
         Matrix() = delete;
 
         Matrix(const std::size_t, const std::size_t, const ValueType = 0);
@@ -84,6 +87,8 @@ namespace LinearAlgebra
         Matrix<ValueType> &operator=(Matrix<ValueType> &&) noexcept = default;
 
         Matrix<ValueType> &operator=(const Matrix<ValueType> &);
+
+        Matrix<ValueType> &operator=(const Vector<ValueType> &);
 
         template<typename ValueType1>
         friend bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);

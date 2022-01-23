@@ -37,6 +37,8 @@ namespace LinearAlgebra
 
         Vector(const Vector<ValueType> &);
 
+        Vector(const Matrix<ValueType> &);
+
 
         constexpr std::size_t Size() const;
 
@@ -79,6 +81,8 @@ namespace LinearAlgebra
 
         Vector<ValueType> &operator=(const Vector<ValueType> &);
 
+        Vector<ValueType> &operator=(const Matrix<ValueType> &);
+
         Vector<ValueType> &operator=(Vector<ValueType> &&) noexcept = default;
 
         template<typename ValueType1>
@@ -101,6 +105,8 @@ namespace LinearAlgebra
         void CheckIndexCompatibility(const std::size_t) const;
 
         void PrintVectorRowByStream(std::ostream &) const;
+
+        static bool CheckRhsMatrixDimensions(const std::size_t, const bool = true);
     };
 }
 

@@ -144,12 +144,12 @@ namespace LinearAlgebra
     template<typename ValueType>
     constexpr double Matrix<ValueType>::Determinant() const
     {
-        Matrix<ValueType>::IsMatrixSquare(*this, true);
+        Matrix::IsMatrixSquare(*this, true);
         const auto[rows, cols] = this->Sizes();
 
-        double response = 1;
+        auto response = 1.0;
         auto to_triangulate = this->GetSimilarMatrixOfDouble();
-        const auto number_of_swaps = Matrix<ValueType>::Gauss(to_triangulate, rows, cols);
+        const auto number_of_swaps = Matrix::Gauss(to_triangulate, rows, cols);
         const auto ratio = number_of_swaps % 2 == 0 ? 1 : -1;
 
         for (std::size_t row = 0; row < rows; ++row)
@@ -181,7 +181,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Matrix <ValueType> Matrix<ValueType>::IdentityMatrix(const std::size_t size)
     {
-        Matrix<ValueType>::CheckValidityOfDimensions(size, size);
+        Matrix::CheckValidityOfDimensions(size, size);
         auto response = LinearAlgebra::Matrix<ValueType>(size, size, 0);
         for (std::size_t index = 0; index < size; ++index)
             response[index][index] = (ValueType) (1);
@@ -193,6 +193,8 @@ namespace LinearAlgebra
     Matrix<ValueType>::RandomizedMatrix(const std::size_t rows, const std::size_t cols,
                                         const int range_from, const int range_to)
     {
+        std::srand(time(NULL));
+
         auto response = Matrix<ValueType>(rows, cols, 0);
         const std::size_t range = std::abs(range_to - range_from);
 
@@ -206,7 +208,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     constexpr bool Matrix<ValueType>::IsSymmetric() const
     {
-        if (!(Matrix<ValueType>::IsMatrixSquare(*this, false)))
+        if (!(Matrix::IsMatrixSquare(*this, false)))
             return false;
 
         const auto[rows, cols] = this->Sizes();
@@ -259,9 +261,10 @@ namespace LinearAlgebra
     template<typename ValueType>
     Matrix <ValueType> Matrix<ValueType>::GetInverseMatrix() const
     {
-        Matrix<ValueType>::IsMatrixSquare(*this);
+        Matrix::IsMatrixSquare(*this);
         const auto[rows, cols] = this->Sizes();
         const auto determinant = this->Determinant();
+
         if (Utils::IsInEpsilonNeighborHood(0.0, 0.0001, determinant))
             throw std::runtime_error("Matrix is non-degenerate. Unable to compute inverse");
 
@@ -390,6 +393,14 @@ namespace LinearAlgebra
         return *this;
     }
 
+    template<typename ValueType>
+    Matrix <ValueType> &Matrix<ValueType>::operator=(const Vector <ValueType> &rhs)
+    {
+        this->vectors_.resize(0);
+        this->vectors_.push_back(Vector<ValueType>(rhs));
+        return *this;
+    }
+
     template<typename ValueType1>
     bool operator==(const Matrix <ValueType1> &first, const Matrix <ValueType1> &second)
     {
@@ -492,7 +503,6 @@ namespace LinearAlgebra
         std::size_t number_of_swaps = 0;
         for (std::size_t row = 0; row < rows; ++row)
         {
-            // находим строку с максимальным первым элементом
             const auto row_with_max_first_item = find_row_with_max_first_element(row);
 
             if (Utils::IsInEpsilonNeighborHood(0.0, 0.1, matrix[row_with_max_first_item][row])) continue;
@@ -501,7 +511,6 @@ namespace LinearAlgebra
 
             number_of_swaps += (row_with_max_first_item != row) ? 1 : 0;
 
-            //  вычитаем текущую строку из всех остальных
             for (std::size_t j = row + 1; j < rows; ++j)
             {
                 const auto q = (-1) * (double) (matrix[j][row]) / (double) (matrix[row][row]);
