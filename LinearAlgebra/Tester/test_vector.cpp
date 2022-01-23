@@ -106,11 +106,11 @@ TEST(Vector, Operators)
 
 TEST(Vector, Norm)
 {
-    ASSERT_EQ(LinearAlgebra::Vector<int>({4, 4, 4, 4, 0, 0, 0}).GetNorm(), 8);
-    ASSERT_EQ(LinearAlgebra::Vector<int>({0, 0, 0, 0, 0, 0, 0, 0, 0}).GetNorm(), 0);
-    ASSERT_EQ(LinearAlgebra::Vector<int>({0, -1, 0, 0, 0, 0, 0}).GetNorm(), 1);
-    ASSERT_EQ(LinearAlgebra::Vector<int>({0, 0, 0, 0, 0, 0, 1}).GetNorm(), 1);
-    ASSERT_EQ(LinearAlgebra::Vector<int>({3, 4, 0, 0, 0, 0, 0}).GetNorm(), 5);
+    EXPECT_EQ(LinearAlgebra::Vector<int>({4, 4, 4, 4, 0, 0, 0}).GetNorm(), 8);
+    EXPECT_EQ(LinearAlgebra::Vector<int>({0, 0, 0, 0, 0, 0, 0, 0, 0}).GetNorm(), 0);
+    EXPECT_EQ(LinearAlgebra::Vector<int>({0, -1, 0, 0, 0, 0, 0}).GetNorm(), 1);
+    EXPECT_EQ(LinearAlgebra::Vector<int>({0, 0, 0, 0, 0, 0, 1}).GetNorm(), 1);
+    EXPECT_EQ(LinearAlgebra::Vector<int>({3, 4, 0, 0, 0, 0, 0}).GetNorm(), 5);
 
     auto tester = LinearAlgebra::Vector<double>(10, 0);
     double to_check = 0;
@@ -124,9 +124,9 @@ TEST(Vector, Norm)
     EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(std::sqrt(to_check), 0.1, tester.GetNorm()));
 
     EXPECT_NO_THROW(tester.Normalize());
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(1.0, 0.1, tester.GetNorm()));
+    EXPECT_DOUBLE_EQ(tester.GetNorm(), 1.0);
 
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(3.5327, 0.1, LinearAlgebra::Vector<double>(
+    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(3.5327, 0.001, LinearAlgebra::Vector<double>(
             {2.8, 1.6, -0.8, -1.2}).GetNorm()));
 
     EXPECT_THROW(LinearAlgebra::Vector<double>({0, 0}).Normalize(), std::runtime_error);

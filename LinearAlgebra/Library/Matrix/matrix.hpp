@@ -44,7 +44,11 @@ namespace LinearAlgebra
 
         constexpr double Determinant() const;
 
-        static Matrix<short> IdentityMatrix(const std::size_t);
+        constexpr double Minor(const std::size_t, const std::size_t) const;
+
+        constexpr double Cofactor(const std::size_t, const std::size_t) const;
+
+        static Matrix<ValueType> IdentityMatrix(const std::size_t);
 
         static Matrix<ValueType> RandomizedMatrix(const std::size_t, const std::size_t, const int = 0, const int = 100);
 
@@ -53,6 +57,8 @@ namespace LinearAlgebra
         constexpr ValueType Track() const;
 
         Matrix<ValueType> GetSubmatrixWithoutRowAndColumn(const std::size_t, const std::size_t) const;
+
+        Matrix<ValueType> GetInverseMatrix() const;
 
 
         Vector<ValueType> &operator[](const size_t);
@@ -107,6 +113,8 @@ namespace LinearAlgebra
         void FreeTemporaryMatrix(double **) const;
 
         void CheckGenericType() const;
+
+        constexpr bool CheckValidityOfIndexes(const std::size_t, const std::size_t, const bool = true) const;
     };
 }
 #endif //LINEARALGEBRA_MATRIX_H

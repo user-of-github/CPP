@@ -42,18 +42,19 @@ Here for the first time using CMake myself and Gtests_
     - [x] Triangulation (Gauss-method, Upper)
     - [x] Identity (Unit) matrix
     - [x] Extracting submatrix for minor 
-    - [ ] Minor
-    - [x] Is symmetric ?  
+    - [x] Minor
+      - [x] Cofactor 
+    - [x] Is symmetric  
     - [x] Track (Spur)
     - [ ] Rank (rang ?) and other measures
-    - [ ] Inverse matrix
+    - [x] Inverse matrix
     - [ ] Equations systems solvers (?)
-        - [ ] Gauss
-        - [ ] Other
-        - [ ] ...
+        - [ ] Gauss ?
+        - [ ] Other ?
+        - [ ] ... ?
     - [ ] Cast to Vector (if 1 row)
 - [ ] __MakeFile__
-  - [x] Cmake (?)
+  - [x] Cmake
 - [x] __Tests:__
   - [ ] Connect to `CodeCov`
   - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
@@ -67,13 +68,14 @@ Here for the first time using CMake myself and Gtests_
 * Template classes
 * Google C++ code style (style guide)
 * Modern features: STD functions, auto lambda expressions, constexpr and so on
-* Google Tests
+* Google Tests, hundreds of code-lines with tests
 * CMake
 
 
 #### _Developed with:_
 * JetBrains Clion
 * Google Tests
+* GNU
 &nbsp;  
 
 ###### © 2022 | All Rights Reserved

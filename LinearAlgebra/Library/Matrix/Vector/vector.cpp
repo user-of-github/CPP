@@ -56,7 +56,7 @@ namespace LinearAlgebra
         ValueType response{};
         for (const auto &item : this->values_)
             response += item * item;
-        return sqrt(response);
+        return std::sqrt(response);
     }
 
     template<typename ValueType>
@@ -249,6 +249,9 @@ namespace LinearAlgebra
                                        (value_type_id.compare(float_id) == 0) ||
                                        (value_type_id.compare(long_double_id) == 0));
 
+        if (!is_integer_type)
+            std::cout << "FLOAT COMPARISON\n";
+
         for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
         {
             if (first.values_.at(counter) != second.values_.at(counter))
@@ -256,7 +259,7 @@ namespace LinearAlgebra
                 if (is_integer_type)
                     return false;
 
-                if (!(Utils::IsInEpsilonNeighborHood((double) first.values_.at(counter), 0.01,
+                if (!(Utils::IsInEpsilonNeighborHood((double) first.values_.at(counter), 0.08,
                                                      (double) second.values_.at(counter))))
                     return false;
             }

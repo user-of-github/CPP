@@ -163,10 +163,26 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Matrix<short> Matrix<ValueType>::IdentityMatrix(const std::size_t size)
+    constexpr double Matrix<ValueType>::Minor(const std::size_t row, const std::size_t col) const
+    {
+        this->CheckValidityOfIndexes(row, col);
+        return (this->GetSubmatrixWithoutRowAndColumn(row, col)).Determinant();
+    }
+
+    template<typename ValueType>
+    constexpr double Matrix<ValueType>::Cofactor(const std::size_t row, const std::size_t col) const
+    {
+        this->CheckValidityOfIndexes(row, col);
+        auto response = (this->GetSubmatrixWithoutRowAndColumn(row, col)).Determinant();
+        if ((row + col) % 2 == 1) response *= -1;
+        return response;
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> Matrix<ValueType>::IdentityMatrix(const std::size_t size)
     {
         Matrix<ValueType>::CheckValidityOfDimensions(size, size);
-        auto response = LinearAlgebra::Matrix<short>(size, size, 0);
+        auto response = LinearAlgebra::Matrix<ValueType>(size, size, 0);
         for (std::size_t index = 0; index < size; ++index)
             response[index][index] = (ValueType) (1);
         return response;
@@ -222,6 +238,7 @@ namespace LinearAlgebra
                                                                           const std::size_t col_to_erase) const
     {
         const auto[rows, cols] = this->Sizes();
+        this->CheckValidityOfIndexes(row_to_erase, col_to_erase);
         auto response = Matrix<ValueType>(rows - 1, cols - 1, 0);
         std::size_t response_row = 0, response_col = 0;
         for (std::size_t row = 0; row < rows; ++row)
@@ -236,6 +253,26 @@ namespace LinearAlgebra
             }
             ++response_row;
         }
+        return response;
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> Matrix<ValueType>::GetInverseMatrix() const
+    {
+        Matrix<ValueType>::IsMatrixSquare(*this);
+        const auto[rows, cols] = this->Sizes();
+        const auto determinant = this->Determinant();
+        if (Utils::IsInEpsilonNeighborHood(0.0, 0.0001, determinant))
+            throw std::runtime_error("Matrix is non-degenerate. Unable to compute inverse");
+
+        auto response = Matrix<ValueType>(rows, cols, 0);
+        for (std::size_t row = 0; row < rows; ++row)
+            for (std::size_t col = 0; col < cols; ++col)
+                response[row][col] = this->Cofactor(row, col);
+
+        response.Transpose();
+        response /= determinant;
+
         return response;
     }
 
@@ -520,5 +557,21 @@ namespace LinearAlgebra
             !std::is_same<ValueType, long double>::value &&
             !std::is_same<ValueType, std::size_t>::value)
             throw new std::invalid_argument("Class Matrix<ValueType> does not support generic for required type");
+    }
+
+    template<typename ValueType>
+    constexpr bool Matrix<ValueType>::CheckValidityOfIndexes(const std::size_t row,
+                                                             const std::size_t col,
+                                                             const bool should_throw) const
+    {
+        const auto[rows, cols] = this->Sizes();
+
+        if ((int) row < 0 || (int) row >= rows || (int) col < 0 || col >= cols)
+        {
+            if (should_throw)
+                throw std::invalid_argument("Some index is less than zero or greater than matrix's size");
+            return false;
+        }
+        return true;
     }
 }
