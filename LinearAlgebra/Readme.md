@@ -5,7 +5,7 @@
 ### _Description:_
 _The first project in my C++ Repo.   
 Hope not the last :)  
-Project's aim — repeat some linear algebra topics, code them, practice modern C++ with STL, lambdas and so on. Start using tests (Google tests) and CMake. Maybe even GitHub Actions (?)  
+Project's aim — repeat some linear algebra topics, code them, try practicing modern C++. Start using tests (Google tests) and CMake. Maybe even GitHub Actions (?)  
 Here for the first time using CMake myself and Gtests_
 
 ### _To Run tests:_
@@ -35,14 +35,16 @@ Here for the first time using CMake myself and Gtests_
 - [x] __Matrix Class__ (can also represent Vector)
     - [x] Operators (via already realized Vector's ones)
     - [x] Ostream operator
-    - [ ] Multiplication
-        - [ ] Pow
+    - [x] Multiplication // native
+        - [x] Pow
     - [x] Determinant
     - [x] Transposing
     - [x] Triangulation (Gauss-method, Upper)
+    - [x] Identity (Unit) matrix
+    - [x] Extracting submatrix for minor 
     - [ ] Minor
-    - [ ] Spur / Track (след)
-    - [ ] Rang
+    - [x] Is symmetric ?  
+    - [x] Track (Spur)
     - [ ] Rank (rang ?) and other measures
     - [ ] Inverse matrix
     - [ ] Equations systems solvers (?)
@@ -55,9 +57,9 @@ Here for the first time using CMake myself and Gtests_
 - [x] __Tests:__
   - [ ] Connect to `CodeCov`
   - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
-  - [x] Or at least start testing with `assert.h`  
+  - [x] Or at least start testing with `assert.h` (`cassert`) 
   - [ ] Bage with tests in Readme.md
-- [ ] __GitHub Actions__ (for what ?? -- don't know, but maybe useful)
+- [ ] __GitHub Actions__ (— for what ?? — don't know, but may be useful)
     
 
 

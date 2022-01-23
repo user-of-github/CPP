@@ -4,24 +4,34 @@
 
 int main()
 {
-    const double initial3[3][3] = {
-            {1, 0, 3},
-            {4, 5, 6},
-            {7, 8, 2022}};
+    const short initial[4][4] = {{1, 2, 1, 3},
+                                 {2, 1, 4, 1},
+                                 {3, 3, 2, -1},
+                                 {4, 2, 2, -1}};
+    const auto tester = LinearAlgebra::Matrix<short>((const short *) initial, 4, 4);
+    const short result[16][3][3] = {
+            {{1, 4, 1}, {3, 2, -1}, {2, 2, -1}},
+            {{2, 4, 1}, {3, 2, -1}, {4, 2, -1}},
+            {{2, 1, 1}, {3, 3, -1}, {4, 2, -1}},
+            {{2, 1, 4}, {3, 3, 2},  {4, 2, 2}},
+            {{2, 1, 3}, {3, 2, -1}, {2, 2, -1}},
+            {{1, 1, 3}, {3, 2, -1}, {4, 2, -1}},
+            {{1, 2, 3}, {3, 3, -1}, {4, 2, -1}},
+            {{1, 2, 1}, {3, 3, 2},  {4, 2, 2}}
+    };
 
-    const double initial3_triangulated[3][3] = {
-            {7, 8,          200},
-            {0, -8.0 / 7.0, -179.0 / 7.0},
-            {0, 0,          -943.0 / 8.0}};
 
-    auto tester3 = LinearAlgebra::Matrix<double>((const double *) initial3, 3, 3);
-    const auto tester3_triangulated = LinearAlgebra::Matrix<double>((const double *) initial3_triangulated, 3, 3);
-
-    tester3.Triangulate();
-
-    std::cout << tester3 << '\n' << tester3_triangulated;
-
-    // check HardFire's code //
+    for (std::size_t row = 0; row < 2; ++row)
+        for (std::size_t col = 0; col < 2; ++col)
+        {
+            if(!(tester.GetSubmatrixWithoutRowAndColumn(row, col) ==
+                LinearAlgebra::Matrix<short>((const short *) result[row * 4 + col], 3, 3)))
+            {
+                std::cout << "counter: " << row * 4 + col <<"| Row & col: " << row << ' ' << col << "\n" ;
+                std::cout <<  tester.GetSubmatrixWithoutRowAndColumn(row, col) << '\n';
+                std::cout << LinearAlgebra::Matrix<short>((const short *) result[row * 4 + col], 3, 3) << "\n\n";
+            }
+        }
 
     return 0;
 }

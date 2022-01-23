@@ -224,9 +224,9 @@ TEST(Matrix, Determinant)
                                 {2, 1,  0, 1},
                                 {1, 1,  2, 4}};
     auto tester3 = LinearAlgebra::Matrix<int>((const int *) initial3, 4, 4);
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester3.Determinant(), 0.01, 28.0));
+    EXPECT_DOUBLE_EQ(tester3.Determinant(), 28.0);
     EXPECT_NO_THROW(tester3.Transpose());
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester3.Determinant(), 0.01, 28.0));
+    EXPECT_DOUBLE_EQ(tester3.Determinant(), 28.0);
 
     EXPECT_THROW(LinearAlgebra::Matrix<int>(2, 3, 5).Determinant(), std::invalid_argument);
     EXPECT_THROW(LinearAlgebra::Matrix<int>(100, 2).Determinant(), std::invalid_argument);
@@ -242,10 +242,7 @@ TEST(Matrix, Determinant)
                                    {11, 11,  11, -11, 10, -10}};
 
 
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(
-            LinearAlgebra::Matrix<double>((const double *) initial4, 6, 6).Determinant(),
-            0.5,
-            -4344000.0));
+    EXPECT_DOUBLE_EQ(LinearAlgebra::Matrix<double>((const double *) initial4, 6, 6).Determinant(), -4344000.0);
 
     const short initial5[2][2] = {{1,  3},
                                   {-2, 5}};
@@ -258,9 +255,9 @@ TEST(Matrix, Determinant)
                                   {0.5, 3, 1},
                                   {0,   2, -1}};
     auto tester6 = LinearAlgebra::Matrix<float>((const float *) initial6, 3, 3);
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester6.Determinant(), 0.1, -7.0));
+    EXPECT_DOUBLE_EQ(tester6.Determinant(), -7.0);
     EXPECT_NO_THROW(tester6.Transpose());
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester6.Determinant(), 0.1, -7.0));
+    EXPECT_DOUBLE_EQ(tester6.Determinant(), -7.0);
 
     const float initial7[3][3] = {{0, -1, 0},
                                   {1, 3,  -2},
@@ -282,8 +279,8 @@ TEST(Matrix, Determinant)
     auto tester8 = LinearAlgebra::Matrix<short>((const short *) initial8, 4, 4);
     auto tester8_copy = tester8;
     EXPECT_NO_THROW(tester8.Transpose());
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester8_copy.Determinant(), 0.01, 42.0));
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester8.Determinant(), 0.01, 42.0));
+    EXPECT_DOUBLE_EQ(tester8_copy.Determinant(), 42.0);
+    EXPECT_DOUBLE_EQ(tester8.Determinant(), 42.0);
     EXPECT_NO_THROW(tester8_copy.Transpose());
     EXPECT_TRUE(tester8_copy == tester8);
     EXPECT_NO_THROW(tester8_copy.Resize(6, 10, 0));
@@ -295,7 +292,7 @@ TEST(Matrix, Determinant)
                                   {3, 2,  1,  1},
                                   {2, 4,  3,  -1}};
     auto tester9 = LinearAlgebra::Matrix<short>((const short *) initial9, 4, 4);
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester9.Determinant(), 0.01, 75.0));
+    EXPECT_DOUBLE_EQ(tester9.Determinant(), 75.0);
     EXPECT_NO_THROW(tester9.Transpose());
     EXPECT_EQ(std::round(tester9.Determinant()), 75);
 
@@ -304,7 +301,7 @@ TEST(Matrix, Determinant)
                                    {3, 1, 0, 3},
                                    {3, 3, 2, 1}};
     auto tester10 = LinearAlgebra::Matrix<short>((const short *) initial10, 4, 4);
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester10.Determinant(), 0.001, 12.0));
+    EXPECT_DOUBLE_EQ(tester10.Determinant(), 12.0);
     EXPECT_NO_THROW(tester10.Transpose());
     EXPECT_EQ(std::round(tester10.Determinant()), 12);
 
@@ -313,17 +310,18 @@ TEST(Matrix, Determinant)
                                    {3, 3, 2, -1},
                                    {4, 2, 2, -1}};
     auto tester11 = LinearAlgebra::Matrix<short>((const short *) initial11, 4, 4);
-    EXPECT_TRUE(LinearAlgebra::Utils::IsInEpsilonNeighborHood(tester11.Determinant(), 0.0001, 63.0));
+    EXPECT_DOUBLE_EQ(tester11.Determinant(), 63.0);
     EXPECT_NO_THROW(tester11.Transpose());
     EXPECT_EQ(std::round(tester11.Determinant()), 63);
 
     for (std::size_t rows = 1; rows < 10; ++rows)
+    {
         for (std::size_t cols = 1; cols < 10; ++cols)
-            if (rows != cols)
-                EXPECT_THROW(
-                        LinearAlgebra::Matrix<int>(rows, cols, std::rand() % 15 - 5).Determinant(),
-                        std::invalid_argument
-                );
+        {
+            if (rows == cols) continue;
+            EXPECT_ANY_THROW(LinearAlgebra::Matrix<int>(rows, cols, std::rand() % 15 - 5).Determinant());
+        }
+    }
 }
 
 TEST(Matrix, IdentityMatrix)
@@ -332,11 +330,14 @@ TEST(Matrix, IdentityMatrix)
     EXPECT_TRUE(LinearAlgebra::Matrix<unsigned short>::IdentityMatrix(1) ==
                 LinearAlgebra::Matrix<short>((const short *) initial1, 1, 1));
 
-    const short initial2[2][2] = {{1, 0}, {0, 1}};
+    const short initial2[2][2] = {{1, 0},
+                                  {0, 1}};
     EXPECT_TRUE(LinearAlgebra::Matrix<unsigned short>::IdentityMatrix(2) ==
                 LinearAlgebra::Matrix<short>((const short *) initial2, 2, 2));
 
-    const short initial3[3][3] = {{1, 0, 0}, {0, 1, 0}, {0, 0, 1}};
+    const short initial3[3][3] = {{1, 0, 0},
+                                  {0, 1, 0},
+                                  {0, 0, 1}};
     EXPECT_TRUE(LinearAlgebra::Matrix<unsigned short>::IdentityMatrix(3) ==
                 LinearAlgebra::Matrix<short>((const short *) initial3, 3, 3));
 
@@ -351,4 +352,151 @@ TEST(Matrix, IdentityMatrix)
         EXPECT_NO_THROW(tester_copy.Transpose());
         EXPECT_TRUE(tester_copy == tester);
     }
+}
+
+TEST(Matrix, Multiplication)
+{
+    for (std::size_t counter = 1; counter < 11; ++counter)
+    {
+        const auto tester = LinearAlgebra::Matrix<short>::RandomizedMatrix(counter, counter, -100, 100);
+        EXPECT_TRUE(tester * LinearAlgebra::Matrix<short>::IdentityMatrix(counter) == tester);
+    }
+
+    EXPECT_ANY_THROW(LinearAlgebra::Matrix<short>::RandomizedMatrix(1, 2, -100, 100) *
+                     LinearAlgebra::Matrix<short>::RandomizedMatrix(12, 1, -100, 100));
+    EXPECT_ANY_THROW(LinearAlgebra::Matrix<short>::RandomizedMatrix(1, 2, -100, 100) *
+                     LinearAlgebra::Matrix<short>::RandomizedMatrix(1, 1, -100, 100));
+    EXPECT_ANY_THROW(LinearAlgebra::Matrix<short>::RandomizedMatrix(3, 3, -100, 100) *
+                     LinearAlgebra::Matrix<short>::RandomizedMatrix(4, 4, -100, 100));
+    EXPECT_NO_THROW(LinearAlgebra::Matrix<short>::RandomizedMatrix(1, 2, -100, 100) *
+                    LinearAlgebra::Matrix<short>::RandomizedMatrix(2, 1, -100, 100));
+
+    const short initial1_1[2][2] = {{4, 2},
+                                    {9, 0}};
+    const short initial1_2[2][2] = {{3,  1},
+                                    {-3, 4}};
+    const short result1[2][2] = {{6,  12},
+                                 {27, 9}};
+    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial1_1, 2, 2) *
+                LinearAlgebra::Matrix<short>((const short *) initial1_2, 2, 2) ==
+                LinearAlgebra::Matrix<short>((const short *) result1, 2, 2));
+    EXPECT_FALSE(LinearAlgebra::Matrix<short>((const short *) initial1_2, 2, 2) *
+                 LinearAlgebra::Matrix<short>((const short *) initial1_1, 2, 2) ==
+                 LinearAlgebra::Matrix<short>((const short *) result1, 2, 2));
+
+    const short initial2_1[3][2] = {{2,  1},
+                                    {-3, 0},
+                                    {4,  -1}};
+    const short initial2_2[2][3] = {{5,  -1, 6},
+                                    {-3, 0,  7}};
+    const short result2[3][3] = {{7,   -2, 19},
+                                 {-15, 3,  -18},
+                                 {23,  -4, 17}};
+    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial2_1, 3, 2) *
+                LinearAlgebra::Matrix<short>((const short *) initial2_2, 2, 3) ==
+                LinearAlgebra::Matrix<short>((const short *) result2, 3, 3));
+    EXPECT_FALSE(LinearAlgebra::Matrix<short>((const short *) initial2_2, 2, 3) *
+                 LinearAlgebra::Matrix<short>((const short *) initial1_2, 3, 2) ==
+                 LinearAlgebra::Matrix<short>((const short *) result2, 3, 3));
+}
+
+TEST(Matrix, Pow)
+{
+    for (std::size_t size = 1; size < 10; ++size)
+        for (std::size_t degree = 1; degree < 10; ++degree)
+            EXPECT_TRUE(LinearAlgebra::Matrix<short>::IdentityMatrix(size).Pow(degree) ==
+                        LinearAlgebra::Matrix<short>::IdentityMatrix(size));
+
+    const short initial1[3][3] = {{1, 2, 3},
+                                  {4, 5, 6},
+                                  {7, 8, 9}};
+    const short result1_2[3][3] = {{30,  36,  42},
+                                   {66,  81,  96},
+                                   {102, 126, 150}};
+    const short result1_3[3][3] = {{468,  576,  684},
+                                   {1062, 1305, 1548},
+                                   {1656, 2034, 2412}};
+    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial1, 3, 3).Pow(2)
+                == LinearAlgebra::Matrix<short>((const short *) result1_2, 3, 3));
+
+    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial1, 3, 3).Pow(3)
+                == LinearAlgebra::Matrix<short>((const short *) result1_3, 3, 3));
+}
+
+TEST (Matrix, IsSymmetric)
+{
+    for (std::size_t rows = 1; rows < 11; ++rows)
+    {
+        for (std::size_t cols = 1; cols < 11; ++cols)
+        {
+            if (rows != cols)
+                EXPECT_FALSE(LinearAlgebra::Matrix<short>(rows, cols, 2).IsSymmetric());
+            else
+                EXPECT_TRUE(LinearAlgebra::Matrix<short>(rows, cols, 2).IsSymmetric());
+        }
+    }
+
+    const int initial1[3][3] = {{1,  2, -3},
+                                {2,  0, 6},
+                                {-3, 6, 3}};
+    EXPECT_TRUE(LinearAlgebra::Matrix<int>((const int *) initial1, 3, 3).IsSymmetric());
+
+    const int initial2[3][3] = {{1,  2, -3},
+                                {2,  0, -6},
+                                {-3, 6, 3}};
+    EXPECT_FALSE(LinearAlgebra::Matrix<int>((const int *) initial2, 3, 3).IsSymmetric());
+}
+
+TEST (Matrix, Track)
+{
+    for (std::size_t size = 1; size < 15; ++size)
+        EXPECT_EQ(LinearAlgebra::Matrix<short>::IdentityMatrix(size).Track(), size);
+
+    for (std::size_t rows = 1; rows < 10; ++rows)
+    {
+        for (std::size_t cols = 1; cols < 10; ++cols)
+        {
+            if (rows != cols)
+                EXPECT_ANY_THROW(LinearAlgebra::Matrix<short>(rows, cols, std::rand() % 255).Track());
+            else
+                EXPECT_NO_THROW(LinearAlgebra::Matrix<short>(rows, cols, std::rand() % 255).Track());
+        }
+    }
+
+    const short initial[3][3] = {{1,  2, 4},
+                                 {-1, 5, 2},
+                                 {0,  1, -2}};
+    EXPECT_EQ(LinearAlgebra::Matrix<short>((const short *) initial, 3, 3).Track(), 4);
+}
+
+TEST(Matrix, SelectingSubmatrixForMinor)
+{
+    const short initial[4][4] = {{1, 2, 1, 3},
+                                 {2, 1, 4, 1},
+                                 {3, 3, 2, -1},
+                                 {4, 2, 2, -1}};
+    const auto tester = LinearAlgebra::Matrix<short>((const short *) initial, 4, 4);
+    const short result[16][3][3] = {
+            {{1, 4, 1}, {3, 2, -1}, {2, 2, -1}},
+            {{2, 4, 1}, {3, 2, -1}, {4, 2, -1}},
+            {{2, 1, 1}, {3, 3, -1}, {4, 2, -1}},
+            {{2, 1, 4}, {3, 3, 2},  {4, 2, 2}},
+            {{2, 1, 3}, {3, 2, -1}, {2, 2, -1}},
+            {{1, 1, 3}, {3, 2, -1}, {4, 2, -1}},
+            {{1, 2, 3}, {3, 3, -1}, {4, 2, -1}},
+            {{1, 2, 1}, {3, 3, 2},  {4, 2, 2}},
+            {{2, 1, 3}, {1, 4, 1},  {2, 2, -1}},
+            {{1, 1, 3}, {2, 4, 1},  {4, 2, -1}},
+            {{1, 2, 3}, {2, 1, 1},  {4, 2, -1}},
+            {{1, 2, 1}, {2, 1, 4},  {4, 2, 2}},
+            {{2, 1, 3}, {1, 4, 1},  {3, 2, -1}},
+            {{1, 1, 3}, {2, 4, 1},  {3, 2, -1}},
+            {{1, 2, 3}, {2, 1, 1},  {3, 3, -1}},
+            {{1, 2, 1}, {2, 1, 4},  {3, 3, 2}}
+    };
+
+    for (std::size_t row = 0; row < 4; ++row)
+        for (std::size_t col = 0; col < 4; ++col)
+            EXPECT_TRUE(tester.GetSubmatrixWithoutRowAndColumn(row, col) ==
+                        LinearAlgebra::Matrix<short>((const short *) result[row * 4 + col], 3, 3));
 }

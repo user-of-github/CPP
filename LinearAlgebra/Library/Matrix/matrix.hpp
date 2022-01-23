@@ -40,9 +40,19 @@ namespace LinearAlgebra
 
         constexpr std::size_t Triangulate();
 
+        Matrix<ValueType> Pow(const std::size_t);
+
         constexpr double Determinant() const;
 
         static Matrix<short> IdentityMatrix(const std::size_t);
+
+        static Matrix<ValueType> RandomizedMatrix(const std::size_t, const std::size_t, const int = 0, const int = 100);
+
+        constexpr bool IsSymmetric() const;
+
+        constexpr ValueType Track() const;
+
+        Matrix<ValueType> GetSubmatrixWithoutRowAndColumn(const std::size_t, const std::size_t) const;
 
 
         Vector<ValueType> &operator[](const size_t);
@@ -62,6 +72,8 @@ namespace LinearAlgebra
         Matrix<ValueType> operator+(const Matrix<ValueType> &) const;
 
         Matrix<ValueType> operator-(const Matrix<ValueType> &) const;
+
+        Matrix<ValueType> operator*(const Matrix<ValueType> &) const;
 
         Matrix<ValueType> &operator=(Matrix<ValueType> &&) noexcept = default;
 

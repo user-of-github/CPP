@@ -243,9 +243,11 @@ namespace LinearAlgebra
         const auto value_type_id = std::string(typeid(ValueType1).name());
         const auto double_id = std::string(typeid(double).name());
         const auto float_id = std::string(typeid(float).name());
+        const auto long_double_id = std::string(typeid(long double).name());
 
         const auto is_integer_type = !((value_type_id.compare(double_id) == 0) ||
-                                       (value_type_id.compare(float_id) == 0));
+                                       (value_type_id.compare(float_id) == 0) ||
+                                       (value_type_id.compare(long_double_id) == 0));
 
         for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
         {
@@ -254,7 +256,8 @@ namespace LinearAlgebra
                 if (is_integer_type)
                     return false;
 
-                if (!(Utils::IsInEpsilonNeighborHood((double)first.values_.at(counter), 0.01, (double)second.values_.at(counter))))
+                if (!(Utils::IsInEpsilonNeighborHood((double) first.values_.at(counter), 0.01,
+                                                     (double) second.values_.at(counter))))
                     return false;
             }
         }
