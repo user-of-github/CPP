@@ -48,7 +48,7 @@ namespace LinearAlgebra
 
         void Normalize();
 
-        void Resize(const std::size_t, const ValueType fill_with_ = 0);
+        void Resize(const std::size_t, const ValueType = 0);
 
 
         const ValueType operator[](const std::size_t) const;

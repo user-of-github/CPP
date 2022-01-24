@@ -55,8 +55,8 @@ Google tests) and ○ CMake, ○ maybe even GitHub Actions. Here for the first t
     - [x] Rank
     - [ ] Norm (?)
     - [x] Inverse matrix
-    - [ ] Equations systems solvers
-        - [ ] Gauss
+    - [x] Equations systems solvers
+        - [x] Gauss
         - [ ] Jacobi
         - [ ] Simple iterations
         - [ ] Zeidel

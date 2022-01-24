@@ -488,7 +488,7 @@ TEST(Matrix, Inverse)
     }
 }
 
-TEST(Matrix, CramerAndInversalSolver)
+TEST(Matrix, EquationSystemSolver)
 {
     const std::size_t size_x2 = 2;
     const float initial_coeff_x2[][size_x2][size_x2] = {{{3, 2}, {1, 4}},
@@ -507,6 +507,12 @@ TEST(Matrix, CramerAndInversalSolver)
         );
         EXPECT_TRUE(
                 LinearAlgebra::Matrix<float>::SolveEquationSystemByInverseMatrix(
+                        LinearAlgebra::Matrix<float>((const float *) initial_coeff_x2[counter], size_x2, size_x2),
+                        LinearAlgebra::Vector<float>((const float *) free_coeff_x2[counter], size_x2)
+                ) == LinearAlgebra::Vector<float>((const float *) roots_x2[counter], size_x2)
+        );
+        EXPECT_TRUE(
+                LinearAlgebra::Matrix<float>::SolveEquationSystemByGauss(
                         LinearAlgebra::Matrix<float>((const float *) initial_coeff_x2[counter], size_x2, size_x2),
                         LinearAlgebra::Vector<float>((const float *) free_coeff_x2[counter], size_x2)
                 ) == LinearAlgebra::Vector<float>((const float *) roots_x2[counter], size_x2)
@@ -538,6 +544,13 @@ TEST(Matrix, CramerAndInversalSolver)
                         LinearAlgebra::Vector<float>((const float *) free_coeff_x3[counter], size_x3)
                 ) == LinearAlgebra::Vector<float>((const float *) roots_x3[counter], size_x3)
         );
+
+        EXPECT_TRUE(
+                LinearAlgebra::Matrix<float>::SolveEquationSystemByGauss(
+                        LinearAlgebra::Matrix<float>((const float *) initial_coeff_x3[counter], size_x3, size_x3),
+                        LinearAlgebra::Vector<float>((const float *) free_coeff_x3[counter], size_x3)
+                ) == LinearAlgebra::Vector<float>((const float *) roots_x3[counter], size_x3)
+        );
     }
 
 
@@ -559,6 +572,13 @@ TEST(Matrix, CramerAndInversalSolver)
 
         EXPECT_TRUE(
                 LinearAlgebra::Matrix<float>::SolveEquationSystemByInverseMatrix(
+                        LinearAlgebra::Matrix<float>((const float *) initial_coeff_x4[counter], size_x4, size_x4),
+                        LinearAlgebra::Vector<float>((const float *) free_coeff_x4[counter], size_x4)
+                ) == LinearAlgebra::Vector<float>((const float *) roots_x4[counter], size_x4)
+        );
+
+        EXPECT_TRUE(
+                LinearAlgebra::Matrix<float>::SolveEquationSystemByGauss(
                         LinearAlgebra::Matrix<float>((const float *) initial_coeff_x4[counter], size_x4, size_x4),
                         LinearAlgebra::Vector<float>((const float *) free_coeff_x4[counter], size_x4)
                 ) == LinearAlgebra::Vector<float>((const float *) roots_x4[counter], size_x4)

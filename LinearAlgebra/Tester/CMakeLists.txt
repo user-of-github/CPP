@@ -17,6 +17,7 @@ enable_testing()
 
 add_executable(
         unit_tests_pack
+        test_main.cpp
         test_vector.cpp
         test_matrix.cpp
 )

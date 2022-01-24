@@ -65,9 +65,13 @@ namespace LinearAlgebra
 
         Matrix<ValueType> GetInverseMatrix() const;
 
+
         static Vector<ValueType> SolveEquationSystemByCramer(const Matrix<ValueType> &, const Vector<ValueType> &);
 
-        static Vector<ValueType> SolveEquationSystemByInverseMatrix(const Matrix<ValueType> &, const Vector<ValueType> &);
+        static Vector<ValueType> SolveEquationSystemByInverseMatrix(const Matrix<ValueType> &,
+                                                                    const Vector<ValueType> &);
+
+        static Vector<ValueType> SolveEquationSystemByGauss(const Matrix<ValueType> &, const Vector<ValueType> &);
 
 
         Vector<ValueType> &operator[](const size_t);

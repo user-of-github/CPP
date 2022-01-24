@@ -360,6 +360,31 @@ namespace LinearAlgebra
         );
     }
 
+    template<typename ValueType>
+    Vector <ValueType> Matrix<ValueType>::SolveEquationSystemByGauss(const Matrix <ValueType> &coefficients_matrix,
+                                                                     const Vector <ValueType> &free_coefficients_vector)
+    {
+        const auto size = std::get<0>(coefficients_matrix.Sizes());
+
+        auto full_system_matrix = Matrix<ValueType>(coefficients_matrix);
+        full_system_matrix.Resize(size, size + 1, 0);
+        for (std::size_t row = 0; row < size; ++row)
+            full_system_matrix[row][size] = free_coefficients_vector[row];
+
+        auto response = Vector<ValueType>(size, 0); // X Vector
+
+        // Gauss back substitution (обратный ход)
+        for (int var_counter = size - 1; var_counter >= 0; --var_counter)
+        {
+            response[var_counter] =
+                    full_system_matrix[var_counter][size] / full_system_matrix[var_counter][var_counter];
+            for (int rest_row = 0; rest_row < var_counter; rest_row++)
+                full_system_matrix[rest_row][size] -= full_system_matrix[rest_row][var_counter] * response[var_counter];
+        }
+
+        return response;
+    }
+
 
     template<typename ValueType>
     Vector <ValueType> &Matrix<ValueType>::operator[](const std::size_t index)
