@@ -59,9 +59,15 @@ namespace LinearAlgebra
 
         constexpr ValueType Track() const;
 
+        constexpr std::size_t Rank() const;
+
         Matrix<ValueType> GetSubmatrixWithoutRowAndColumn(const std::size_t, const std::size_t) const;
 
         Matrix<ValueType> GetInverseMatrix() const;
+
+        static Vector<ValueType> SolveEquationSystemByCramer(const Matrix<ValueType> &, const Vector<ValueType> &);
+
+        static Vector<ValueType> SolveEquationSystemByInverseMatrix(const Matrix<ValueType> &, const Vector<ValueType> &);
 
 
         Vector<ValueType> &operator[](const size_t);
@@ -91,7 +97,7 @@ namespace LinearAlgebra
         Matrix<ValueType> &operator=(const Vector<ValueType> &);
 
         template<typename ValueType1>
-        friend bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);
+        friend constexpr bool operator==(const Matrix<ValueType1> &, const Matrix<ValueType1> &);
 
         template<typename ValueType2>
         friend std::ostream &operator<<(std::ostream &, const Matrix<ValueType2> &);
@@ -113,13 +119,15 @@ namespace LinearAlgebra
 
         static constexpr std::size_t Gauss(double **, const std::size_t, const std::size_t);
 
-        double **GetSimilarMatrixOfDouble() const;
+        constexpr double **GetSimilarMatrixOfDouble() const;
 
         void FreeTemporaryMatrix(double **) const;
 
         void CheckGenericType() const;
 
         constexpr bool CheckValidityOfIndexes(const std::size_t, const std::size_t, const bool = true) const;
+
+        static Matrix<ValueType> CreateColMatrixFromVector(const Vector<ValueType> &);
     };
 }
 #endif //LINEARALGEBRA_MATRIX_H

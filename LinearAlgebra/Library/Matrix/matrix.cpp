@@ -236,6 +236,33 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
+    constexpr std::size_t Matrix<ValueType>::Rank() const
+    {
+        const auto rows = std::get<0>(this->Sizes());
+        const auto cols = std::get<1>(this->Sizes());
+
+        auto to_triangulate = this->GetSimilarMatrixOfDouble();
+
+        const auto does_full_equal_zero = [&](const std::size_t row) -> bool {
+            for (std::size_t col = 0; col < cols; ++col)
+                if (!Utils::IsInEpsilonNeighborHood(0.0, 0.001, to_triangulate[row][col]))
+                    return false;
+            return true;
+        };
+
+        Matrix::Gauss(to_triangulate, rows, cols);
+
+        std::size_t response = 0;
+
+        for (std::size_t row = 0; row < rows; ++row)
+            response += (std::size_t) (!does_full_equal_zero(row));
+
+        Matrix::FreeTemporaryMatrix(to_triangulate);
+
+        return response;
+    }
+
+    template<typename ValueType>
     Matrix <ValueType> Matrix<ValueType>::GetSubmatrixWithoutRowAndColumn(const std::size_t row_to_erase,
                                                                           const std::size_t col_to_erase) const
     {
@@ -277,6 +304,60 @@ namespace LinearAlgebra
         response /= determinant;
 
         return response;
+    }
+
+    template<typename ValueType>
+    Vector <ValueType> Matrix<ValueType>::SolveEquationSystemByCramer(const Matrix <ValueType> &coefficients_matrix,
+                                                                      const Vector <ValueType> &free_coefficients_vector)
+    {
+        auto coefficients = coefficients_matrix;
+        const auto size = std::get<0>(coefficients.Sizes());
+
+        auto copy = new ValueType[size];
+
+        const auto replace_column_to_free_coefficients = [&](const std::size_t col) -> void {
+            for (std::size_t row = 0; row < size; ++row)
+            {
+                copy[row] = coefficients[row][col];
+                coefficients[row][col] = free_coefficients_vector[row];
+            }
+        };
+
+        const auto put_values_back_to_coefficient_matrix = [&](const std::size_t col) -> void {
+            for (std::size_t row = 0; row < size; ++row)
+                coefficients[row][col] = copy[row];
+        };
+
+        const auto main_determinant = coefficients.Determinant();
+        if (Utils::IsInEpsilonNeighborHood(0.0, 0.001, main_determinant))
+            throw std::runtime_error("Unable to use Cramer's method: main system determinant equals zero");
+
+        auto response = Vector<ValueType>(size, 0);
+
+        for (std::size_t counter = 0; auto &item : response.values_)
+        {
+            replace_column_to_free_coefficients(counter);
+            const auto determinant = coefficients.Determinant();
+            const auto x = determinant / main_determinant;
+            item = x;
+            put_values_back_to_coefficient_matrix(counter);
+            ++counter;
+        }
+
+        delete[] copy;
+
+        return response;
+    }
+
+    template<typename ValueType>
+    Vector <ValueType>
+    Matrix<ValueType>::SolveEquationSystemByInverseMatrix(const Matrix <ValueType> &coefficients_matrix,
+                                                          const Vector <ValueType> &free_coefficients_vector)
+    {
+        return Vector<ValueType>(
+                coefficients_matrix.GetInverseMatrix() *
+                Matrix<ValueType>::CreateColMatrixFromVector(free_coefficients_vector)
+        );
     }
 
 
@@ -402,7 +483,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType1>
-    bool operator==(const Matrix <ValueType1> &first, const Matrix <ValueType1> &second)
+    constexpr bool operator==(const Matrix <ValueType1> &first, const Matrix <ValueType1> &second)
     {
         if (!Matrix<ValueType1>::CheckMatricesCompatibility(first, second, false))
             return false;
@@ -526,7 +607,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    double **Matrix<ValueType>::GetSimilarMatrixOfDouble() const
+    constexpr double **Matrix<ValueType>::GetSimilarMatrixOfDouble() const
     {
         const auto[rows, cols] = this->Sizes();
         auto response = new double *[rows];
@@ -564,7 +645,19 @@ namespace LinearAlgebra
             !std::is_same<ValueType, float>::value &&
             !std::is_same<ValueType, double>::value &&
             !std::is_same<ValueType, long double>::value &&
-            !std::is_same<ValueType, std::size_t>::value)
+            !std::is_same<ValueType, std::size_t>::value &&
+            !std::is_same<ValueType, const char>::value &&
+            !std::is_same<ValueType, const unsigned char>::value &&
+            !std::is_same<ValueType, const short>::value &&
+            !std::is_same<ValueType, const unsigned short>::value &&
+            !std::is_same<ValueType, const int>::value &&
+            !std::is_same<ValueType, const unsigned int>::value &&
+            !std::is_same<ValueType, const long long>::value &&
+            !std::is_same<ValueType, const unsigned long long>::value &&
+            !std::is_same<ValueType, const float>::value &&
+            !std::is_same<ValueType, const double>::value &&
+            !std::is_same<ValueType, const long double>::value &&
+            !std::is_same<ValueType, const std::size_t>::value)
             throw new std::invalid_argument("Class Matrix<ValueType> does not support generic for required type");
     }
 
@@ -582,5 +675,15 @@ namespace LinearAlgebra
             return false;
         }
         return true;
+    }
+
+    template<typename ValueType>
+    Matrix <ValueType> Matrix<ValueType>::CreateColMatrixFromVector(const Vector <ValueType> &rhs)
+    {
+        const auto rows = rhs.Size();
+        auto response = Matrix<ValueType>(rows, 1, 0);
+        for (std::size_t row = 0; row < rows; ++row)
+            response[row][0] = rhs[row];
+        return response;
     }
 }

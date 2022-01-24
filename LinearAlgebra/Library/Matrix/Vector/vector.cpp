@@ -46,8 +46,19 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType>::Vector(const Matrix <ValueType> &rhs)
     {
-        Vector::CheckRhsMatrixDimensions(std::get<0>(rhs.Sizes()));
-        this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+        const auto[rows, cols] = rhs.Sizes();
+        Vector::CheckRhsMatrixDimensions(rows, cols);
+        if (rows == 1)
+        {
+            this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+        }
+        else
+        {
+            auto temp = std::vector<ValueType>(0);
+            for (std::size_t row = 0; row < rows; ++row)
+                temp.push_back(rhs[row][0]);
+            this->CopyFullStdVector(temp);
+        }
     }
 
 
@@ -244,8 +255,19 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> &Vector<ValueType>::operator=(const Matrix <ValueType> &rhs)
     {
-        Vector::CheckRhsMatrixDimensions(std::get<0>(rhs.Sizes()));
-        this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+        const auto[rows, cols] = rhs.Sizes();
+        Vector::CheckRhsMatrixDimensions(rows, cols);
+        if (rows == 1)
+        {
+            this->CopyFullStdVector(rhs.vectors_.at(0).values_);
+        }
+        else
+        {
+            auto temp = std::vector<ValueType>(0);
+            for (std::size_t row = 0; row < rows; ++row)
+                temp.push_back(rhs[row][0]);
+            this->CopyFullStdVector(temp);
+        }
         return *this;
     }
 
@@ -299,7 +321,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
+    constexpr bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
                                                     const std::vector<ValueType> &second,
                                                     const bool to_throw_exception)
     {
@@ -334,12 +356,13 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    bool Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const bool should_throw)
+    constexpr bool Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const std::size_t cols_count,
+                                                     const bool should_throw)
     {
-        if (rows_count != 1)
+        if (!((rows_count == 1) || (cols_count == 1)))
         {
             if (should_throw)
-                throw std::runtime_error("Unable to create Vector from not 1-rowed Matrix");
+                throw std::runtime_error("Unable to create Vector from not 1-rowed or 1-coled Matrix");
             return false;
         }
         return true;

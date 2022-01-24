@@ -96,7 +96,7 @@ namespace LinearAlgebra
 
         void CopyFullStdVector(const std::vector<ValueType> &);
 
-        static bool CheckSizesCompatibility(const std::vector<ValueType> &,
+        static constexpr bool CheckSizesCompatibility(const std::vector<ValueType> &,
                                             const std::vector<ValueType> &,
                                             const bool = true);
 
@@ -106,7 +106,7 @@ namespace LinearAlgebra
 
         void PrintVectorRowByStream(std::ostream &) const;
 
-        static bool CheckRhsMatrixDimensions(const std::size_t, const bool = true);
+        static constexpr bool CheckRhsMatrixDimensions(const std::size_t, const std::size_t, const bool = true);
     };
 }
 
