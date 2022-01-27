@@ -7,8 +7,7 @@
 _The first project in my C++ Repo.   
 Hope not the last :)  
 Simple Linear Algebra lib to work with numeric vectors, matrices, systems of equations and so on  
-Project's aim — ○ repeat some linear algebra topics, ○ code them, ○ try practicing modern C++, ○ start using tests (
-Google tests) and ○ CMake, ○ maybe even GitHub Actions. Here for the first time using CMake myself and Gtests_
+Project's aim — • repeat some linear algebra topics, • code them, • try practicing (modern) C++, • start using tests (Google tests) and • CMake, • maybe even GitHub Actions. Here for the first time using CMake myself and Gtests_
 
 ### _To Run tests:_
 
@@ -34,7 +33,7 @@ Google tests) and ○ CMake, ○ maybe even GitHub Actions. Here for the first t
     - [x] Ostream operator
     - [x] Norm
     - [x] Normalization
-    - [ ] Convert / Transform (with lambda as argument)
+    - [ ] &times; Convert / Transform (with lambda as argument)
     - [x] Sum
     - [x] Friend class for Matrix class
     - [x] Cast to Matrix
@@ -53,24 +52,23 @@ Google tests) and ○ CMake, ○ maybe even GitHub Actions. Here for the first t
     - [x] Is symmetric
     - [x] Track (Spur)
     - [x] Rank
-    - [ ] Norm (?)
+    - [ ] &times; Norm (?)
     - [x] Inverse matrix
     - [x] Equations systems solvers
         - [x] Gauss
-        - [ ] Jacobi
-        - [ ] Simple iterations
-        - [ ] Zeidel
+        - [ ] &times; Jacobi
+        - [ ] &times; Simple iterations
+        - [ ] &times; Zeidel
         - [x] Cramer
         - [x] By inverse matrix
     - [x] Cast to Vector (if 1 row)
-- [ ] __MakeFile__
-    - [x] Cmake
+- [x] __CMake__
 - [x] __Tests:__
-    - [ ] Connect to `CodeCov`
+    - [ ] &times; Connect to `CodeCov`
     - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
     - [x] Or at least start testing with `assert.h` (`cassert`)
     - [ ] Bage with tests in Readme.md
-- [ ] __GitHub Actions__ (— for what ? — don't know yet, but may be useful)
+- [ ] &times; __GitHub Actions__ (— for what ? — don't know yet, but may be useful)
 
 ### _Some more features:_
 
