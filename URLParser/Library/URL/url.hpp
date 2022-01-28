@@ -1,23 +1,25 @@
 #ifndef URLPARSER_URL_HPP
 #define URLPARSER_URL_HPP
 
-#include <string_view>
 #include <regex>
 #include "../Utils/utils.hpp"
 
 
-class URL
+class Url
 {
 public:
-    URL(const char *);
+    Url() = delete;
 
-    URL(const std::string_view);
+    Url(const char *);
 
-    friend std::ostream &operator<<(std::ostream &, const URL &);
+    Url(const std::string &);
 
-    static constexpr bool CheckValidity(const std::string_view);
+    Url(const Url &);
 
-    std::string Host() const;
+    Url(Url &&) = default;
+
+
+    std::string Protocol() const;
 
     std::string Domain() const;
 
@@ -25,10 +27,24 @@ public:
 
     std::string Source() const;
 
+    static constexpr bool CheckValidity(const std::string &);
+
+
+    friend std::ostream &operator<<(std::ostream &, const Url &);
+
 private:
     static const std::regex kUrlRegularExpression;
-    std::string source_;
+    static const std::string kUndefinedUrlPartDesignation;
+
     std::cmatch result_;
+
+    std::string source_;
+    std::string protocol_;
+    std::string domain_;
+    std::string query_;
+
+    void Update();
 };
+
 
 #endif //URLPARSER_URL_HPP

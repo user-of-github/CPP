@@ -1,40 +1,78 @@
 #include "url.hpp"
 
-const std::regex URL::kUrlRegularExpression = std::regex("[a-z]");
+
+const std::regex Url::kUrlRegularExpression{
+        "(?:(https?|ftp|):\\/)?"
+        "\\/?"
+        "([^:\\/\\s]+)"
+        ".*"
+};
+
+const std::string Url::kUndefinedUrlPartDesignation{"<UNDEFINED>"};
 
 
-URL::URL(const char *source) : source_(source)
-{}
-
-URL::URL(const std::string_view source) : source_(source)
-{}
-
-std::ostream &operator<<(std::ostream &stream, const URL &url)
+Url::Url(const char *source) : source_(Trim(std::string(source)))
 {
-    return stream;
+    this->Update();
 }
 
-constexpr bool URL::CheckValidity(const std::string_view url)
+Url::Url(const std::string &source) : source_(Trim(source))
+{
+    this->Update();
+}
+
+Url::Url(const Url &rhs) : source_(rhs.source_), domain_(rhs.domain_), protocol_(rhs.protocol_), result_(rhs.result_)
+{}
+
+
+std::string Url::Protocol() const
+{
+    return this->protocol_;
+}
+
+std::string Url::Domain() const
+{
+    return this->domain_;
+}
+
+std::string Url::Query() const
+{
+    return this->query_;
+}
+
+std::string Url::Source() const
+{
+    return this->source_;
+}
+
+constexpr bool Url::CheckValidity(const std::string &url)
 {
     return false;
 }
 
-std::string URL::Host() const
+std::ostream &operator<<(std::ostream &stream, const Url &url)
 {
-    return "";
+    stream << "____________\n";
+    for (const auto &item : url.result_)
+        stream << item << '\n';
+    stream << "____________\n";
+    return stream;
 }
 
-std::string URL::Domain() const
+void Url::Update()
 {
-    return "";
+    std::regex_match(this->source_.c_str(), this->result_, Url::kUrlRegularExpression);
+
+    auto result_it = std::cbegin(this->result_);
+    std::advance(result_it, 1);
+    const auto found_protocol = std::string(*result_it);
+    this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
 }
 
-std::string URL::Query() const
-{
-    return "";
-}
 
-std::string URL::Source() const
-{
-    return this->source_;
-}
+
+// useful links:
+/*
+    https://stackoverflow.com/questions/18633334/regex-optional-group
+
+ */
