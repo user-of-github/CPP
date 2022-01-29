@@ -1,4 +1,4 @@
-## Simple URL Parser
+## Simple web-URL Parser
 
 ###### Educational purposes
 

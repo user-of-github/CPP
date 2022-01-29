@@ -11,7 +11,7 @@ const std::regex Url::kUrlRegularExpression{
 const std::string Url::kUndefinedUrlPartDesignation{"<UNDEFINED>"};
 
 
-Url::Url(const char *source) : source_(Trim(std::string(source)))
+Url::Url(const char *source) : source_(Trim(std::string{source}))
 {
     this->Update();
 }
@@ -52,10 +52,11 @@ constexpr bool Url::CheckValidity(const std::string &url)
 
 std::ostream &operator<<(std::ostream &stream, const Url &url)
 {
-    stream << "____________\n";
-    for (const auto &item : url.result_)
-        stream << item << '\n';
-    stream << "____________\n";
+    stream << "URL: " << url.source_ << '\n';
+    stream << '\t' << "Protocol: " << url.Protocol() << '\n';
+    stream << '\t' << "Domain: " << url.Domain() << '\n';
+    stream << '\t' << "Query: " << url.Query() << '\n';
+
     return stream;
 }
 
@@ -65,7 +66,7 @@ void Url::Update()
 
     auto result_it = std::cbegin(this->result_);
     std::advance(result_it, 1);
-    const auto found_protocol = std::string(*result_it);
+    const auto found_protocol = std::string{*result_it};
     this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
 }
 
@@ -74,5 +75,5 @@ void Url::Update()
 // useful links:
 /*
     https://stackoverflow.com/questions/18633334/regex-optional-group
-
+    https://gist.github.com/metafeather/202974
  */
