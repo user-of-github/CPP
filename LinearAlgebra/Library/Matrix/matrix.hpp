@@ -11,13 +11,18 @@
 #include "../Utils/utils.cpp"
 
 
+
 namespace LinearAlgebra
 {
+    template<typename ValueType>
+    class EquationSystemSolver;
+
     template<typename ValueType>
     class Matrix
     {
     public:
         friend class Vector<ValueType>;
+        friend class EquationSystemSolver<ValueType>;
 
 
         Matrix() = delete;
@@ -64,14 +69,6 @@ namespace LinearAlgebra
         Matrix<ValueType> GetSubmatrixWithoutRowAndColumn(const std::size_t, const std::size_t) const;
 
         Matrix<ValueType> GetInverseMatrix() const;
-
-
-        static Vector<ValueType> SolveEquationSystemByCramer(const Matrix<ValueType> &, const Vector<ValueType> &);
-
-        static Vector<ValueType> SolveEquationSystemByInverseMatrix(const Matrix<ValueType> &,
-                                                                    const Vector<ValueType> &);
-
-        static Vector<ValueType> SolveEquationSystemByGauss(const Matrix<ValueType> &, const Vector<ValueType> &);
 
 
         Vector<ValueType> &operator[](const size_t);

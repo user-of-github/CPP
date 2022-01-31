@@ -17,16 +17,13 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 3. `cmake --build build`
 4. `cd build && ctest`
 
-### _To run custom user's code - `sandbox.cpp`:_
-
-1. From `root` folder: `cmake -S . -B build -G "MinGW Makefiles"` _// or
-   your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
-2. `cmake --build build`
-3. `cd build`, `demo(.exe)`
+### _To build a static library:_
+1. `cd Library`  
+2. `cmake . -B build -G "MinGW Makefiles`
 
 ### _Functionality / To Do:_
 
-- [x] __Vector Class__
+- [x] __Vector class__
     - [x] Template
     - [x] Copy constructor and = operator
     - [x] Operators
@@ -37,7 +34,7 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Sum
     - [x] Friend class for Matrix class
     - [x] Cast to Matrix
-- [x] __Matrix Class__ (can also represent Vector)
+- [x] __Matrix class__ (can also represent Vector)
     - [x] Operators (via already realized Vector's ones)
     - [x] Ostream operator
     - [x] Multiplication // native
@@ -54,20 +51,20 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Rank
     - [ ] &times; Norm (?)
     - [x] Inverse matrix
-    - [x] Equations systems solvers
-        - [x] Gauss
-        - [ ] &times; Jacobi
-        - [ ] &times; Simple iterations
-        - [ ] &times; Zeidel
-        - [x] Cramer
-        - [x] By inverse matrix
     - [x] Cast to Vector (if 1 row)
+- [x] __Equations systems solvers class__
+  - [x] Gauss
+  - [ ] &times; Jacobi
+  - [ ] &times; Simple iterations
+  - [ ] &times; Zeidel
+  - [x] Cramer
+  - [x] By inverse matrix    
 - [x] __CMake__
 - [x] __Tests:__
     - [ ] &times; Connect to `CodeCov`
     - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
     - [x] Or at least start testing with `assert.h` (`cassert`)
-    - [ ] Bage with tests in Readme.md
+    - [ ] &times; Bage with tests in Readme.md
 - [ ] &times; __GitHub Actions__ (— for what ? — don't know yet, but may be useful)
 
 ### _Some more features:_
@@ -76,7 +73,7 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 * Google C++ code style (style guide)
 * Modern features: STD functions, auto lambda expressions, constexpr and so on
 * Google Tests, hundreds of code-lines with tests
-* CMake
+* CMake for tests, building a lib and for custom user's code
 
 #### _Developed with:_
 

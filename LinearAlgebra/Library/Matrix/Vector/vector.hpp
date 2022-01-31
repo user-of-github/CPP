@@ -19,10 +19,15 @@ namespace LinearAlgebra
     class Matrix;
 
     template<typename ValueType>
+    class EquationSystemSolver;
+
+    template<typename ValueType>
     class Vector
     {
     public:
         friend class Matrix<ValueType>;
+
+        friend class EquationSystemSolver<ValueType>;
 
 
         Vector();
@@ -97,8 +102,8 @@ namespace LinearAlgebra
         void CopyFullStdVector(const std::vector<ValueType> &);
 
         static constexpr bool CheckSizesCompatibility(const std::vector<ValueType> &,
-                                            const std::vector<ValueType> &,
-                                            const bool = true);
+                                                      const std::vector<ValueType> &,
+                                                      const bool = true);
 
         static void CheckValidityOfSize(const std::size_t);
 

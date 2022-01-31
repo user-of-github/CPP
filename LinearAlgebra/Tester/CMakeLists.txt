@@ -20,6 +20,7 @@ add_executable(
         test_main.cpp
         test_vector.cpp
         test_matrix.cpp
+        test_equ_system_solve.cpp
 )
 target_link_libraries(
         unit_tests_pack
