@@ -11,7 +11,6 @@
 #include "../Utils/utils.cpp"
 
 
-
 namespace LinearAlgebra
 {
     class EquationSystemSolver;
@@ -21,6 +20,7 @@ namespace LinearAlgebra
     {
     public:
         friend class Vector<ValueType>;
+
         friend class EquationSystemSolver;
 
 
@@ -104,6 +104,7 @@ namespace LinearAlgebra
 
     private:
         std::vector<Vector<ValueType>> vectors_;
+
 
         void CopyItems(const Matrix<ValueType> &);
 

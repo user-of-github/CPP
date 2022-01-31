@@ -1,5 +1,7 @@
-#pragma once
+#pragma once // without it there are errors: redefinition of 'LinearAlgebra::Vector<ValueType>
+
 #include "vector.hpp"
+
 
 namespace LinearAlgebra
 {
@@ -323,8 +325,8 @@ namespace LinearAlgebra
 
     template<typename ValueType>
     constexpr bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
-                                                    const std::vector<ValueType> &second,
-                                                    const bool to_throw_exception)
+                                                              const std::vector<ValueType> &second,
+                                                              const bool to_throw_exception)
     {
         if (first.size() != second.size())
         {
@@ -357,8 +359,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const std::size_t cols_count,
-                                                     const bool should_throw)
+    constexpr bool
+    Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const std::size_t cols_count,
+                                                const bool should_throw)
     {
         if (!((rows_count == 1) || (cols_count == 1)))
         {

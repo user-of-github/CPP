@@ -1,5 +1,3 @@
-#pragma once
-
 #include "matrix.hpp"
 
 
@@ -191,9 +189,8 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Matrix <ValueType>
-    Matrix<ValueType>::RandomizedMatrix(const std::size_t rows, const std::size_t cols,
-                                        const int range_from, const int range_to)
+    Matrix <ValueType> Matrix<ValueType>::RandomizedMatrix(const std::size_t rows, const std::size_t cols,
+                                                           const int range_from, const int range_to)
     {
         auto response = Matrix<ValueType>(rows, cols, 0);
         const std::size_t range = std::abs(range_to - range_from);
@@ -500,6 +497,7 @@ namespace LinearAlgebra
 
             return false;
         }
+
         return true;
     }
 
@@ -620,6 +618,7 @@ namespace LinearAlgebra
                 throw std::invalid_argument("Some index is less than zero or greater than matrix's size");
             return false;
         }
+
         return true;
     }
 
@@ -630,6 +629,7 @@ namespace LinearAlgebra
         auto response = Matrix<ValueType>(rows, 1, 0);
         for (std::size_t row = 0; row < rows; ++row)
             response[row][0] = rhs[row];
+
         return response;
     }
 }

@@ -1,6 +1,5 @@
 #include "equation_system_solver.hpp"
 
-#pragma once
 
 namespace LinearAlgebra
 {
@@ -8,7 +7,7 @@ namespace LinearAlgebra
     Vector <ValueType> EquationSystemSolver::Cramer(const Matrix <ValueType> &coefficients_matrix,
                                                     const Vector <ValueType> &free_coefficients_vector)
     {
-        auto coefficients = coefficients_matrix;
+        auto coefficients = Matrix<ValueType>(coefficients_matrix);
         const auto size = std::get<0>(coefficients.Sizes());
 
         auto copy = new ValueType[size];
@@ -48,9 +47,8 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector <ValueType>
-    EquationSystemSolver::InverseMatrix(const Matrix <ValueType> &coefficients_matrix,
-                                        const Vector <ValueType> &free_coefficients_vector)
+    Vector <ValueType> EquationSystemSolver::InverseMatrix(const Matrix <ValueType> &coefficients_matrix,
+                                                           const Vector <ValueType> &free_coefficients_vector)
     {
         return Vector<ValueType>(
                 coefficients_matrix.GetInverseMatrix() *
@@ -74,12 +72,12 @@ namespace LinearAlgebra
         full_system_matrix.Triangulate();
 
         // Gauss back substitution (обратный ход)
-        for (int var_counter = size - 1; var_counter >= 0; --var_counter)
+        for (int current_x = size - 1; current_x >= 0; --current_x)
         {
-            response[var_counter] =
-                    full_system_matrix[var_counter][size] / full_system_matrix[var_counter][var_counter];
-            for (int rest_row = 0; rest_row < var_counter; ++rest_row)
-                full_system_matrix[rest_row][size] -= full_system_matrix[rest_row][var_counter] * response[var_counter];
+            response[current_x] = full_system_matrix[current_x][size] / full_system_matrix[current_x][current_x];
+            for (int rest_row = 0; rest_row <
+                                   current_x; ++rest_row) // int declaration => to avoid possible problems in comparison between signed and unsigned
+                full_system_matrix[rest_row][size] -= full_system_matrix[rest_row][current_x] * response[current_x];
         }
 
         return response;

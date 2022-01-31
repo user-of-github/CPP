@@ -5,9 +5,7 @@
 
 #include <iostream>
 #include <vector>
-#include <exception>
 #include <cmath>
-#include <stdexcept>
 #include <numeric>
 #include "../../Utils/utils.hpp"
 #include "../../Utils/utils.cpp"
@@ -97,6 +95,7 @@ namespace LinearAlgebra
 
     private:
         std::vector<ValueType> values_;
+
 
         void CopyFullStdVector(const std::vector<ValueType> &);
 
