@@ -18,7 +18,6 @@ namespace LinearAlgebra
     template<typename ValueType>
     class Matrix;
 
-    template<typename ValueType>
     class EquationSystemSolver;
 
     template<typename ValueType>
@@ -27,7 +26,7 @@ namespace LinearAlgebra
     public:
         friend class Matrix<ValueType>;
 
-        friend class EquationSystemSolver<ValueType>;
+        friend class EquationSystemSolver;
 
 
         Vector();

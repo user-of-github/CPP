@@ -1,11 +1,12 @@
 #include "equation_system_solver.hpp"
+
 #pragma once
 
 namespace LinearAlgebra
 {
     template<typename ValueType>
-    Vector<ValueType> EquationSystemSolver<ValueType>::Cramer(const Matrix<ValueType> &coefficients_matrix,
-                                                                        const Vector<ValueType> &free_coefficients_vector)
+    Vector <ValueType> EquationSystemSolver::Cramer(const Matrix <ValueType> &coefficients_matrix,
+                                                    const Vector <ValueType> &free_coefficients_vector)
     {
         auto coefficients = coefficients_matrix;
         const auto size = std::get<0>(coefficients.Sizes());
@@ -47,9 +48,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType>
-    EquationSystemSolver<ValueType>::InverseMatrix(const Matrix<ValueType> &coefficients_matrix,
-                                                             const Vector<ValueType> &free_coefficients_vector)
+    Vector <ValueType>
+    EquationSystemSolver::InverseMatrix(const Matrix <ValueType> &coefficients_matrix,
+                                        const Vector <ValueType> &free_coefficients_vector)
     {
         return Vector<ValueType>(
                 coefficients_matrix.GetInverseMatrix() *
@@ -58,8 +59,8 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    Vector<ValueType> EquationSystemSolver<ValueType>::Gauss(const Matrix<ValueType> &coefficients_matrix,
-                                                                       const Vector<ValueType> &free_coefficients_vector)
+    Vector <ValueType> EquationSystemSolver::Gauss(const Matrix <ValueType> &coefficients_matrix,
+                                                   const Vector <ValueType> &free_coefficients_vector)
     {
         const auto size = std::get<0>(coefficients_matrix.Sizes());
 
@@ -70,12 +71,14 @@ namespace LinearAlgebra
 
         auto response = Vector<ValueType>(size, 0); // X Vector
 
+        full_system_matrix.Triangulate();
+
         // Gauss back substitution (обратный ход)
         for (int var_counter = size - 1; var_counter >= 0; --var_counter)
         {
             response[var_counter] =
                     full_system_matrix[var_counter][size] / full_system_matrix[var_counter][var_counter];
-            for (int rest_row = 0; rest_row < var_counter; rest_row++)
+            for (int rest_row = 0; rest_row < var_counter; ++rest_row)
                 full_system_matrix[rest_row][size] -= full_system_matrix[rest_row][var_counter] * response[var_counter];
         }
 

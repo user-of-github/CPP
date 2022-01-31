@@ -15,7 +15,8 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 2. `cmake -S . -B build -G "MinGW Makefiles"` _// or
    your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
 3. `cmake --build build`
-4. `cd build && ctest`
+4. `cd build && ctest`  
+5. In JetBrains Clion it is possible to choose main `CMakeLists.txt` (so it's necessary to choose one from `Tester` folder) — and it will be possible to run tests automatically by `ctrl + F5` or `Run` button. Also it will be necessary to choose `All CTest | Debug` in select of configuration
 
 ### _To build a static library:_
 1. `cd Library`  
@@ -73,12 +74,10 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 * Google C++ code style (style guide)
 * Modern features: STD functions, auto lambda expressions, constexpr and so on
 * Google Tests, hundreds of code-lines with tests
-* CMake for tests, building a lib and for custom user's code
+* CMake-s for tests and for building a lib 
 
-#### _Developed with:_
+   
+&nbsp;  
 
-* JetBrains Clion
-* Google Tests
-* GNU &nbsp;
 
 ###### © 2022 | All Rights Reserved

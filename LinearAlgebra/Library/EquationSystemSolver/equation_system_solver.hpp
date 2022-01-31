@@ -12,17 +12,19 @@
 
 namespace LinearAlgebra
 {
-    template<typename ValueType>
+
     class EquationSystemSolver
     {
     public:
 
+        template<typename ValueType>
         static Vector <ValueType> Cramer(const Matrix <ValueType> &, const Vector <ValueType> &);
 
-
+        template<typename ValueType>
         static Vector <ValueType> InverseMatrix(const Matrix <ValueType> &,
                                                 const Vector <ValueType> &);
 
+        template<typename ValueType>
         static Vector <ValueType> Gauss(const Matrix <ValueType> &, const Vector <ValueType> &);
     };
 }
