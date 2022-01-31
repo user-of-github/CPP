@@ -12,15 +12,14 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 ### _To Run tests:_
 
 1. `cd Tester`
-2. `cmake -S . -B build -G "MinGW Makefiles"` _// or
-   your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
+2. `cmake -S . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
 3. `cmake --build build`
 4. `cd build && ctest`  
 5. In JetBrains Clion it is possible to choose main `CMakeLists.txt` (so it's necessary to choose one from `Tester` folder) — and it will be possible to run tests automatically by `ctrl + F5` or `Run` button. Also it will be necessary to choose `All CTest | Debug` in select of configuration
 
 ### _To build a static library:_
 1. `cd Library`  
-2. `cmake . -B build -G "MinGW Makefiles`  
+2. `cmake . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_  
 3. `cmake --build build`
 
 ### _Functionality / To Do:_
