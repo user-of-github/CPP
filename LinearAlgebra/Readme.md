@@ -20,7 +20,8 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 
 ### _To build a static library:_
 1. `cd Library`  
-2. `cmake . -B build -G "MinGW Makefiles`
+2. `cmake . -B build -G "MinGW Makefiles`  
+3. `cmake --build build`
 
 ### _Functionality / To Do:_
 
