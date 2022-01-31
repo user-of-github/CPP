@@ -70,6 +70,12 @@ void Url::Update()
     this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
 }
 
+Url &Url::operator=(const Url &rhs)
+{
+    *this = Url(rhs);
+    return *this;
+}
+
 
 
 // useful links:

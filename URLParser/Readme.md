@@ -18,13 +18,14 @@ use some modern C++ features, • also use Gtest and CMake_
 * Also it may be able to add configuration to Clion (or just choose CMakeLists in `Tests` folder) and run tests just by `ctrl + F5` or button `Run`
   clicking
 
-### _To run custom user's code - `sandbox.cpp`:_
+### _To build a lib:_  
+
 
 ### _Functionality / To Do:_
 
 - [ ] Validating of all kinds of Url
 - [ ] Extracting Url parts:
-    - [ ] Protocol
+    - [x] Protocol
     - [ ] Domain
     - [ ] Pathname (filename ?)
     - [ ] Query string

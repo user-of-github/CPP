@@ -30,6 +30,10 @@ public:
     static constexpr bool CheckValidity(const std::string &);
 
 
+    Url & operator = (const Url &);
+
+    Url & operator = (Url &&) = default;
+
     friend std::ostream &operator<<(std::ostream &, const Url &);
 
 private:
