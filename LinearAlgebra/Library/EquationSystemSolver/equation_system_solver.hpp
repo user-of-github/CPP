@@ -14,7 +14,6 @@ namespace LinearAlgebra
     class EquationSystemSolver
     {
     public:
-
         template<typename ValueType>
         static Vector<ValueType> Cramer(const Matrix<ValueType> &, const Vector<ValueType> &);
 
