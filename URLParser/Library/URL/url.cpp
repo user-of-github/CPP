@@ -2,10 +2,16 @@
 
 
 const std::regex Url::kUrlRegularExpression{
-        "(?:(https?|ftp|):\\/)?"
+        "(?:(https?|ftp|):\\/)?" // protocol
         "\\/?"
-        "([^:\\/\\s]+)"
+        "("
+        "(?:www\\.)?"
+        "(?:(?:(?:[^:\\/\\s\\.]+)|(?:[^:\\/\\s]+\\.([a-zA-Z]+)))"
+        "(?:\\.([a-zA-Z]{2,6}))?(?:\\:([0-9]+))?)"
+        ")" // host + port
+        ""
         ".*"
+        "(#[a-zA-Z0-9]*)?"
 };
 
 const std::string Url::kUndefinedUrlPartDesignation{"<UNDEFINED>"};
@@ -37,7 +43,7 @@ std::string Url::Domain() const
 
 std::string Url::Query() const
 {
-    return this->query_;
+    return this->whole_query_;
 }
 
 std::string Url::Source() const
@@ -53,9 +59,12 @@ constexpr bool Url::CheckValidity(const std::string &url)
 std::ostream &operator<<(std::ostream &stream, const Url &url)
 {
     stream << "URL: " << url.source_ << '\n';
-    stream << '\t' << "Protocol: " << url.Protocol() << '\n';
+    /*stream << '\t' << "Protocol: " << url.Protocol() << '\n';
     stream << '\t' << "Domain: " << url.Domain() << '\n';
-    stream << '\t' << "Query: " << url.Query() << '\n';
+    stream << '\t' << "Query: " << url.Query() << '\n';*/
+
+    for (const auto &item : url.result_)
+        stream << '\t' << item << '\n';
 
     return stream;
 }
@@ -74,6 +83,17 @@ Url &Url::operator=(const Url &rhs)
 {
     *this = Url(rhs);
     return *this;
+}
+
+void Url::Set(const std::string &new_to_parse)
+{
+    this->source_ = new_to_parse;
+    this->Update();
+}
+
+std::string Url::Hash() const
+{
+    return this->hash_;
 }
 
 
