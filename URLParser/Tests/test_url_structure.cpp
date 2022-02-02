@@ -5,7 +5,7 @@ struct UrlForTest
     const std::string host;
 };
 
-const UrlForTest tester[] = {
+const UrlForTest tester[] {
         {"http://www.services.world.com/images/hardware?key1=param1&key2=param2#justsomehash", "http", "www.services.com"},
         {"http://www.services.com/images/hardware?key1=param1&key2=param2#justsomehash", "http", "www.services.com"},
         {"https://www.eurosport.ru/watch/schedule.shtml?time=12024458#somehashagain", "https", "www.eurosport.ru"},
@@ -20,5 +20,7 @@ const UrlForTest tester[] = {
         {"/apple.com/a?foo=bar", Url::kUndefinedUrlPartDesignation, "apple.com"},
         {"https://developer.mozilla.org/en-US/docs/Web/API/URL/pathname?q=value", "https", "developer.mozilla.org"},
         {"https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host", "https", "developer.mozilla.org:443"},
-        {"https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host?", "https", "developer.mozilla.org:443"}
+        {"https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host?", "https", "developer.mozilla.org:443"},
+        {"https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host?kek=keke&lol=5f", "https", "developer.mozilla.org:443"},
+        {"https://developer.mozilla.org:443/en-US/docs/Web/API/URL/host?kek=keke&lol=5f", "https", "developer.mozilla.org:443"},
 };

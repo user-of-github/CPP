@@ -26,7 +26,7 @@ public:
 
     std::string Host() const;
 
-    std::variant<std::string, short> Port() const;
+    constexpr unsigned short Port() const;
 
     std::string Domain() const;
 
@@ -51,13 +51,22 @@ public:
 
 private:
     static const std::regex kUrlRegularExpression;
+    static const unsigned short kDefaultUrlPort; // 443
+    static const std::size_t kProtocolOrder; // 1
+    static const std::size_t kHostOrder; // 2
+    static const std::size_t kDomainZoneOrder; // 3
+    static const std::size_t kPortOrder; // 4
+    static const std::size_t kPathOrder; // 5
+    static const std::size_t kQueryOrder; // 6
+    static const std::size_t kHashOrder; // 7
 
     std::cmatch result_;
 
     std::string source_;
     std::string protocol_;
     std::string host_;
-    std::string domain_;
+    std::string domain_zone_;
+    unsigned short port_;
     std::string whole_query_;
     std::string hash_;
     std::map<std::string, std::string> query_;

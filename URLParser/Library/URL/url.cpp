@@ -2,16 +2,26 @@
 
 
 const std::regex Url::kUrlRegularExpression{
-        "(?:(https?|ftp|):\\/)?" // protocol
+        // protocol
+        "(?:(https?|ftp|):\\/)?"
         "\\/?"
+        // Domain: {host, domain zone, port}
         "("
         "(?:www\\.)?"
-        "(?:(?:[^:\\/\\s]+\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // host + domain zone + port)"
+        "(?:(?:[^:\\/\\s]+\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))"
         "(?:\\:([0-9]{1,5}))?" // port
         ")"
-        "((?:\\/[A-Za-z0-9-_]+)*(?:\\.[a-zA-Z_-]+)?\\/?)" // path (with file & extension probably)
-        "(\\?(?:[a-zA-Z0-9]+(?:=[a-zA-Z0-9-_]+)?)?"
-        "[^\\.]*"
+        // path, file and extension
+        "((?:\\/[A-Za-z0-9-_]+)*(?:\\.[a-zA-Z_-]+)?\\/?)"
+        // query (search)
+        "("
+        "\\?" // there can be just '?' sign without any parameters after it
+        "(?:"
+        "[a-zA-Z0-9]+(?:\\=[a-zA-Z0-9-_]+)?" // exactly catch first pair (key=value) (maybe without value)
+        "(?:&[a-zA-Z0-9]+(?:\\=[a-zA-Z0-9-_]+)?)*" // and other are with '&' sign before them, if there are
+        ")?"
+        ")?"
+        // hash (anchor)
         "(#[a-zA-Z0-9]*)?"
 };
 
@@ -28,7 +38,8 @@ Url::Url(const std::string &source) : source_(Trim(source))
     this->Update();
 }
 
-Url::Url(const Url &rhs) : source_(rhs.source_), domain_(rhs.domain_), protocol_(rhs.protocol_), result_(rhs.result_)
+Url::Url(const Url &rhs) : source_(rhs.source_), domain_zone_(rhs.domain_zone_),
+                           protocol_(rhs.protocol_), result_(rhs.result_)
 {}
 
 
@@ -39,7 +50,7 @@ std::string Url::Protocol() const
 
 std::string Url::Domain() const
 {
-    return this->domain_;
+    return this->domain_zone_;
 }
 
 std::string Url::Query() const
@@ -72,12 +83,25 @@ std::ostream &operator<<(std::ostream &stream, const Url &url)
 
 void Url::Update()
 {
-    std::regex_match(this->source_.c_str(), this->result_, Url::kUrlRegularExpression);
+    if (!std::regex_match(this->source_.c_str(), this->result_, Url::kUrlRegularExpression))
+        throw std::invalid_argument("Not a valid URL");
 
-    auto result_it = std::cbegin(this->result_);
-    std::advance(result_it, 1);
-    const auto found_protocol = std::string{*result_it};
+    const auto result_it{std::cbegin(this->result_)};
+
+    const auto found_protocol{std::string{*(result_it + Url::kProtocolOrder)}};
     this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
+
+    const auto found_host{std::string{*(result_it + Url::kHostOrder)}};
+    this->host_ = found_host.empty() ? Url::kUndefinedUrlPartDesignation : found_host;
+
+    const auto found_domain_zone{std::string{*(result_it + Url::kDomainZoneOrder)}};
+    this->domain_zone_ = found_domain_zone.empty() ? Url::kUndefinedUrlPartDesignation : found_domain_zone;
+
+    const auto found_port{std::string(*(result_it + Url::kPortOrder))};
+    this->port_ = found_port.empty() ? Url::kDefaultUrlPort : std::stoi(found_port);
+
+    const auto found_path {std::string(*(result_it + Url::kPathOrder))};
+
 }
 
 Url &Url::operator=(const Url &rhs)

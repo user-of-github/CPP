@@ -4,8 +4,8 @@
 
 ### _Description:_
 
-_This is the second project in my CPP repository.  
-Project's aim is to • practice regular expressions in C++, • create plugin for validating and parsing Url-expressions, •
+_Here is the second project in my CPP repository.  
+Project's aim is to • learn regular expressions fundamentals and practice them in C++, • create class for validating and parsing Url-expressions, •
 use some modern C++ features, • also use Gtest and CMake_
 
 ### _To Run tests:_
@@ -36,7 +36,11 @@ use some modern C++ features, • also use Gtest and CMake_
 - [ ] Getting query parameter by name (key)
 - [ ] Maybe email parser ?
 - [x] Build with CMake
-- [x] Link to [gtest](https://github.com/google/googletest)
+- [x] Link to [gtest](https://github.com/google/googletest)  
+&nbsp;  
+__+ Utils:__
+  - [x] Trim
+  - [ ] Split
 
 ### _Additional To Do:_
 * [ ] Check copy constructors and operators
