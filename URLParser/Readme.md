@@ -34,6 +34,7 @@ use some modern C++ features, • also use Gtest and CMake_
     - [ ] ... ?
 - [ ] Parsing query string to a pair of strings: <key, value>
 - [ ] Getting query parameter by name (key)
+- [ ] Ostream operator 
 - [ ] Maybe email parser ?
 - [x] Build with CMake
 - [x] Link to [gtest](https://github.com/google/googletest)  

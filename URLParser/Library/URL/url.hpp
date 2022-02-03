@@ -28,15 +28,17 @@ public:
 
     constexpr unsigned short Port() const;
 
-    std::string Domain() const;
+    std::string DomainZone() const;
 
-    std::string PathName() const;
+    std::string Path() const;
 
     std::string Query() const;
 
     std::string Hash() const;
 
     std::string Source() const;
+
+    void Update();
 
     void Set(const std::string &);
 
@@ -67,11 +69,10 @@ private:
     std::string host_;
     std::string domain_zone_;
     unsigned short port_;
+    std::string path_;
     std::string whole_query_;
     std::string hash_;
     std::map<std::string, std::string> query_;
-
-    void Update();
 };
 
 

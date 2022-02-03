@@ -25,21 +25,29 @@ const std::regex Url::kUrlRegularExpression{
         "(#[a-zA-Z0-9]*)?"
 };
 
-const std::string Url::kUndefinedUrlPartDesignation{"<UNDEFINED>"};
+const std::string Url::kUndefinedUrlPartDesignation{"undefined"};
+const unsigned short Url::kDefaultUrlPort{443}; // 443
+const std::size_t Url::kProtocolOrder{1}; // 1
+const std::size_t Url::kHostOrder{2}; // 2
+const std::size_t Url::kDomainZoneOrder{3}; // 3
+const std::size_t Url::kPortOrder{4}; // 4
+const std::size_t Url::kPathOrder{5}; // 5
+const std::size_t Url::kQueryOrder{6}; // 6
+const std::size_t Url::kHashOrder{7}; // 7
 
 
-Url::Url(const char *source) : source_(Trim(std::string{source}))
+Url::Url(const char *source) : source_{Trim(std::string{source})}
 {
     this->Update();
 }
 
-Url::Url(const std::string &source) : source_(Trim(source))
+Url::Url(const std::string &source) : source_{Trim(source)}
 {
     this->Update();
 }
 
-Url::Url(const Url &rhs) : source_(rhs.source_), domain_zone_(rhs.domain_zone_),
-                           protocol_(rhs.protocol_), result_(rhs.result_)
+Url::Url(const Url &rhs) : source_{rhs.source_}, domain_zone_{rhs.domain_zone_},
+                           protocol_{rhs.protocol_}, result_{rhs.result_}
 {}
 
 
@@ -48,9 +56,24 @@ std::string Url::Protocol() const
     return this->protocol_;
 }
 
-std::string Url::Domain() const
+std::string Url::Host() const
+{
+    return this->host_;
+}
+
+constexpr unsigned short Url::Port() const
+{
+    return this->port_;
+}
+
+std::string Url::DomainZone() const
 {
     return this->domain_zone_;
+}
+
+std::string Url::Path() const
+{
+    return this->path_;
 }
 
 std::string Url::Query() const
@@ -58,27 +81,14 @@ std::string Url::Query() const
     return this->whole_query_;
 }
 
+std::string Url::Hash() const
+{
+    return this->hash_;
+}
+
 std::string Url::Source() const
 {
     return this->source_;
-}
-
-constexpr bool Url::CheckValidity(const std::string &url)
-{
-    return false;
-}
-
-std::ostream &operator<<(std::ostream &stream, const Url &url)
-{
-    stream << "URL: " << url.source_ << '\n';
-    /*stream << '\t' << "Protocol: " << url.Protocol() << '\n';
-    stream << '\t' << "Domain: " << url.Domain() << '\n';
-    stream << '\t' << "Query: " << url.Query() << '\n';*/
-
-    for (const auto &item : url.result_)
-        stream << '\t' << item << '\n';
-
-    return stream;
 }
 
 void Url::Update()
@@ -88,26 +98,26 @@ void Url::Update()
 
     const auto result_it{std::cbegin(this->result_)};
 
-    const auto found_protocol{std::string{*(result_it + Url::kProtocolOrder)}};
+    const std::string found_protocol{*(result_it + Url::kProtocolOrder)};
     this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
 
-    const auto found_host{std::string{*(result_it + Url::kHostOrder)}};
+    const std::string found_host{*(result_it + Url::kHostOrder)};
     this->host_ = found_host.empty() ? Url::kUndefinedUrlPartDesignation : found_host;
 
-    const auto found_domain_zone{std::string{*(result_it + Url::kDomainZoneOrder)}};
+    const std::string found_domain_zone{*(result_it + Url::kDomainZoneOrder)};
     this->domain_zone_ = found_domain_zone.empty() ? Url::kUndefinedUrlPartDesignation : found_domain_zone;
 
-    const auto found_port{std::string(*(result_it + Url::kPortOrder))};
+    const std::string found_port{*(result_it + Url::kPortOrder)};
     this->port_ = found_port.empty() ? Url::kDefaultUrlPort : std::stoi(found_port);
 
-    const auto found_path {std::string(*(result_it + Url::kPathOrder))};
+    const std::string found_path{*(result_it + Url::kPathOrder)};
+    this->path_ = found_path.empty() ? "/" : found_path;
 
-}
+    const std::string found_query{*(result_it + Url::kQueryOrder)};
+    this->whole_query_ = found_query.empty() ? "?" : found_query;
 
-Url &Url::operator=(const Url &rhs)
-{
-    *this = Url(rhs);
-    return *this;
+    const std::string found_hash{*(result_it + Url::kHashOrder)};
+    this->hash_ = found_hash.empty() ? "#" : found_hash;
 }
 
 void Url::Set(const std::string &new_to_parse)
@@ -116,15 +126,28 @@ void Url::Set(const std::string &new_to_parse)
     this->Update();
 }
 
-std::string Url::Hash() const
+constexpr bool Url::CheckValidity(const std::string &url)
 {
-    return this->hash_;
+    return false;
 }
 
 
+Url &Url::operator=(const Url &rhs)
+{
+    *this = Url(rhs);
+    return *this;
+}
 
-// useful links:
-/*
-    https://stackoverflow.com/questions/18633334/regex-optional-group
-    https://gist.github.com/metafeather/202974
- */
+std::ostream &operator<<(std::ostream &stream, const Url &url)
+{
+    stream << "URL: " << url.source_ << '\n';
+    stream << '\t' << "Protocol: " << url.protocol_ << '\n';
+    stream << '\t' << "Host: " << url.host_ << '\n';
+    stream << '\t' << "Domain zone: " << url.domain_zone_ << '\n';
+    stream << '\t' << "Port: " << url.port_ << '\n';
+    stream << '\t' << "Path: " << url.path_ << '\n';
+    stream << '\t' << "Query: " << url.whole_query_ << '\n';
+    stream << '\t' << "Hash (anchor): " << url.hash_ << '\n';
+
+    return stream;
+}
