@@ -10,7 +10,6 @@ class Url
 public:
     static const std::string kUndefinedUrlPartDesignation;
 
-
     Url() = delete;
 
     Url(const char *);
@@ -38,11 +37,9 @@ public:
 
     std::string Source() const;
 
-    void Update();
-
     void Set(const std::string &);
 
-    static constexpr bool CheckValidity(const std::string &);
+    static bool CheckValidity(const std::string &);
 
 
     Url &operator=(const Url &);
@@ -53,14 +50,14 @@ public:
 
 private:
     static const std::regex kUrlRegularExpression;
-    static const unsigned short kDefaultUrlPort; // 443
-    static const std::size_t kProtocolOrder; // 1
-    static const std::size_t kHostOrder; // 2
-    static const std::size_t kDomainZoneOrder; // 3
-    static const std::size_t kPortOrder; // 4
-    static const std::size_t kPathOrder; // 5
-    static const std::size_t kQueryOrder; // 6
-    static const std::size_t kHashOrder; // 7
+    static const unsigned short kDefaultUrlPort;
+    static const std::size_t kProtocolOrder;
+    static const std::size_t kHostOrder;
+    static const std::size_t kDomainZoneOrder;
+    static const std::size_t kPortOrder;
+    static const std::size_t kPathOrder;
+    static const std::size_t kQueryOrder;
+    static const std::size_t kHashOrder;
 
     std::cmatch result_;
 
@@ -73,6 +70,10 @@ private:
     std::string whole_query_;
     std::string hash_;
     std::map<std::string, std::string> query_;
+
+    void Update();
+
+    void SplitQuery();
 };
 
 

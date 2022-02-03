@@ -8,7 +8,7 @@ const std::regex Url::kUrlRegularExpression{
         // Domain: {host, domain zone, port}
         "("
         "(?:www\\.)?"
-        "(?:(?:[^:\\/\\s]+\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))"
+        "(?:(?:[^:\\/\\s]+\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // hostname
         "(?:\\:([0-9]{1,5}))?" // port
         ")"
         // path, file and extension
@@ -26,28 +26,29 @@ const std::regex Url::kUrlRegularExpression{
 };
 
 const std::string Url::kUndefinedUrlPartDesignation{"undefined"};
-const unsigned short Url::kDefaultUrlPort{443}; // 443
-const std::size_t Url::kProtocolOrder{1}; // 1
-const std::size_t Url::kHostOrder{2}; // 2
-const std::size_t Url::kDomainZoneOrder{3}; // 3
-const std::size_t Url::kPortOrder{4}; // 4
-const std::size_t Url::kPathOrder{5}; // 5
-const std::size_t Url::kQueryOrder{6}; // 6
-const std::size_t Url::kHashOrder{7}; // 7
+const unsigned short Url::kDefaultUrlPort{443};
+const std::size_t Url::kProtocolOrder{1};
+const std::size_t Url::kHostOrder{2};
+const std::size_t Url::kDomainZoneOrder{3};
+const std::size_t Url::kPortOrder{4};
+const std::size_t Url::kPathOrder{5};
+const std::size_t Url::kQueryOrder{6};
+const std::size_t Url::kHashOrder{7};
 
 
-Url::Url(const char *source) : source_{Trim(std::string{source})}
+Url::Url(const char *source) : source_{Utils::Trim(std::string{source})}
 {
     this->Update();
 }
 
-Url::Url(const std::string &source) : source_{Trim(source)}
+Url::Url(const std::string &source) : source_{Utils::Trim(source)}
 {
     this->Update();
 }
 
-Url::Url(const Url &rhs) : source_{rhs.source_}, domain_zone_{rhs.domain_zone_},
-                           protocol_{rhs.protocol_}, result_{rhs.result_}
+Url::Url(const Url &rhs) : source_{rhs.source_}, protocol_{rhs.protocol_}, domain_zone_{rhs.domain_zone_},
+                           port_{rhs.port_}, path_{rhs.path_}, whole_query_{rhs.whole_query_},
+                           query_{rhs.query_}, hash_{rhs.hash_}, result_{rhs.result_}
 {}
 
 
@@ -91,6 +92,52 @@ std::string Url::Source() const
     return this->source_;
 }
 
+void Url::Set(const std::string &new_to_parse)
+{
+    this->source_ = new_to_parse;
+    this->Update();
+}
+
+bool Url::CheckValidity(const std::string &url)
+{
+    std::cmatch temp_result{};
+    //return std::regex_match()
+    return true;
+}
+
+
+Url &Url::operator=(const Url &rhs)
+{
+    std::tie(
+            this->source_, this->protocol_, this->port_, this->path_,
+            this->whole_query_, this->query_, this->hash_, this->result_
+    ) = std::tie(
+            rhs.source_, rhs.protocol_, rhs.port_, rhs.path_,
+            rhs.whole_query_, rhs.query_, rhs.hash_, rhs.result_
+    );
+
+    return *this;
+}
+
+std::ostream &operator<<(std::ostream &stream, const Url &url)
+{
+    stream << "URL: " << url.source_ << '\n';
+    stream << '\t' << "Protocol: " << url.protocol_ << '\n';
+    stream << '\t' << "Host: " << url.host_ << '\n';
+    stream << '\t' << "Domain zone: " << url.domain_zone_ << '\n';
+    stream << '\t' << "Port: " << url.port_ << '\n';
+    stream << '\t' << "Path: " << url.path_ << '\n';
+    stream << '\t' << "Query: " << url.whole_query_ << '\n';
+    stream << '\t' << "Hash (anchor): " << url.hash_ << '\n';
+
+    stream << '\t' << "Splited query: " << '\n';
+    for (const auto &[key, value] : url.query_)
+        stream << '\t' << '\t' << key << " = " << value << '\n';
+
+    return stream;
+}
+
+
 void Url::Update()
 {
     if (!std::regex_match(this->source_.c_str(), this->result_, Url::kUrlRegularExpression))
@@ -118,36 +165,20 @@ void Url::Update()
 
     const std::string found_hash{*(result_it + Url::kHashOrder)};
     this->hash_ = found_hash.empty() ? "#" : found_hash;
+
+    this->SplitQuery();
 }
 
-void Url::Set(const std::string &new_to_parse)
+void Url::SplitQuery()
 {
-    this->source_ = new_to_parse;
-    this->Update();
-}
+    this->query_.clear();
 
-constexpr bool Url::CheckValidity(const std::string &url)
-{
-    return false;
-}
+    const auto query_without_question_mark{this->whole_query_.substr(1, this->whole_query_.size() - 1)};
 
-
-Url &Url::operator=(const Url &rhs)
-{
-    *this = Url(rhs);
-    return *this;
-}
-
-std::ostream &operator<<(std::ostream &stream, const Url &url)
-{
-    stream << "URL: " << url.source_ << '\n';
-    stream << '\t' << "Protocol: " << url.protocol_ << '\n';
-    stream << '\t' << "Host: " << url.host_ << '\n';
-    stream << '\t' << "Domain zone: " << url.domain_zone_ << '\n';
-    stream << '\t' << "Port: " << url.port_ << '\n';
-    stream << '\t' << "Path: " << url.path_ << '\n';
-    stream << '\t' << "Query: " << url.whole_query_ << '\n';
-    stream << '\t' << "Hash (anchor): " << url.hash_ << '\n';
-
-    return stream;
+    for (const auto splited_query{Utils::Split(query_without_question_mark, '&')}; const auto &item : splited_query)
+    {
+        const auto splited_item{Utils::Split(item, '=')};
+        const auto item_size{std::distance(std::cbegin(splited_item), std::cend(splited_item))};
+        this->query_.insert({splited_item.front(), item_size == 2 ? *(++std::begin(splited_item)) : ""});
+    }
 }

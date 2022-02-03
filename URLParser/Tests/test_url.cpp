@@ -8,5 +8,5 @@ TEST(Url, Protocol)
 {
     for (const auto &[source, protocol, host] : tester)
         // EXPECT_STREQ(Url(test_pair.full_url).Protocol().c_str(), test_pair.protocol.c_str());
-        std::cout << Url(source) << '\n';
+        std::cout << Url{source} << '\n';
 }
