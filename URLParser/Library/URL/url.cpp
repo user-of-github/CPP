@@ -3,7 +3,7 @@
 
 const std::regex Url::kUrlRegularExpression{
         // protocol
-        "(?:(https?|ftp|):\\/)?"
+        "(?:(https?):\\/)?"
         "\\/?"
         // Domain: {host, domain zone, port}
         "("
@@ -101,8 +101,7 @@ void Url::Set(const std::string &new_to_parse)
 bool Url::CheckValidity(const std::string &url)
 {
     std::cmatch temp_result{};
-    //return std::regex_match()
-    return true;
+    return std::regex_match(url.c_str(), temp_result, Url::kUrlRegularExpression);
 }
 
 

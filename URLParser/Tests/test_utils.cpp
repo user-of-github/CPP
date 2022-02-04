@@ -13,3 +13,8 @@ TEST(Utils, Trim)
     EXPECT_STREQ(Utils::Trim(" \t \n String with tabs on the left").c_str(), "String with tabs on the left");
     EXPECT_STREQ(Utils::Trim("string with tabs on the right\n\t   \t").c_str(), "string with tabs on the right");
 }
+
+TEST(Urils, Split)
+{
+
+}

@@ -26,15 +26,14 @@ use some modern C++ features, • also use Gtest and CMake_
 - [ ] Validating of all kinds of Url
 - [ ] Extracting URL parts:
     - [x] Protocol
-    - [ ] Host
-    - [ ] Domain zone
-    - [ ] Pathname (filename ?)
-    - [ ] Query string
-    - [ ] Hash
-    - [ ] ... ?
+    - [x] Host
+    - [x] Domain zone
+    - [x] Pathname (filename ?)
+    - [x] Query string
+    - [x] Hash
 - [ ] Parsing query string to a pair of strings: <key, value>
 - [ ] Getting query parameter by name (key)
-- [ ] Ostream operator 
+- [x] Ostream operator 
 - [ ] Maybe email parser ?
 - [x] Build with CMake
 - [x] Link to [gtest](https://github.com/google/googletest)  
