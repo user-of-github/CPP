@@ -8,11 +8,11 @@ const std::regex Url::kUrlRegularExpression{
         // Domain: {host, domain zone, port}
         "("
         "(?:www\\.)?"
-        "(?:(?:[^:\\/\\s]+\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // hostname
+        "(?:(?:[^:\\/\\s\\.]+(?:\\.[^:\\/\\s\\.]+)*\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // hostname (one with .com.by.., another - without domain zone (ex. localhost)
         "(?:\\:([0-9]{1,5}))?" // port
         ")"
         // path, file and extension
-        "((?:\\/[A-Za-z0-9-_]+)*(?:\\.[a-zA-Z_-]+)?\\/?)"
+        "((?:\\/[A-Za-z0-9-_\\.]+)*(?:\\.[A-Za-z_-]+)?\\/?)"
         // query (search)
         "("
         "\\?" // there can be just '?' sign without any parameters after it
@@ -26,7 +26,7 @@ const std::regex Url::kUrlRegularExpression{
 };
 
 const std::string Url::kUndefinedUrlPartDesignation{"undefined"};
-const unsigned short Url::kDefaultUrlPort{443};
+const std::string Url::kDefaultUrlPort{"default"};
 const std::size_t Url::kProtocolOrder{1};
 const std::size_t Url::kHostOrder{2};
 const std::size_t Url::kDomainZoneOrder{3};
@@ -62,7 +62,7 @@ std::string Url::Host() const
     return this->host_;
 }
 
-constexpr unsigned short Url::Port() const
+std::variant<std::string, unsigned short> Url::Port() const
 {
     return this->port_;
 }
@@ -124,7 +124,12 @@ std::ostream &operator<<(std::ostream &stream, const Url &url)
     stream << '\t' << "Protocol: " << url.protocol_ << '\n';
     stream << '\t' << "Host: " << url.host_ << '\n';
     stream << '\t' << "Domain zone: " << url.domain_zone_ << '\n';
-    stream << '\t' << "Port: " << url.port_ << '\n';
+    stream << '\t' << "Port: ";
+    if (url.port_.index() == 0)
+        stream << std::get<std::string>(url.port_);
+    else
+        stream << std::get<unsigned short>(url.port_);
+    stream << '\n';
     stream << '\t' << "Path: " << url.path_ << '\n';
     stream << '\t' << "Query: " << url.whole_query_ << '\n';
     stream << '\t' << "Hash (anchor): " << url.hash_ << '\n';
@@ -154,7 +159,11 @@ void Url::Update()
     this->domain_zone_ = found_domain_zone.empty() ? Url::kUndefinedUrlPartDesignation : found_domain_zone;
 
     const std::string found_port{*(result_it + Url::kPortOrder)};
-    this->port_ = found_port.empty() ? Url::kDefaultUrlPort : std::stoi(found_port);
+    if (found_port.empty())
+        this->port_ = Url::kDefaultUrlPort;
+    else
+        this->port_ = std::stoi(found_port);
+
 
     const std::string found_path{*(result_it + Url::kPathOrder)};
     this->path_ = found_path.empty() ? "/" : found_path;

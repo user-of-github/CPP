@@ -3,12 +3,14 @@
 
 #include <regex>
 #include "../Utils/utils.hpp"
+#include <variant>
 
 
 class Url
 {
 public:
     static const std::string kUndefinedUrlPartDesignation;
+    static const std::string kDefaultUrlPort;
 
     Url() = delete;
 
@@ -25,7 +27,7 @@ public:
 
     std::string Host() const;
 
-    constexpr unsigned short Port() const;
+    std::variant<std::string, unsigned short> Port() const;
 
     std::string DomainZone() const;
 
@@ -50,7 +52,6 @@ public:
 
 private:
     static const std::regex kUrlRegularExpression;
-    static const unsigned short kDefaultUrlPort;
     static const std::size_t kProtocolOrder;
     static const std::size_t kHostOrder;
     static const std::size_t kDomainZoneOrder;
@@ -65,7 +66,7 @@ private:
     std::string protocol_;
     std::string host_;
     std::string domain_zone_;
-    unsigned short port_;
+    std::variant<std::string, unsigned short> port_;
     std::string path_;
     std::string whole_query_;
     std::string hash_;
