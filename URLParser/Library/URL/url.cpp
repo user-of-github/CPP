@@ -25,7 +25,7 @@ const std::regex Url::kUrlRegularExpression{
         "(#[a-zA-Z0-9]*)?"
 };
 
-const std::string Url::kUndefinedUrlPartDesignation{"undefined"};
+const std::string Url::kUndefinedDesignation{"undefined"};
 const std::string Url::kDefaultUrlPort{"default"};
 const std::size_t Url::kProtocolOrder{1};
 const std::size_t Url::kHostOrder{2};
@@ -98,6 +98,14 @@ void Url::Set(const std::string &new_to_parse)
     this->Update();
 }
 
+std::string Url::GetQueryParameterByKey(const std::string &key)
+{
+    if (!this->query_.contains(key))
+        return Url::kUndefinedDesignation;
+
+    return this->query_.at(key);
+}
+
 bool Url::CheckValidity(const std::string &url)
 {
     std::cmatch temp_result{};
@@ -150,13 +158,13 @@ void Url::Update()
     const auto result_it{std::cbegin(this->result_)};
 
     const std::string found_protocol{*(result_it + Url::kProtocolOrder)};
-    this->protocol_ = found_protocol.empty() ? Url::kUndefinedUrlPartDesignation : found_protocol;
+    this->protocol_ = found_protocol.empty() ? Url::kUndefinedDesignation : found_protocol;
 
     const std::string found_host{*(result_it + Url::kHostOrder)};
-    this->host_ = found_host.empty() ? Url::kUndefinedUrlPartDesignation : found_host;
+    this->host_ = found_host.empty() ? Url::kUndefinedDesignation : found_host;
 
     const std::string found_domain_zone{*(result_it + Url::kDomainZoneOrder)};
-    this->domain_zone_ = found_domain_zone.empty() ? Url::kUndefinedUrlPartDesignation : found_domain_zone;
+    this->domain_zone_ = found_domain_zone.empty() ? Url::kUndefinedDesignation : found_domain_zone;
 
     const std::string found_port{*(result_it + Url::kPortOrder)};
     if (found_port.empty())

@@ -46,7 +46,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "ftp.funet.fi/pub/standards/RFC/rfc959.txt#",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "ftp.funet.fi",
                 "fi",
                 Url::kDefaultUrlPort,
@@ -56,7 +56,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "httpeurosport.ru/watch/schedule.shtml?aa=bb&cc=dd#",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "httpeurosport.ru",
                 "ru",
                 Url::kDefaultUrlPort,
@@ -66,7 +66,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "hthpseurosport.ru/watch/schedule.shtml?#2022",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "hthpseurosport.ru",
                 "ru",
                 Url::kDefaultUrlPort,
@@ -76,7 +76,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "ftpeurosport.ru/watch/schedule.shtml?aa=bb&cc=dd#kek",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "ftpeurosport.ru",
                 "ru",
                 Url::kDefaultUrlPort,
@@ -86,7 +86,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "fileeurosport.ru/watch/schedule.shtml?aa=bb&cc=dd#kek",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "fileeurosport.ru",
                 "ru",
                 Url::kDefaultUrlPort,
@@ -96,7 +96,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "ftp.funet.fi/pub/standards/RFC/rfc959.txt",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "ftp.funet.fi",
                 "fi",
                 Url::kDefaultUrlPort,
@@ -116,7 +116,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "/domain.org/a?foo=bar",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "domain.org",
                 "org",
                 Url::kDefaultUrlPort,
@@ -126,7 +126,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "/apple.com/a?foo=bar",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "apple.com",
                 "com",
                 Url::kDefaultUrlPort,
@@ -178,7 +178,7 @@ const UrlForTest valid_urls[]{
                 "https://localhost/catalog.html?authorized=false#login",
                 "https",
                 "localhost",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 Url::kDefaultUrlPort,
                 "/catalog.html",
                 "?authorized=false",
@@ -236,7 +236,7 @@ const UrlForTest valid_urls[]{
         },
         {
                 "192.168.0.1:80/html/index/login",
-                Url::kUndefinedUrlPartDesignation,
+                Url::kUndefinedDesignation,
                 "192.168.0.1:80",
                 "1",
                 80,

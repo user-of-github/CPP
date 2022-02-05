@@ -19,20 +19,25 @@ use some modern C++ features, • also use Gtest and CMake_
   by `ctrl + F5` or button `Run`
   clicking
 
-### _To build a lib:_
+### _To build a lib:_  
+
+* From root directory move to Library: `cd Library`
+* Run `cmake -S . -B build -G "MinGW Makefiles"` // or
+  your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html) (NMake, Ninja...)
+* Run `cmake --build build`
 
 ### _Functionality / To Do:_
 
-- [ ] Validating of all kinds of Url
-- [ ] Extracting URL parts:
+- [x] Validating of web-Url-s
+- [x] Extracting URL parts:
     - [x] Protocol
     - [x] Host
     - [x] Domain zone
     - [x] Pathname (filename ?)
     - [x] Query string
     - [x] Hash
-- [ ] Parsing query string to a pair of strings: <key, value>
-- [ ] Getting query parameter by name (key)
+- [x] Parsing query string to a pair of strings: <key, value>
+- [x] Getting query parameter by name (key)
 - [x] Ostream operator 
 - [ ] Maybe email parser ?
 - [x] Build with CMake
@@ -40,7 +45,7 @@ use some modern C++ features, • also use Gtest and CMake_
 &nbsp;  
 __+ Utils:__
   - [x] Trim
-  - [ ] Split
+  - [x] ± Split
 
 ### _Additional To Do:_
 * [ ] Check copy constructors and operators

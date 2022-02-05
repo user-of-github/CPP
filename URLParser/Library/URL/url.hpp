@@ -9,7 +9,7 @@
 class Url
 {
 public:
-    static const std::string kUndefinedUrlPartDesignation;
+    static const std::string kUndefinedDesignation;
     static const std::string kDefaultUrlPort;
 
     Url() = delete;
@@ -40,6 +40,8 @@ public:
     std::string Source() const;
 
     void Set(const std::string &);
+
+    std::string GetQueryParameterByKey(const std::string &);
 
     static bool CheckValidity(const std::string &);
 
