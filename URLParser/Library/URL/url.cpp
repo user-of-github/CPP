@@ -2,26 +2,26 @@
 
 
 const std::regex Url::kUrlRegularExpression{
-        // protocol
+        // Protocol
         "(?:(https?):\\/)?"
         "\\/?"
         // Domain: {host, domain zone, port}
         "("
         "(?:www\\.)?"
-        "(?:(?:[^:\\/\\s\\.]+(?:\\.[^:\\/\\s\\.]+)*\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // hostname (one with .com.by.., another - without domain zone (ex. localhost)
+        "(?:(?:[^:\\/\\s\\.]+(?:\\.[^:\\/\\s\\.]+)*\\.([A-Za-z0-9_]+))|(?:[^:\\/\\s\\.]+))" // hostname (one with .com.by.., another - without domain at all (ex. localhost))
         "(?:\\:([0-9]{1,5}))?" // port
         ")"
-        // path, file and extension
+        // Path, file and extension
         "((?:\\/[A-Za-z0-9-_\\.]+)*(?:\\.[A-Za-z_-]+)?\\/?)"
-        // query (search)
+        // Query (search)
         "("
         "\\?" // there can be just '?' sign without any parameters after it
         "(?:"
         "[a-zA-Z0-9]+(?:\\=[a-zA-Z0-9-_]+)?" // exactly catch first pair (key=value) (maybe without value)
-        "(?:&[a-zA-Z0-9]+(?:\\=[a-zA-Z0-9-_]+)?)*" // and other are with '&' sign before them, if there are
+        "(?:&[a-zA-Z0-9]+(?:\\=[a-zA-Z0-9-_]+)?)*" // and others are with '&' sign before them, if there are
         ")?"
         ")?"
-        // hash (anchor)
+        // Hash (anchor)
         "(#[a-zA-Z0-9]*)?"
 };
 
@@ -62,14 +62,14 @@ std::string Url::Host() const
     return this->host_;
 }
 
-std::variant<std::string, unsigned short> Url::Port() const
-{
-    return this->port_;
-}
-
 std::string Url::DomainZone() const
 {
     return this->domain_zone_;
+}
+
+std::variant<std::string, unsigned short> Url::Port() const
+{
+    return this->port_;
 }
 
 std::string Url::Path() const
@@ -153,7 +153,7 @@ std::ostream &operator<<(std::ostream &stream, const Url &url)
 void Url::Update()
 {
     if (!std::regex_match(this->source_.c_str(), this->result_, Url::kUrlRegularExpression))
-        throw std::invalid_argument("Not a valid URL");
+        throw std::invalid_argument{"Not a valid URL"};
 
     const auto result_it{std::cbegin(this->result_)};
 
@@ -178,11 +178,10 @@ void Url::Update()
 
     const std::string found_query{*(result_it + Url::kQueryOrder)};
     this->whole_query_ = found_query.empty() ? "?" : found_query;
+    this->SplitQuery();
 
     const std::string found_hash{*(result_it + Url::kHashOrder)};
     this->hash_ = found_hash.empty() ? "#" : found_hash;
-
-    this->SplitQuery();
 }
 
 void Url::SplitQuery()

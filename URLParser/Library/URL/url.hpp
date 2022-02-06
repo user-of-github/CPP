@@ -2,8 +2,8 @@
 #define URLPARSER_URL_HPP
 
 #include <regex>
-#include "../Utils/utils.hpp"
 #include <variant>
+#include "../Utils/utils.hpp"
 
 
 class Url
@@ -27,9 +27,9 @@ public:
 
     std::string Host() const;
 
-    std::variant<std::string, unsigned short> Port() const;
-
     std::string DomainZone() const;
+
+    std::variant<std::string, unsigned short> Port() const;
 
     std::string Path() const;
 
@@ -54,6 +54,7 @@ public:
 
 private:
     static const std::regex kUrlRegularExpression;
+
     static const std::size_t kProtocolOrder;
     static const std::size_t kHostOrder;
     static const std::size_t kDomainZoneOrder;

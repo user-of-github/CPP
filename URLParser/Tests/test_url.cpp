@@ -79,6 +79,22 @@ TEST(Url, SetAndConstructors)
         EXPECT_STREQ(tester2.Hash().c_str(), valid_urls[counter + 1].hash.c_str());
         EXPECT_STREQ(tester2.Query().c_str(), valid_urls[counter + 1].query.c_str());
         EXPECT_STREQ(tester2.DomainZone().c_str(), valid_urls[counter + 1].domain_zone.c_str());
+        EXPECT_STREQ(tester.Hash().c_str(), valid_urls[counter].hash.c_str());
+    }
+
+    for (std::size_t counter = 0; counter < urls_size - 1; ++counter)
+    {
+        const Url tester{valid_urls[counter].source};
+        auto tester2 = tester;
+        EXPECT_STREQ(tester2.Hash().c_str(), valid_urls[counter].hash.c_str());
+        EXPECT_STREQ(tester2.Query().c_str(), valid_urls[counter].query.c_str());
+        EXPECT_STREQ(tester2.DomainZone().c_str(), valid_urls[counter].domain_zone.c_str());
+        EXPECT_STREQ(tester.Hash().c_str(), valid_urls[counter].hash.c_str());
+        tester2.Set(valid_urls[counter + 1].source);
+        EXPECT_STREQ(tester2.Hash().c_str(), valid_urls[counter + 1].hash.c_str());
+        EXPECT_STREQ(tester2.Query().c_str(), valid_urls[counter + 1].query.c_str());
+        EXPECT_STREQ(tester2.DomainZone().c_str(), valid_urls[counter + 1].domain_zone.c_str());
+        EXPECT_STREQ(tester.Hash().c_str(), valid_urls[counter].hash.c_str());
     }
 }
 
