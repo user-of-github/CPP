@@ -47,7 +47,7 @@ __+ Utils:__
   - [x] Trim
   - [x] ± Split
 - [ ] Maybe some badge in Readme ? 
-- [ ] Maybe GitHub actions for something ?
+- [x] Maybe GitHub actions for something ? // just running gtests
 
 
 ### _Additional To Do:_
