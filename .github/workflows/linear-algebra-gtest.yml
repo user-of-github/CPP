@@ -16,7 +16,7 @@ jobs:
 
     - name: Configure CMake 
       working-directory: LinearAlgebra/Tester
-      run: cmake . -B build -G "MinGW Makefiles"
+      run: cmake . -B build
 
     - name: Build Tests
       working-directory: LinearAlgebra/Tester
