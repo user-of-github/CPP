@@ -7,6 +7,10 @@ on:
 jobs:
   build:
     runs-on: windows-latest
+    
+    env:
+      CC: gcc-10
+      CXX: g++-10
 
     steps:
     - uses: actions/checkout@v2
