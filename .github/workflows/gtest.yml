@@ -16,6 +16,7 @@ jobs:
       run: cmake -B build
 
     - name: Build
+      working-directory: URLParser/Tests
       run: cmake --build build
 
     - name: Test
