@@ -1,4 +1,4 @@
-name: Running Google Tests
+name: URL Parser Google Tests
 
 on:
   push:
