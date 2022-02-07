@@ -1,0 +1,24 @@
+name: Linear Algebra Google Tests
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CMake 
+      working-directory: LinearAlgebra/Tester
+      run: cmake . -B build -G "MinGW Makefiles"
+
+    - name: Build Tests
+      working-directory: LinearAlgebra/Tester
+      run: cmake --build build
+
+    - name: Test Results
+      working-directory: LinearAlgebra/Tester/build
+      run: ctest
