@@ -100,7 +100,7 @@ void Url::Set(const std::string &new_to_parse)
 
 std::string Url::GetQueryParameterByKey(const std::string &key)
 {
-    if (!this->query_.contains(key))
+    if (!this->query_.count(key)) // Map::contains does not work in C++ older than C++ 17
         return Url::kUndefinedDesignation;
 
     return this->query_.at(key);
