@@ -100,7 +100,7 @@ void Url::Set(const std::string &new_to_parse)
 
 std::string Url::GetQueryParameterByKey(const std::string &key)
 {
-    if (!this->query_.count(key)) // Map::contains does not work in C++ older than C++ 17
+    if (!this->query_.contains(key))
         return Url::kUndefinedDesignation;
 
     return this->query_.at(key);
@@ -189,8 +189,8 @@ void Url::SplitQuery()
     this->query_.clear();
 
     const auto query_without_question_mark{this->whole_query_.substr(1, this->whole_query_.size() - 1)};
-    const auto splited_query{Utils::Split(query_without_question_mark, '&')};
-    for (const auto &item : splited_query)
+
+    for (const auto splited_query{Utils::Split(query_without_question_mark, '&')}; const auto &item : splited_query)
     {
         const auto splited_item{Utils::Split(item, '=')};
         const auto item_size{std::distance(std::cbegin(splited_item), std::cend(splited_item))};

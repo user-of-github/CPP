@@ -79,8 +79,7 @@ TEST(Urils, Split)
         const auto response{Utils::Split(item.source, item.divider)};
         const unsigned short length = std::distance(std::cbegin(response), std::cend(response));
         EXPECT_EQ(length, item.result_length);
-        unsigned short counter = 0;
-        for (const auto &word : response)
+        for (unsigned short counter = 0; const auto &word : response)
         {
             if (counter == item.index)
                 EXPECT_STREQ(word.c_str(), item.result.c_str());

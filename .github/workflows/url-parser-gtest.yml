@@ -6,14 +6,17 @@ on:
 
 jobs:
   build:
-    runs-on: windows-latest
+    runs-on: ubuntu-20.04
+    
+    env:
+      CXX: g++-10
 
     steps:
     - uses: actions/checkout@v2
 
     - name: Configure CMake 
       working-directory: URLParser/Tests
-      run: cmake . -B build -G "MinGW Makefiles"
+      run: cmake . -B build -G
 
     - name: Build
       working-directory: URLParser/Tests
