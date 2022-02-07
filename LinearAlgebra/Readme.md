@@ -66,7 +66,7 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Test with `Google tests` ([gtest CMake tutorial](https://google.github.io/googletest/quickstart-cmake.html))
     - [x] Or at least start testing with `assert.h` (`cassert`)
     - [ ] &times; Bage with tests in Readme.md
-- [ ] &times; __GitHub Actions__ (— for what ? — don't know yet, but may be useful)
+- [x] __GitHub Actions__ (— for what ? — don't know yet, but may be useful) // just running gtest on server
 
 ### _Some more features:_
 
