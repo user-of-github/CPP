@@ -1,0 +1,24 @@
+name: Running Google Tests
+
+on:
+  push:
+    branches: [ master ]
+
+jobs:
+  build:
+    runs-on: ubuntu-20.04
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Configure CMake 
+      working-directory: URLParser/Tests
+      run: cmake . -B build 
+
+    - name: Build
+      working-directory: URLParser/Tests
+      run: cmake --build build
+
+    - name: Test
+      working-directory: URLParser/Tests/build
+      run: ctest
