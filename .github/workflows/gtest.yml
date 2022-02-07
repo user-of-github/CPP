@@ -13,7 +13,7 @@ jobs:
 
     - name: Configure CMake 
       working-directory: URLParser/Tests
-      run: cmake . -B build 
+      run: cmake . -B build -G "MinGW Makefiles"
 
     - name: Build
       working-directory: URLParser/Tests
