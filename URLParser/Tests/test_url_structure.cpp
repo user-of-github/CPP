@@ -149,7 +149,7 @@ const UrlForTest valid_urls[]{
                 "https",
                 "developer.mozilla.org:443",
                 "org",
-                443,
+                443u,
                 "/en-US/docs/Web/API/URL/host",
                 "?",
                 "#"
@@ -159,7 +159,7 @@ const UrlForTest valid_urls[]{
                 "https",
                 "developer.mozilla.org:443",
                 "org",
-                443,
+                443u,
                 "/en-US/docs/Web/API/URL/host",
                 "?",
                 "#"
@@ -169,7 +169,7 @@ const UrlForTest valid_urls[]{
                 "https",
                 "developer.mozilla.org:443",
                 "org",
-                443,
+                443u,
                 "/en-US/docs/Web/API/URL/host",
                 "?kek=keke&lol=5f",
                 "#"
@@ -229,7 +229,7 @@ const UrlForTest valid_urls[]{
                 "http",
                 "192.168.0.1:80",
                 "1",
-                80,
+                80u,
                 "/html/index/login",
                 "?",
                 "#"
@@ -239,7 +239,7 @@ const UrlForTest valid_urls[]{
                 Url::kUndefinedDesignation,
                 "192.168.0.1:80",
                 "1",
-                80,
+                80u,
                 "/html/index/login",
                 "?",
                 "#"
