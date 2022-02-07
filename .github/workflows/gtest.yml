@@ -11,7 +11,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
 
-    - name: Configure CMake
+    - name: Configure CMake 
       working-directory: URLParser/Tests
       run: cmake . -B build 
 
