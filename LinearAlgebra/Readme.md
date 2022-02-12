@@ -67,6 +67,12 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Or at least start testing with `assert.h` (`cassert`)
     - [ ] &times; Bage with tests in Readme.md
 - [x] __GitHub Actions__ (— for what ? — don't know yet, but may be useful) // just running gtest on server
+- [ ] __Modern C++ 17 features__, which are new for me
+  - [ ] Initialization with curly brackets everywhere
+  - [ ] Automatic output of the received template class type
+  - [ ] Unpacking structures ?
+  - [ ] Limiting the scope of variables in if, for, switch ?
+  - [ ] constexpr-if ?
 
 ### _Some more features:_
 

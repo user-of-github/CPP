@@ -5,17 +5,17 @@
 
 TEST(Matrix, Constructors)
 {
-    EXPECT_EQ(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>({1, 2, 3})).Sum(), 6);
-    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>({1, 2, 3})));
-    auto tester = LinearAlgebra::Matrix<int>(5, 6, 7);
-    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(tester).Sum());
-    EXPECT_ANY_THROW(LinearAlgebra::Matrix<std::string>(5, 6, ""));
+    EXPECT_EQ(LinearAlgebra::Matrix{LinearAlgebra::Vector({1, 2, 3})}.Sum(), 6);
+    EXPECT_NO_THROW(LinearAlgebra::Matrix{LinearAlgebra::Vector({1, 2, 3})});
+    auto tester{LinearAlgebra::Matrix(5, 6, 7)};
+    EXPECT_NO_THROW(LinearAlgebra::Matrix(tester).Sum());
+    EXPECT_ANY_THROW(LinearAlgebra::Matrix(5, 6, ""));
 
-    LinearAlgebra::Matrix<int> tester2 = LinearAlgebra::Vector<int>({1, 2, 3, 4});
+    const LinearAlgebra::Matrix tester2{LinearAlgebra::Vector({1, 2, 3, 4})};
     EXPECT_EQ(tester2.Sum(), 10);
 
-    const auto vec = LinearAlgebra::Vector<int>(5, 6);
-    auto matr = LinearAlgebra::Matrix<int>(1, 5, 6);
+    const auto vec{LinearAlgebra::Vector(5, 6)};
+    auto matr{LinearAlgebra::Matrix(1, 5, 6)};
     EXPECT_NO_THROW((LinearAlgebra::Matrix<int>) vec + matr);
     EXPECT_NO_THROW(matr.Resize(2, 5, 6));
     EXPECT_ANY_THROW((LinearAlgebra::Vector<int>) matr + vec);
@@ -23,19 +23,19 @@ TEST(Matrix, Constructors)
 
 TEST(Matrix, Size)
 {
-    auto test = LinearAlgebra::Matrix<double>(4, 5, 1);
-    const auto[rows, cols] = test.Sizes();
+    auto test{LinearAlgebra::Matrix(4, 5, 1.0)};
+    const auto[rows, cols]{test.Sizes()};
     EXPECT_EQ(rows, 4);
     EXPECT_EQ(cols, 5);
     EXPECT_NO_THROW(test.Resize(10, 20, 0));
     EXPECT_EQ(std::get<0>(test.Sizes()), 10);
     EXPECT_EQ(std::get<1>(test.Sizes()), 20);
 
-    const int initial2[4][4] = {{1, 0, 0, 0},
-                                {0, 1, 0, 0},
-                                {0, 0, 1, 0},
-                                {0, 0, 0, 1}};
-    auto tester = LinearAlgebra::Matrix<int>((int *) (initial2), 4, 4);
+    const int initial2[4][4]{{1, 0, 0, 0},
+                             {0, 1, 0, 0},
+                             {0, 0, 1, 0},
+                             {0, 0, 0, 1}};
+    auto tester{LinearAlgebra::Matrix((int *) (initial2), 4, 4)};
     EXPECT_THROW(std::cout << tester[4][2] << '\n', std::invalid_argument);
 
     EXPECT_ANY_THROW(tester.Resize(0, 1));
@@ -47,22 +47,22 @@ TEST(Matrix, Size)
 
 TEST(Matrix, Sum)
 {
-    const auto initial = new const int *[2]{new int[3]{6, 5, 7}, new int[3]{1, 2, 3}};
-    EXPECT_EQ(LinearAlgebra::Matrix<int>((initial), 2, 3).Sum(), 24);
+    const auto initial{new const int *[2]{new int[3]{6, 5, 7}, new int[3]{1, 2, 3}}};
+    EXPECT_EQ(LinearAlgebra::Matrix((initial), 2, 3).Sum(), 24);
 
-    EXPECT_EQ(LinearAlgebra::Matrix<int>(LinearAlgebra::Vector<int>(5, 6)).Sum(),
-              LinearAlgebra::Vector<int>(5, 6).Sum());
+    EXPECT_EQ(LinearAlgebra::Matrix{LinearAlgebra::Vector(5, 6)}.Sum(),
+              LinearAlgebra::Vector(5, 6).Sum());
 
-    LinearAlgebra::Vector<int> vector1 = {1, 2, 3, 4};
+    LinearAlgebra::Vector vector1 = {1, 2, 3, 4};
     EXPECT_EQ(vector1.Sum(), 10);
-    auto matrix1 = LinearAlgebra::Matrix<typeof(vector1[0])>(vector1);
+    const auto matrix1{LinearAlgebra::Matrix(vector1)};
     EXPECT_EQ(matrix1.Sum(), 10);
 
-    const int initial2[4][4] = {{1, 0, 0, 0},
-                                {0, 1, 0, 0},
-                                {0, 0, 1, 0},
-                                {0, 0, 0, 1}};
-    auto tester = LinearAlgebra::Matrix<int>((int *) (initial2), 4, 4);
+    const int initial2[4][4]{{1, 0, 0, 0},
+                             {0, 1, 0, 0},
+                             {0, 0, 1, 0},
+                             {0, 0, 0, 1}};
+    auto tester = LinearAlgebra::Matrix((int *) (initial2), 4, 4);
     EXPECT_EQ(tester.Sum(), 4);
     EXPECT_NO_THROW(tester.Resize(5, 5));
     EXPECT_TRUE(tester[0][0] == 1 && tester[4][4] == 0 && tester[2][2] == 1);
@@ -73,34 +73,34 @@ TEST(Matrix, Sum)
 
 TEST(Matrix, Operators)
 {
-    EXPECT_TRUE(LinearAlgebra::Matrix<int>(4, 4, 1) == LinearAlgebra::Matrix<int>(4, 4, 1));
-    const int initial1[4][4] = {{1,  2,  3,  4},
-                                {5,  6,  7,  8},
-                                {10, 11, 12, 13},
-                                {14, 15, 16, 17}};
+    EXPECT_TRUE(LinearAlgebra::Matrix(4, 4, 1) == LinearAlgebra::Matrix(4, 4, 1));
+    const int initial1[4][4]{{1,  2,  3,  4},
+                             {5,  6,  7,  8},
+                             {10, 11, 12, 13},
+                             {14, 15, 16, 17}};
 
-    const int initial2[4][4] = {{-1,  -2,  -3,   -4},
-                                {5,   6,   7,    8},
-                                {10,  11,  12,   13},
-                                {114, 115, 1161, 1171}};
+    const int initial2[4][4]{{-1,  -2,  -3,   -4},
+                             {5,   6,   7,    8},
+                             {10,  11,  12,   13},
+                             {114, 115, 1161, 1171}};
 
-    auto tester1 = LinearAlgebra::Matrix<int>((int *) (initial1), 4, 4);
-    auto tester2 = LinearAlgebra::Matrix<int>((int *) (initial2), 4, 4);
+    auto tester1{LinearAlgebra::Matrix((int *) (initial1), 4, 4)};
+    auto tester2{LinearAlgebra::Matrix((int *) (initial2), 4, 4)};
 
     EXPECT_FALSE(tester1 == tester2);
-    auto sum1 = tester1.Sum();
+    const auto sum1{tester1.Sum()};
     EXPECT_NO_THROW(tester1 *= 5);
     EXPECT_EQ(sum1 * 5, tester1.Sum());
-    auto sum2 = tester2.Sum();
+    const auto sum2{tester2.Sum()};
     EXPECT_NO_THROW(tester2.Resize(5, 5, 1));
     EXPECT_EQ(sum2 + 9, tester2.Sum());
     EXPECT_THROW(tester2 /= 0, std::invalid_argument);
     tester2.Resize(4, 4);
     tester1.Resize(4, 4);
 
-    LinearAlgebra::Matrix<int> testerSum = tester1 + tester2;
+    LinearAlgebra::Matrix testerSum = tester1 + tester2;
     EXPECT_NE(testerSum.Sum(), tester1.Sum());
-    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(tester1 + tester2).Sum());
+    EXPECT_NO_THROW(LinearAlgebra::Matrix(tester1 + tester2).Sum());
     EXPECT_EQ(testerSum.Sum(), tester1.Sum() + tester2.Sum());
     EXPECT_EQ((tester1 - tester2).Sum(), tester1.Sum() - tester2.Sum());
     EXPECT_EQ((tester2 - tester2).Sum(), 0);
@@ -108,114 +108,115 @@ TEST(Matrix, Operators)
 
 TEST(Matrix, Transpose)
 {
-    const int initial[4][4] = {{1,  2,  3,  4},
-                               {5,  6,  7,  8},
-                               {9,  10, 11, 12},
-                               {13, 14, 15, 16}};
+    const int initial[4][4]{{1,  2,  3,  4},
+                            {5,  6,  7,  8},
+                            {9,  10, 11, 12},
+                            {13, 14, 15, 16}};
 
-    const int initial_transposed[4][4] = {{1, 5, 9,  13},
-                                          {2, 6, 10, 14},
-                                          {3, 7, 11, 15},
-                                          {4, 8, 12, 16}};
-    auto tester = LinearAlgebra::Matrix<int>((const int *) initial, 4, 4);
-    auto tester_transposed = LinearAlgebra::Matrix<int>((const int *) initial_transposed, 4, 4);
+    const int initial_transposed[4][4]{{1, 5, 9,  13},
+                                       {2, 6, 10, 14},
+                                       {3, 7, 11, 15},
+                                       {4, 8, 12, 16}};
+    auto tester{LinearAlgebra::Matrix((const int *) initial, 4, 4)};
+    auto tester_transposed{LinearAlgebra::Matrix((const int *) initial_transposed, 4, 4)};
     EXPECT_NO_THROW(tester.Transpose());
     EXPECT_TRUE(tester == tester_transposed);
     EXPECT_NO_THROW(tester_transposed.Transpose());
-    EXPECT_TRUE(tester_transposed == LinearAlgebra::Matrix<int>((const int *) initial, 4, 4));
+    EXPECT_TRUE(tester_transposed == LinearAlgebra::Matrix((const int *) initial, 4, 4));
 
-    auto tester2 = LinearAlgebra::Matrix<unsigned short>(4, 4, 2022);
+    auto tester2{LinearAlgebra::Matrix(4, 4, 2022)};
     EXPECT_NO_THROW(tester2.Transpose());
-    EXPECT_TRUE(tester2 == LinearAlgebra::Matrix<unsigned short>(4, 4, 2022));
+    EXPECT_TRUE(tester2 == LinearAlgebra::Matrix(4, 4, 2022));
 
-    auto tester3 = LinearAlgebra::Matrix<int>(5, 6, 2022);
-    const auto sum3 = tester3.Sum();
+    auto tester3{LinearAlgebra::Matrix(5, 6, 2022)};
+    const auto sum3{tester3.Sum()};
+    EXPECT_EQ(sum3, 2022 * 30);
     tester3 /= 2;
     EXPECT_EQ(tester3.Sum(), ((5 * 6 * 2022) / 2));
 }
 
 TEST(Matrix, Triangulate)
 {
-    const int initial1[3][4] = {{6,  5,  4,  3},
-                                {6,  3,  0,  -3},
-                                {-2, -3, -4, -5}};
-    const int initial1_triangulated[3][4] = {{6, 5,  4,  3},
-                                             {0, -2, -4, -6},
-                                             {0, 0,  0,  0}};
-    auto tester1 = LinearAlgebra::Matrix<int>((const int *) initial1, 3, 4);
+    const int initial1[3][4]{{6,  5,  4,  3},
+                             {6,  3,  0,  -3},
+                             {-2, -3, -4, -5}};
+    const int initial1_triangulated[3][4]{{6, 5,  4,  3},
+                                          {0, -2, -4, -6},
+                                          {0, 0,  0,  0}};
+    auto tester1{LinearAlgebra::Matrix((const int *) initial1, 3, 4)};
     EXPECT_NO_THROW(tester1.Triangulate());
-    EXPECT_TRUE(tester1 == LinearAlgebra::Matrix<int>((const int *) initial1_triangulated, 3, 4));
+    EXPECT_TRUE(tester1 == LinearAlgebra::Matrix((const int *) initial1_triangulated, 3, 4));
 
 
-    const double initial2[3][3] = {{2, 6,  -1},
-                                   {0, 2,  1},
-                                   {2, -1, 0}};
-    const double initial2_triangulated[3][3] = {{2, 6,  -1},
-                                                {0, -7, 1},
-                                                {0, 0,  (9.0 / 7.0)}};
-    auto tester2 = LinearAlgebra::Matrix<double>((const double *) initial2, 3, 3);
+    const double initial2[3][3]{{2, 6,  -1},
+                                {0, 2,  1},
+                                {2, -1, 0}};
+    const double initial2_triangulated[3][3]{{2, 6,  -1},
+                                             {0, -7, 1},
+                                             {0, 0,  (9.0 / 7.0)}};
+    auto tester2{LinearAlgebra::Matrix((const double *) initial2, 3, 3)};
     EXPECT_NO_THROW(tester2.Triangulate());
-    EXPECT_TRUE(tester2 == LinearAlgebra::Matrix<double>((const double *) initial2_triangulated, 3, 3));
+    EXPECT_TRUE(tester2 == LinearAlgebra::Matrix((const double *) initial2_triangulated, 3, 3));
 
-    const double initial3[3][3] = {{4,   0,   12},
-                                   {160, 200, 240},
-                                   {35,  40,  1000}};
-    const double initial3_triangulated[3][3] = {{160, 200, 240},
-                                                {0,   -5,  6},
-                                                {0,   0,   943}};
-    auto tester3 = LinearAlgebra::Matrix<double>((const double *) initial3, 3, 3);
+    const double initial3[3][3]{{4,   0,   12},
+                                {160, 200, 240},
+                                {35,  40,  1000}};
+    const double initial3_triangulated[3][3]{{160, 200, 240},
+                                             {0,   -5,  6},
+                                             {0,   0,   943}};
+    auto tester3{LinearAlgebra::Matrix((const double *) initial3, 3, 3)};
     EXPECT_NO_THROW(tester3.Triangulate());
-    EXPECT_TRUE(tester3 == LinearAlgebra::Matrix<double>((const double *) initial3_triangulated, 3, 3));
+    EXPECT_TRUE(tester3 == LinearAlgebra::Matrix((const double *) initial3_triangulated, 3, 3));
 
     const double initial4[2][2] = {{1, 2},
                                    {3, 4}};
     const double initial4_triangulated[2][2] = {{3, 4},
                                                 {0, 2.0 / 3.0}};
-    auto tester4 = LinearAlgebra::Matrix<double>((const double *) initial4, 2, 2);
+    auto tester4{LinearAlgebra::Matrix((const double *) initial4, 2, 2)};
     EXPECT_NO_THROW(tester4.Triangulate());
-    EXPECT_TRUE(LinearAlgebra::Matrix<double>((const double *) initial4_triangulated, 2, 2) == tester4);
+    EXPECT_TRUE(LinearAlgebra::Matrix((const double *) initial4_triangulated, 2, 2) == tester4);
 
-    const short initial5[2][2] = {{-1, 1},
-                                  {-1, 1}};
-    const short initial5_triangulated[2][2] = {{-1, 1},
-                                               {0,  0}};
-    auto tester5 = LinearAlgebra::Matrix<short>((const short *) initial5, 2, 2);
+    const short initial5[2][2]{{-1, 1},
+                               {-1, 1}};
+    const short initial5_triangulated[2][2]{{-1, 1},
+                                            {0,  0}};
+    auto tester5{LinearAlgebra::Matrix((const short *) initial5, 2, 2)};
     EXPECT_NO_THROW(tester5.Triangulate());
-    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial5_triangulated, 2, 2) == tester5);
+    EXPECT_TRUE(LinearAlgebra::Matrix((const short *) initial5_triangulated, 2, 2) == tester5);
 
-    const short initial6[2][2] = {{2,     -12},
-                                  {-1000, 2000}};
-    short initial6_triangulated[2][2] = {{-1000, 2000},
-                                         {0,     8}};
-    auto tester6 = LinearAlgebra::Matrix<short>((const short *) initial6, 2, 2);
+    const short initial6[2][2]{{2,     -12},
+                               {-1000, 2000}};
+    short initial6_triangulated[2][2]{{-1000, 2000},
+                                      {0,     8}};
+    auto tester6 = LinearAlgebra::Matrix((const short *) initial6, 2, 2);
     EXPECT_NO_THROW(tester6.Triangulate());
-    EXPECT_FALSE(LinearAlgebra::Matrix<short>((const short *) initial6_triangulated, 2, 2) == tester6);
+    EXPECT_FALSE(LinearAlgebra::Matrix((const short *) initial6_triangulated, 2, 2) == tester6);
     EXPECT_NO_THROW(initial6_triangulated[1][1] = -8);
-    EXPECT_TRUE(LinearAlgebra::Matrix<short>((const short *) initial6_triangulated, 2, 2) == tester6);
+    EXPECT_TRUE(LinearAlgebra::Matrix((const short *) initial6_triangulated, 2, 2) == tester6);
 }
 
 TEST(Matrix, Determinant)
 {
     for (int random = std::rand() % 100 - 50; random < std::rand() % 200 + 100; ++random)
-        EXPECT_EQ(LinearAlgebra::Matrix<int>(1, 1, random).Determinant(), random);
+        EXPECT_EQ(LinearAlgebra::Matrix(1, 1, random).Determinant(), random);
 
-    EXPECT_THROW(LinearAlgebra::Matrix<int>(2, 3, 5).Determinant(), std::invalid_argument);
+    EXPECT_THROW(LinearAlgebra::Matrix(2, 3, 5).Determinant(), std::invalid_argument);
     EXPECT_THROW(LinearAlgebra::Matrix<int>(100, 2).Determinant(), std::invalid_argument);
     EXPECT_THROW(LinearAlgebra::Matrix<int>(100, 101).Determinant(), std::invalid_argument);
-    EXPECT_NO_THROW(LinearAlgebra::Matrix<int>(20, 20, 0).Determinant());
-    EXPECT_EQ(LinearAlgebra::Matrix<int>(20, 20, 0).Determinant(), 0);
+    EXPECT_NO_THROW(LinearAlgebra::Matrix(20, 20, 0).Determinant());
+    EXPECT_EQ(LinearAlgebra::Matrix(20, 20, 0).Determinant(), 0);
 
-    const double initial4[6][6] = {{1,  2,   3,  4,   5,  6},
+    /*const long double initial4[6][6] = {{1,  2,   3,  4,   5,  6},
                                    {7,  8,   9,  10,  11, 12},
                                    {13, 14,  15, 16,  17, 18},
                                    {19, 20,  1,  22,  23, 24},
                                    {25, -26, 27, -28, 29, 30},
                                    {11, 11,  11, -11, 10, -10}};
-    EXPECT_DOUBLE_EQ(LinearAlgebra::Matrix<double>((const double *) initial4, 6, 6).Determinant(), -4344000.0);
+    ASSERT_DOUBLE_EQ(LinearAlgebra::Matrix<long double>((const long double *) initial4, 6, 6).Determinant(), -4344000.0);*/
 
-    const short initial5[2][2] = {{1,  3},
-                                  {-2, 5}};
-    auto tester5 = LinearAlgebra::Matrix<short>((const short *) initial5, 2, 2);
+    const short initial5[2][2]{{1,  3},
+                               {-2, 5}};
+    auto tester5 = LinearAlgebra::Matrix((const short *) initial5, 2, 2);
     EXPECT_EQ(tester5.Determinant(), 11);
     EXPECT_NO_THROW(tester5.Transpose());
     EXPECT_EQ(tester5.Determinant(), 11);
@@ -225,7 +226,7 @@ TEST(Matrix, Determinant)
     const float initial_x3[][3][3] = {{{0, 1,  2},  {1,   0, 3},  {0, 0, 2}},
                                       {{1, 0,  -2}, {0.5, 3, 1},  {0, 2, -1}},
                                       {{0, -1, 0},  {1,   3, -2}, {2, 5, -1}}};
-    const std::array<const double, 3> result_x3{-2.0, -7.0, 3.0};
+    const std::array result_x3{-2.0, -7.0, 3.0};
     for (std::size_t counter = 0; counter < result_x3.size(); ++counter)
     {
         auto tester = LinearAlgebra::Matrix<float>((const float *) initial_x3[counter], 3, 3);
@@ -487,8 +488,6 @@ TEST(Matrix, Inverse)
         EXPECT_TRUE((tester * tester_inverse) == LinearAlgebra::Matrix<double>::IdentityMatrix(4));
     }
 }
-
-
 
 
 TEST(Matrix, Rank)
