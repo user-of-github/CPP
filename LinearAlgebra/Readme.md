@@ -7,19 +7,25 @@
 _The first project in my C++ Repo.   
 Hope not the last :)  
 Simple Linear Algebra lib to work with numeric vectors, matrices, systems of equations and so on  
-Project's aim — • repeat some linear algebra topics, • code them, • try practicing (modern) C++, • start using tests (Google tests) and • CMake, • maybe even GitHub Actions. Here for the first time using CMake myself and Gtests_
+Project's aim — • repeat some linear algebra topics, • code them, • try practicing (modern) C++, • start using tests (
+Google tests) and • CMake, • maybe even GitHub Actions. Here for the first time using CMake myself and Gtests_
 
 ### _To Run tests:_
 
 1. `cd Tester`
-2. `cmake -S . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
+2. `cmake -S . -B build -G "MinGW Makefiles"` _// or
+   your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
 3. `cmake --build build`
-4. `cd build && ctest`  
-5. In JetBrains Clion it is possible to choose main `CMakeLists.txt` (so it's necessary to choose one from `Tester` folder) — and it will be possible to run tests automatically by `ctrl + F5` or `Run` button. Also it will be necessary to choose `All CTest | Debug` in select of configuration
+4. `cd build && ctest`
+5. In JetBrains Clion it is possible to choose main `CMakeLists.txt` (so it's necessary to choose one from `Tester`
+   folder) — and it will be possible to run tests automatically by `ctrl + F5` or `Run` button. Also it will be
+   necessary to choose `All CTest | Debug` in select of configuration
 
 ### _To build a static library:_
-1. `cd Library`  
-2. `cmake . -B build -G "MinGW Makefiles"` _// or your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_  
+
+1. `cd Library`
+2. `cmake . -B build -G "MinGW Makefiles"` _// or
+   your [generator](https://cmake.org/cmake/help/latest/manual/cmake-generators.7.html)_
 3. `cmake --build build`
 
 ### _Functionality / To Do:_
@@ -54,12 +60,12 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Inverse matrix
     - [x] Cast to Vector (if 1 row)
 - [x] __Equations systems solvers class__
-  - [x] Gauss
-  - [ ] &times; Jacobi
-  - [ ] &times; Simple iterations
-  - [ ] &times; Zeidel
-  - [x] Cramer
-  - [x] By inverse matrix    
+    - [x] Gauss
+    - [ ] &times; Jacobi
+    - [ ] &times; Simple iterations __// COMING SOON__
+    - [ ] &times; Zeidel __// COMING SOON__
+    - [x] Cramer
+    - [x] By inverse matrix
 - [x] __CMake__
 - [x] __Tests:__
     - [ ] &times; Connect to `CodeCov`
@@ -67,12 +73,12 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
     - [x] Or at least start testing with `assert.h` (`cassert`)
     - [ ] &times; Bage with tests in Readme.md
 - [x] __GitHub Actions__ (— for what ? — don't know yet, but may be useful) // just running gtest on server
-- [ ] __Modern C++ 17 features__, which are new for me
-  - [ ] Initialization with curly brackets everywhere
-  - [ ] Automatic output of the received template class type
-  - [ ] Unpacking structures ?
-  - [ ] Limiting the scope of variables in if, for, switch ?
-  - [ ] constexpr-if ?
+- [x] __Modern C++ 17 features__, which are new for me
+    - [x]  Initialization with curly brackets with _auto_ type
+    - [x] Automatic output of the received template class type, example: _Vector<int>(5, 6) => Vector(5, 6)_
+    - [ ] Unpacking structures ?
+    - [ ] Limiting the scope of variables in if, for, switch ?
+    - [x] _constexpr-if_ ?
 
 ### _Some more features:_
 
@@ -80,10 +86,8 @@ Project's aim — • repeat some linear algebra topics, • code them, • try 
 * Google C++ code style (style guide)
 * Modern features: STD functions, auto lambda expressions, constexpr and so on
 * Google Tests, hundreds of code-lines with tests
-* CMake-s for tests and for building a lib 
+* CMake-s for tests and for building a lib
 
-   
-&nbsp;  
-
+&nbsp;
 
 ###### © 2022 | All Rights Reserved

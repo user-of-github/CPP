@@ -49,7 +49,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector<ValueType>::Vector(const Matrix <ValueType> &rhs)
     {
-        const auto[rows, cols] = rhs.Sizes();
+        const auto[rows, cols]{rhs.Sizes()};
         Vector::CheckRhsMatrixDimensions(rows, cols);
         if (rows == 1)
         {
@@ -57,7 +57,7 @@ namespace LinearAlgebra
         }
         else
         {
-            auto temp = std::vector<ValueType>(0);
+            auto temp{std::vector<ValueType>(0)};
             for (std::size_t row = 0; row < rows; ++row)
                 temp.push_back(rhs[row][0]);
             this->CopyFullStdVector(temp);
@@ -66,13 +66,13 @@ namespace LinearAlgebra
 
 
     template<typename ValueType>
-    constexpr std::size_t Vector<ValueType>::Size() const
+    std::size_t Vector<ValueType>::Size() const
     {
         return this->values_.size();
     }
 
     template<typename ValueType>
-    constexpr ValueType Vector<ValueType>::GetNorm() const
+    ValueType Vector<ValueType>::GetNorm() const
     {
         ValueType response{};
         for (const auto &item : this->values_)
@@ -81,7 +81,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr ValueType Vector<ValueType>::Sum() const
+    ValueType Vector<ValueType>::Sum() const
     {
         return std::accumulate(
                 std::begin(this->values_),
@@ -93,7 +93,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Vector<ValueType>::Normalize()
     {
-        const auto norm = this->GetNorm();
+        const auto norm{this->GetNorm()};
         if (norm == 0)
             throw std::runtime_error("Can't normalize vector. Attempted to divide by Zero");
 
@@ -164,7 +164,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> Vector<ValueType>::operator+(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        auto response{*this};
         for (auto &item : response.values_)
             item += scalar;
         return response;
@@ -173,7 +173,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> Vector<ValueType>::operator-(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        auto response{*this};
         for (auto &item : response.values_)
             item -= scalar;
         return response;
@@ -182,7 +182,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Vector <ValueType> Vector<ValueType>::operator*(const ValueType &scalar) const
     {
-        Vector<ValueType> response(*this);
+        auto response{*this};
         for (auto &item : response.values_)
             item *= scalar;
         return response;
@@ -194,7 +194,7 @@ namespace LinearAlgebra
         if (scalar == 0)
             throw std::invalid_argument("Division by zero is not allowed");
 
-        Vector<ValueType> response(*this);
+        auto response{*this};
         for (auto &item : response.values_)
             item /= scalar;
         return response;
@@ -227,7 +227,7 @@ namespace LinearAlgebra
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
-        Vector<ValueType> response(*this);
+        auto response{*this};
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
             response.values_.at(counter) += scalar.values_.at(counter);
@@ -240,7 +240,7 @@ namespace LinearAlgebra
     {
         Vector<ValueType>::CheckSizesCompatibility(this->values_, scalar.values_);
 
-        auto response = Vector<ValueType>(*this);
+        auto response{Vector<ValueType>(*this)};
 
         for (std::size_t counter = 0; counter < this->Size(); ++counter)
             response.values_.at(counter) -= scalar.values_.at(counter);
@@ -280,20 +280,18 @@ namespace LinearAlgebra
         if (!Vector<ValueType1>::CheckSizesCompatibility(first.values_, second.values_, false))
             return false;
 
-        const auto value_type_id = std::string(typeid(ValueType1).name());
-        const auto double_id = std::string(typeid(double).name());
-        const auto float_id = std::string(typeid(float).name());
-        const auto long_double_id = std::string(typeid(long double).name());
-
-        const auto is_integer_type = !((value_type_id.compare(double_id) == 0) ||
-                                       (value_type_id.compare(float_id) == 0) ||
-                                       (value_type_id.compare(long_double_id) == 0));
+        constexpr auto is_integer_type{!(std::is_same_v<ValueType1, double> ||
+                                         std::is_same_v<ValueType1, float> ||
+                                         std::is_same_v<ValueType1, long double> ||
+                                         std::is_same_v<ValueType1, const double> ||
+                                         std::is_same_v<ValueType1, const float> ||
+                                         std::is_same_v<ValueType1, const long double>)};
 
         for (std::size_t counter = 0; counter < first.values_.size(); ++counter)
         {
             if (first.values_.at(counter) != second.values_.at(counter))
             {
-                if (is_integer_type)
+                if constexpr(is_integer_type)
                     return false;
 
                 if (!(Utils::IsInEpsilonNeighborHood((double) first.values_.at(counter), 0.08,
@@ -324,9 +322,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
-                                                              const std::vector<ValueType> &second,
-                                                              const bool to_throw_exception)
+    bool Vector<ValueType>::CheckSizesCompatibility(const std::vector<ValueType> &first,
+                                                    const std::vector<ValueType> &second,
+                                                    const bool to_throw_exception)
     {
         if (first.size() != second.size())
         {
@@ -359,9 +357,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool
-    Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count, const std::size_t cols_count,
-                                                const bool should_throw)
+    bool Vector<ValueType>::CheckRhsMatrixDimensions(const std::size_t rows_count,
+                                                     const std::size_t cols_count,
+                                                     const bool should_throw)
     {
         if (!((rows_count == 1) || (cols_count == 1)))
         {

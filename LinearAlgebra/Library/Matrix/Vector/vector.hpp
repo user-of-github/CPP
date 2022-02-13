@@ -42,11 +42,11 @@ namespace LinearAlgebra
         Vector(const Matrix<ValueType> &);
 
 
-        constexpr std::size_t Size() const;
+        std::size_t Size() const;
 
-        constexpr ValueType GetNorm() const;
+        ValueType GetNorm() const;
 
-        constexpr ValueType Sum() const;
+        ValueType Sum() const;
 
         void Normalize();
 
@@ -99,7 +99,7 @@ namespace LinearAlgebra
 
         void CopyFullStdVector(const std::vector<ValueType> &);
 
-        static constexpr bool CheckSizesCompatibility(const std::vector<ValueType> &,
+        static bool CheckSizesCompatibility(const std::vector<ValueType> &,
                                                       const std::vector<ValueType> &,
                                                       const bool = true);
 
@@ -109,7 +109,7 @@ namespace LinearAlgebra
 
         void PrintVectorRowByStream(std::ostream &) const;
 
-        static constexpr bool CheckRhsMatrixDimensions(const std::size_t, const std::size_t, const bool = true);
+        static bool CheckRhsMatrixDimensions(const std::size_t, const std::size_t, const bool = true);
     };
 }
 

@@ -50,7 +50,7 @@ namespace LinearAlgebra
 
 
     template<typename ValueType>
-    constexpr ValueType Matrix<ValueType>::Sum() const
+    ValueType Matrix<ValueType>::Sum() const
     {
         return std::accumulate(
                 std::begin(this->vectors_),
@@ -61,7 +61,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr std::tuple<std::size_t, std::size_t> Matrix<ValueType>::Sizes() const
+    std::tuple<std::size_t, std::size_t> Matrix<ValueType>::Sizes() const
     {
         return std::tuple<std::size_t, std::size_t>(this->vectors_.size(), this->vectors_.at(0).values_.size());
     }
@@ -72,13 +72,13 @@ namespace LinearAlgebra
         if (!(Matrix<ValueType>::IsMatrixSquare(*this, true)))
             return;
 
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
 
         for (std::size_t row = 0; row < rows; ++row)
         {
             for (std::size_t col = 0; col < row; ++col)
             {
-                const auto temp = this->vectors_.at(row).values_.at(col);
+                const auto temp{this->vectors_.at(row).values_.at(col)};
                 this->vectors_.at(row).values_.at(col) = this->vectors_.at(col).values_.at(row);
                 this->vectors_.at(col).values_.at(row) = temp;
             }
@@ -96,18 +96,18 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr std::size_t Matrix<ValueType>::Triangulate()
+    std::size_t Matrix<ValueType>::Triangulate()
     {
-        const auto sizes = this->Sizes();
-        const auto rows = std::get<0>(sizes), cols = std::get<1>(sizes);
+        const auto sizes{this->Sizes()};
+        const auto rows{std::get<0>(sizes)}, cols{std::get<1>(sizes)};
 
         const auto copy_transformed_matrix_to_original = [&](const double **instance) -> void {
             for (std::size_t row = 0; row < rows; ++row)
                 for (std::size_t col = 0; col < cols; ++col)
-                    (*this)[row][col] = (ValueType) (instance[row][col]);
+                    (*this)[row][col] = (ValueType)(instance[row][col]);
         };
 
-        auto to_count = this->GetSimilarMatrixOfDouble();
+        auto to_count{this->GetSimilarMatrixOfDouble()};
 
         const auto number_of_swaps = Matrix<ValueType>::Gauss(to_count, rows, cols);
         copy_transformed_matrix_to_original((const double **) to_count); // <warning> casting to const ?</warning>
@@ -127,7 +127,7 @@ namespace LinearAlgebra
         if (degree == 1)
             return Matrix<ValueType>(*this);
 
-        const auto size = std::get<0>(this->Sizes());
+        const auto size{std::get<0>(this->Sizes())};
 
         if (degree == 0)
             return Matrix<ValueType>::IdentityMatrix(size);
@@ -136,21 +136,21 @@ namespace LinearAlgebra
             return (*this) * this->Pow(degree - 1);
         else
         {
-            const auto half_degreed = this->Pow(degree / 2);
+            const auto half_degreed{this->Pow(degree / 2)};
             return half_degreed * half_degreed;
         }
     }
 
     template<typename ValueType>
-    constexpr double Matrix<ValueType>::Determinant() const
+    double Matrix<ValueType>::Determinant() const
     {
         Matrix::IsMatrixSquare(*this, true);
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
 
-        auto response = 1.0;
-        auto to_triangulate = this->GetSimilarMatrixOfDouble();
-        const auto number_of_swaps = Matrix::Gauss(to_triangulate, rows, cols);
-        const auto ratio = number_of_swaps % 2 == 0 ? 1 : -1;
+        double response{1.0};
+        auto to_triangulate{this->GetSimilarMatrixOfDouble()};
+        const auto number_of_swaps{Matrix::Gauss(to_triangulate, rows, cols)};
+        const auto ratio{number_of_swaps % 2 == 0 ? 1 : -1};
 
         for (std::size_t row = 0; row < rows; ++row)
             response *= to_triangulate[row][row];
@@ -163,14 +163,14 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr double Matrix<ValueType>::Minor(const std::size_t row, const std::size_t col) const
+    double Matrix<ValueType>::Minor(const std::size_t row, const std::size_t col) const
     {
         this->CheckValidityOfIndexes(row, col);
         return (this->GetSubmatrixWithoutRowAndColumn(row, col)).Determinant();
     }
 
     template<typename ValueType>
-    constexpr double Matrix<ValueType>::Cofactor(const std::size_t row, const std::size_t col) const
+    double Matrix<ValueType>::Cofactor(const std::size_t row, const std::size_t col) const
     {
         this->CheckValidityOfIndexes(row, col);
         auto response = (this->GetSubmatrixWithoutRowAndColumn(row, col)).Determinant();
@@ -203,12 +203,12 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool Matrix<ValueType>::IsSymmetric() const
+    bool Matrix<ValueType>::IsSymmetric() const
     {
         if (!(Matrix::IsMatrixSquare(*this, false)))
             return false;
 
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
 
         for (std::size_t row = 0; row < rows; ++row)
             for (std::size_t col = 0; col < row; ++col)
@@ -219,10 +219,10 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr ValueType Matrix<ValueType>::Track() const
+    ValueType Matrix<ValueType>::Track() const
     {
         Matrix<ValueType>::IsMatrixSquare(*this);
-        std::size_t counter = 0;
+        std::size_t counter{0};
         return std::accumulate(std::begin(this->vectors_),
                                std::end(this->vectors_),
                                ValueType(),
@@ -233,19 +233,19 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr std::size_t Matrix<ValueType>::Rank() const
+    std::size_t Matrix<ValueType>::Rank() const
     {
-        const auto rows = std::get<0>(this->Sizes());
-        const auto cols = std::get<1>(this->Sizes());
+        const auto rows{std::get<0>(this->Sizes())};
+        const auto cols{std::get<1>(this->Sizes())};
 
-        auto to_triangulate = this->GetSimilarMatrixOfDouble();
+        auto to_triangulate{this->GetSimilarMatrixOfDouble()};
 
-        const auto does_full_equal_zero = [&](const std::size_t row) -> bool {
+        const auto does_full_equal_zero{[&](const std::size_t row) -> bool {
             for (std::size_t col = 0; col < cols; ++col)
                 if (!Utils::IsInEpsilonNeighborHood(0.0, 0.001, to_triangulate[row][col]))
                     return false;
             return true;
-        };
+        }};
 
         Matrix::Gauss(to_triangulate, rows, cols);
 
@@ -263,10 +263,10 @@ namespace LinearAlgebra
     Matrix <ValueType> Matrix<ValueType>::GetSubmatrixWithoutRowAndColumn(const std::size_t row_to_erase,
                                                                           const std::size_t col_to_erase) const
     {
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
         this->CheckValidityOfIndexes(row_to_erase, col_to_erase);
         auto response = Matrix<ValueType>(rows - 1, cols - 1, 0);
-        std::size_t response_row = 0, response_col = 0;
+        std::size_t response_row{0}, response_col{0};
         for (std::size_t row = 0; row < rows; ++row)
         {
             if (row == row_to_erase) continue;
@@ -286,13 +286,13 @@ namespace LinearAlgebra
     Matrix <ValueType> Matrix<ValueType>::GetInverseMatrix() const
     {
         Matrix::IsMatrixSquare(*this);
-        const auto[rows, cols] = this->Sizes();
-        const auto determinant = this->Determinant();
+        const auto[rows, cols]{this->Sizes()};
+        const auto determinant{this->Determinant()};
 
         if (Utils::IsInEpsilonNeighborHood(0.0, 0.0001, determinant))
             throw std::runtime_error("Matrix is non-degenerate. Unable to compute inverse");
 
-        auto response = Matrix<ValueType>(rows, cols, 0);
+        auto response{Matrix<ValueType>(rows, cols, 0)};
         for (std::size_t row = 0; row < rows; ++row)
             for (std::size_t col = 0; col < cols; ++col)
                 response[row][col] = this->Cofactor(row, col);
@@ -396,9 +396,9 @@ namespace LinearAlgebra
         if (cols1 != rows2)
             throw std::invalid_argument("Matrices are incompatible for multiplication");
 
-        const auto rows = rows1;
-        const auto cols = cols2;
-        const auto general = cols1;
+        const auto rows{rows1};
+        const auto cols{cols2};
+        const auto general{cols1};
 
         auto response = Matrix<ValueType>(rows1, cols2, 0);
 
@@ -426,7 +426,7 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType1>
-    constexpr bool operator==(const Matrix <ValueType1> &first, const Matrix <ValueType1> &second)
+    bool operator==(const Matrix <ValueType1> &first, const Matrix <ValueType1> &second)
     {
         if (!Matrix<ValueType1>::CheckMatricesCompatibility(first, second, false))
             return false;
@@ -472,9 +472,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool Matrix<ValueType>::CheckMatricesCompatibility(const Matrix <ValueType> &first,
-                                                                 const Matrix <ValueType> &second,
-                                                                 const bool should_throw)
+    bool Matrix<ValueType>::CheckMatricesCompatibility(const Matrix <ValueType> &first,
+                                                       const Matrix <ValueType> &second,
+                                                       const bool should_throw)
     {
         if (first.vectors_.size() != second.vectors_.size() ||
             first.vectors_.at(0).values_.size() != second.vectors_.at(0).values_.size())
@@ -487,10 +487,10 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr bool Matrix<ValueType>::IsMatrixSquare(const Matrix <ValueType> &matrix, const bool should_throw)
+    bool Matrix<ValueType>::IsMatrixSquare(const Matrix <ValueType> &matrix, const bool should_throw)
     {
-        const auto[row, col] = matrix.Sizes();
-        if (row != col)
+        const auto[rows, cols]{matrix.Sizes()};
+        if (rows != cols)
         {
             if (should_throw)
                 throw std::invalid_argument("Unable to perform operation with non-square matrix");
@@ -509,26 +509,33 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr std::size_t Matrix<ValueType>::Gauss(double **matrix, const std::size_t rows, const std::size_t cols)
+    std::size_t Matrix<ValueType>::Gauss(double **matrix, const std::size_t rows, const std::size_t cols)
     {
-        const auto find_row_with_max_first_element = [&](const int from) -> const std::size_t {
+        const auto find_row_with_max_first_element{[&](const int from) -> const std::size_t {
             std::size_t response = from;
             for (std::size_t row = from + 1; row < rows; ++row)
                 if (std::abs(matrix[row][from]) > std::abs(matrix[response][from]))
                     response = row;
             return response;
-        };
+        }};
 
-        const auto swap_rows = [&](const std::size_t row1, const std::size_t row2) -> void {
+        const auto swap_rows([&](const std::size_t row1, const std::size_t row2) -> void {
             if (row1 == row2) return;
             for (std::size_t col = 0; col < cols; ++col)
                 std::swap(matrix[row1][col], matrix[row2][col]);
-        };
+        });
 
-        std::size_t number_of_swaps = 0;
+        const auto subtract_rows_with_ratio([&](const std::size_t from,
+                                                const std::size_t what,
+                                                const double ratio) -> void {
+            for (int col = cols - 1; col >= 0; --col)
+                matrix[from][col] -= (ratio * (double) matrix[what][col]);
+        });
+
+        std::size_t number_of_swaps{0};
         for (std::size_t row = 0; row < rows; ++row)
         {
-            const auto row_with_max_first_item = find_row_with_max_first_element(row);
+            const auto row_with_max_first_item{find_row_with_max_first_element(row)};
 
             if (Utils::IsInEpsilonNeighborHood(0.0, 0.1, matrix[row_with_max_first_item][row])) continue;
 
@@ -536,14 +543,10 @@ namespace LinearAlgebra
 
             number_of_swaps += (row_with_max_first_item != row) ? 1 : 0;
 
-            for (std::size_t j = row + 1; j < rows; ++j)
+            for (std::size_t lower_row = row + 1; lower_row < rows; ++lower_row)
             {
-                const auto q = (-1) * (double) (matrix[j][row]) / (double) (matrix[row][row]);
-                for (std::size_t k = cols - 1; k >= row; --k)
-                {
-                    matrix[j][k] += (q * (double) matrix[row][k]);
-                    if (k == 0) break; // because std::size_t === unsigned long long => overflow
-                }
+                const double ratio{(double) (matrix[lower_row][row]) / (double) (matrix[row][row])};
+                subtract_rows_with_ratio(lower_row, row, ratio);
             }
         }
 
@@ -551,9 +554,9 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    constexpr double **Matrix<ValueType>::GetSimilarMatrixOfDouble() const
+    double **Matrix<ValueType>::GetSimilarMatrixOfDouble() const
     {
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
         auto response = new double *[rows];
         for (std::size_t row = 0; row < rows; ++row)
             response[row] = new double[cols];
@@ -568,7 +571,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     void Matrix<ValueType>::FreeTemporaryMatrix(double **instance) const
     {
-        const auto rows = std::get<0>(this->Sizes());
+        const auto rows{std::get<0>(this->Sizes())};
 
         for (std::size_t row = 0; row < rows; ++row)
             delete[] instance[row];
@@ -576,41 +579,41 @@ namespace LinearAlgebra
     }
 
     template<typename ValueType>
-    void Matrix<ValueType>::CheckGenericType() const
+    constexpr void Matrix<ValueType>::CheckGenericType() const
     {
-        if (!std::is_same<ValueType, char>::value &&
-            !std::is_same<ValueType, unsigned char>::value &&
-            !std::is_same<ValueType, short>::value &&
-            !std::is_same<ValueType, unsigned short>::value &&
-            !std::is_same<ValueType, int>::value &&
-            !std::is_same<ValueType, unsigned int>::value &&
-            !std::is_same<ValueType, long long>::value &&
-            !std::is_same<ValueType, unsigned long long>::value &&
-            !std::is_same<ValueType, float>::value &&
-            !std::is_same<ValueType, double>::value &&
-            !std::is_same<ValueType, long double>::value &&
-            !std::is_same<ValueType, std::size_t>::value &&
-            !std::is_same<ValueType, const char>::value &&
-            !std::is_same<ValueType, const unsigned char>::value &&
-            !std::is_same<ValueType, const short>::value &&
-            !std::is_same<ValueType, const unsigned short>::value &&
-            !std::is_same<ValueType, const int>::value &&
-            !std::is_same<ValueType, const unsigned int>::value &&
-            !std::is_same<ValueType, const long long>::value &&
-            !std::is_same<ValueType, const unsigned long long>::value &&
-            !std::is_same<ValueType, const float>::value &&
-            !std::is_same<ValueType, const double>::value &&
-            !std::is_same<ValueType, const long double>::value &&
-            !std::is_same<ValueType, const std::size_t>::value)
+        if constexpr(!std::is_same<ValueType, char>::value &&
+                     !std::is_same<ValueType, unsigned char>::value &&
+                     !std::is_same<ValueType, short>::value &&
+                     !std::is_same<ValueType, unsigned short>::value &&
+                     !std::is_same<ValueType, int>::value &&
+                     !std::is_same<ValueType, unsigned int>::value &&
+                     !std::is_same<ValueType, long long>::value &&
+                     !std::is_same<ValueType, unsigned long long>::value &&
+                     !std::is_same<ValueType, float>::value &&
+                     !std::is_same<ValueType, double>::value &&
+                     !std::is_same<ValueType, long double>::value &&
+                     !std::is_same<ValueType, std::size_t>::value &&
+                     !std::is_same<ValueType, const char>::value &&
+                     !std::is_same<ValueType, const unsigned char>::value &&
+                     !std::is_same<ValueType, const short>::value &&
+                     !std::is_same<ValueType, const unsigned short>::value &&
+                     !std::is_same<ValueType, const int>::value &&
+                     !std::is_same<ValueType, const unsigned int>::value &&
+                     !std::is_same<ValueType, const long long>::value &&
+                     !std::is_same<ValueType, const unsigned long long>::value &&
+                     !std::is_same<ValueType, const float>::value &&
+                     !std::is_same<ValueType, const double>::value &&
+                     !std::is_same<ValueType, const long double>::value &&
+                     !std::is_same<ValueType, const std::size_t>::value)
             throw new std::invalid_argument("Class Matrix<ValueType> does not support generic for required type");
     }
 
     template<typename ValueType>
-    constexpr bool Matrix<ValueType>::CheckValidityOfIndexes(const std::size_t row,
-                                                             const std::size_t col,
-                                                             const bool should_throw) const
+    bool Matrix<ValueType>::CheckValidityOfIndexes(const std::size_t row,
+                                                   const std::size_t col,
+                                                   const bool should_throw) const
     {
-        const auto[rows, cols] = this->Sizes();
+        const auto[rows, cols]{this->Sizes()};
 
         if ((int) row < 0 || (int) row >= rows || (int) col < 0 || col >= cols)
         {
@@ -625,7 +628,7 @@ namespace LinearAlgebra
     template<typename ValueType>
     Matrix <ValueType> Matrix<ValueType>::CreateColMatrixFromVector(const Vector <ValueType> &rhs)
     {
-        const auto rows = rhs.Size();
+        const auto rows{rhs.Size()};
         auto response = Matrix<ValueType>(rows, 1, 0);
         for (std::size_t row = 0; row < rows; ++row)
             response[row][0] = rhs[row];
