@@ -6,10 +6,8 @@ on:
 
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: windows-2022
     
-    env:
-      CXX: g++-10
 
     steps:
     - uses: actions/checkout@v2
