@@ -20,7 +20,10 @@ add_executable(
         unit_tests_pack
         main.cpp
         test_utils.cpp
-        test_types.hpp data_for_tests.hpp)
+        types_for_tests.hpp
+        data_for_tests.hpp
+        ../Library/Utils/utils.cpp
+)
 target_link_libraries(
         unit_tests_pack
         gtest_main

@@ -1,7 +1,8 @@
 #ifndef TEST_CALCULATOR_DATA_FOR_TESTS_HPP
 #define TEST_CALCULATOR_DATA_FOR_TESTS_HPP
 
-#include "./test_types.hpp"
+#include "./types_for_tests.hpp"
+
 
 const TestNumberExtractingValid valid_strings_for_extracting_numbers[]{
         {"with number 12.52 and 12300", 12, "12.52"},
@@ -15,23 +16,42 @@ const TestNumberExtractingValid valid_strings_for_extracting_numbers[]{
         {"12,22 + 56.78 - 85.45 / 85",  16, "85.45"},
         {"12,22 + 56.78 - 85.45/85",    16, "85.45"},
         {"12,22 + 56.78 - 85.45 / 85",  24, "85"},
-        {"1fyhtyhty",  0, "1"},
-        {"1",  0, "1"},
-        {"aaa1",  3, "1"},
+        {"1fyhtyhty",                   0,  "1"},
+        {"1",                           0,  "1"},
+        {"aaa1",                        3,  "1"},
 };
 
-const TestNumberExtractingInvalid invalid_strings_for_extracting_numbers[]{
-        {"with number 12.52 and 12300", 11},
-        {"with number 12.52 and 12300", 17},
-        {"with number 12.52 and 12300", 30},
+const TestNumberExtractingBase invalid_strings_for_extracting_numbers[]{
+        {"with number 12.52 and 12300",   11},
+        {"with number 12.52 and 12300",   17},
+        {"with number 12.52 and 12300",   30},
         {"with number 12.52 and 12.30.0", 22},
-        {"1.2.3.4", 0},
-        {"1.2.3.4", 1},
-        {"1.2.3.4", 2},
-        {"1.2.3.4", 3},
-        {"1.2+.35.5", 4},
-        {"1.2+.35.5", 3},
-        {"1.2+.35.5", 3},
+        {"1.2.3.4",                       0},
+        {"1.2.3.4",                       1},
+        {"1.2.3.4",                       2},
+        {"1.2.3.4",                       3},
+        {"1.2+.35.5",                     4},
+        {"1.2+.35.5",                     3},
+        {"1.2+.35.5",                     3},
+        {"1.2,6+.35.5",                     0},
+};
+
+
+const TestNumberConvertingValid valid_strings_for_converting_to_numbers[]{
+        {"with number 12.52 and 12300", 12, 12.52},
+        {"with number 12.52 and 12300", 13, 2.52},
+        {"with number 12.52 and 12300", 15, 52},
+        {"with number 12.52 and 12300", 22, 12300},
+        {"1111", 0,  1111},
+        {"9101", 0,  9101},
+        {"12,22 + 56.78 - 85.45 / 85",  0,  12.22},
+        {"12,22 + 56.78 - 85.45 / 85",  8,  56.78},
+        {"12,22 + 56.78 - 85.45 / 85",  16, 85.45},
+        {"12,22 + 56.78 - 85.45/85",    16, 85.45},
+        {"12,22 + 56.78 - 85.45 / 85",  24, 85},
+        {"1fyhtyhty",                   0,  1},
+        {"1",                           0,  1},
+        {"aaa1",                        3,  1},
 };
 
 
