@@ -25,6 +25,13 @@ const TestNumberExtractingInvalid invalid_strings_for_extracting_numbers[]{
         {"with number 12.52 and 12300", 17},
         {"with number 12.52 and 12300", 30},
         {"with number 12.52 and 12.30.0", 22},
+        {"1.2.3.4", 0},
+        {"1.2.3.4", 1},
+        {"1.2.3.4", 2},
+        {"1.2.3.4", 3},
+        {"1.2+.35.5", 4},
+        {"1.2+.35.5", 3},
+        {"1.2+.35.5", 3},
 };
 
 
