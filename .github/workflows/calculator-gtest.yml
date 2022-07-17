@@ -1,9 +1,9 @@
-name: Linear Algebra Google Tests
+name: Calculator Google Tests
 
 on:
   push:
     paths:
-      - LinearAlgebra/*
+      - Calculator/*
 
 jobs:
   build:
@@ -16,13 +16,13 @@ jobs:
     - uses: actions/checkout@v2
 
     - name: Configure CMake 
-      working-directory: LinearAlgebra/Tester
+      working-directory: Calculator/Tests
       run: cmake . -B build
 
     - name: Build Tests
-      working-directory: LinearAlgebra/Tester
+      working-directory: Calculator/Tests
       run: cmake --build build
 
     - name: Test Results
-      working-directory: LinearAlgebra/Tester/build
+      working-directory: Calculator/Tests/build
       run: ctest
