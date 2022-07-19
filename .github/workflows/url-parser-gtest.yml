@@ -1,9 +1,6 @@
 name: URL Parser Google Tests
 
-on:
-  push:
-    paths:
-      - URLParser/*
+on: [push]
 
 jobs:
   build:
