@@ -23,7 +23,7 @@ add_executable(
         types_for_tests.hpp
         data_for_tests.hpp
         ../Library/Utils/utils.cpp
-)
+        test_calculator.cpp)
 target_link_libraries(
         unit_tests_pack
         gtest_main

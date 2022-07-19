@@ -3,7 +3,7 @@
 
 namespace Calculator::Utils
 {
-    const std::string ExtractNumber(const std::string_view &source, const std::size_t extract_from)
+    const std::string_view ExtractNumber(const std::string_view &source, const std::size_t extract_from)
     {
         std::size_t commas_counter{0};
         std::size_t total_length{source.size()};
@@ -12,14 +12,14 @@ namespace Calculator::Utils
         const auto check_conditions{[&]() -> bool {
             if (index >= total_length) return false;
             const auto &curr{source.at(index)};
-            return !kBrackets.contains(curr) && !kOperators.contains(curr) && !kSpaceSymbols.contains(curr);
+            return std::find(std::cbegin(kBrackets), std::cend(kBrackets), curr) == std::cend(kBrackets)
+                   && std::find(std::cbegin(kOperators), std::cend(kOperators), curr) == std::cend(kOperators)
+                   && std::find(std::cbegin(kSpaceSymbols), std::cend(kSpaceSymbols), curr) == std::cend(kSpaceSymbols);
         }};
 
         while (check_conditions())
         {
-            const auto &current_symbol{source.at(index)};
-
-            if (kFloatDividers.contains(current_symbol))
+            if (const auto &current_symbol{source.at(index)}; kFloatDividers.contains(current_symbol))
             {
                 if (++commas_counter > 1) throw std::invalid_argument{"Invalid float number. To many commas"};
             }
@@ -28,9 +28,10 @@ namespace Calculator::Utils
             ++index;
         }
 
-        if (extract_from == index) throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
+        if (extract_from == index)
+            throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
 
-        return std::string{source.substr(extract_from, index - extract_from)};
+        return std::string_view{source.substr(extract_from, index - extract_from)};
     }
 
 
@@ -44,7 +45,40 @@ namespace Calculator::Utils
         }
         catch (const std::exception &exception)
         {
-            throw std::invalid_argument{std::string{"Invalid float number"} + exception.what()};
+            throw std::invalid_argument{std::string{"Invalid float number. "} + exception.what()};
         }
+    }
+
+
+    const bool CheckForCorrectBracketSequence(const std::string_view &query)
+    {
+        std::stack<char> brackets{};
+
+        for (const auto &symbol : query)
+        {
+            const auto found_bracket{std::find(std::cbegin(kBrackets), std::cend(kBrackets), symbol)};
+
+            if (found_bracket == std::cend(kBrackets)) continue; // not a bracket
+
+            if (brackets.empty())
+            {
+                brackets.push(symbol);
+                continue;
+            }
+
+            if (const auto index{std::distance(std::cbegin(kBrackets), found_bracket)}; index % 2 == 1) // closing brace
+            {
+                if (kBrackets.at(index - 1) == brackets.top())
+                    brackets.pop();
+                else
+                    return false;
+            }
+            else // opening bracket
+            {
+                brackets.push(symbol);
+            }
+        }
+
+        return brackets.empty();
     }
 }

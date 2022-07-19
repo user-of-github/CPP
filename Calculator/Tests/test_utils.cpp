@@ -32,3 +32,15 @@ TEST(Utils, ConvertingAndExtractingNumberValid)
         EXPECT_DOUBLE_EQ(response, item.right_response);
     }
 }
+
+TEST(Utils, CheckingCorrectBracketSequenceValid)
+{
+    for (const auto &sequence : correct_sequences_with_brackets)
+        EXPECT_TRUE(Calculator::Utils::CheckForCorrectBracketSequence(sequence));
+}
+
+TEST(Utils, CheckingCorrectBracketSequenceInvalid)
+{
+    for (const auto &sequence : invalid_sequences_with_brackets)
+        EXPECT_FALSE(Calculator::Utils::CheckForCorrectBracketSequence(sequence));
+}
