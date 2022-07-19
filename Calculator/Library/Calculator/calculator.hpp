@@ -10,19 +10,31 @@
 
 namespace Calculator
 {
-    template<typename ValueType = double>
+    template<typename ValueType = int>
     class Calculator
     {
     public:
-        explicit Calculator(std::string ) noexcept;
+        explicit Calculator(std::string) noexcept;
 
         void Compute();
 
+        void SetConverter(const std::function<const ValueType(const std::string_view)> &);
+
+        void SetExtractor(const std::function<const std::string(const std::string_view &, std::size_t &)> &);
+
     private:
-        const std::map<const char, const std::function<void()>> kOperations;
+        const std::map<const char, const std::function<const ValueType(const ValueType, const ValueType)>> kOperations{
+                {'+', [](const ValueType a, const ValueType b) -> ValueType const { return a + b; }},
+                {'-', [](const ValueType a, const ValueType b) -> ValueType const { return a - b; }},
+                {'*', [](const ValueType a, const ValueType b) -> ValueType const { return a * b; }},
+                {'/', [](const ValueType a, const ValueType b) -> ValueType const { return a / b; }},
+        };
+
         std::string source_;
         std::stack<char> arithmetic_signs_;
         std::stack<ValueType> numbers_;
+        std::function<const ValueType(const std::string_view)> converter_ {Utils::StringToDoubleConverterDefault};
+        std::function<const std::string_view(const std::string_view &, std::size_t &)> extractor_ {Utils::ExtractDoubleNumberDefault};
     };
 }
 

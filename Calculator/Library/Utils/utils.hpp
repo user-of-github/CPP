@@ -15,11 +15,12 @@ namespace Calculator::Utils
     const std::set kFloatDividers{'.', ','};
     const std::set kSpaceSymbols{' ', '\t', '\r', '\n'};
     const std::array kBrackets{'(', ')', '<', '>', '[', ']', '{', '}'};
-    const std::set kOperators {'+', '-', '*', '/', '^', '%'};
+    const std::set<char> kBracketsSet{std::cbegin(kBrackets), std::cend(kBrackets)};
+    const std::set<char> kOperators {'+', '-', '*', '/', '^', '%'};
 
-    const std::string_view ExtractNumber(const std::string_view &, const std::size_t);
+    const std::string_view ExtractDoubleNumberDefault(const std::string_view &, std::size_t &);
 
-    const double StringToDouble(const std::string_view &);
+    const double StringToDoubleConverterDefault(const std::string_view &);
 
     const bool CheckForCorrectBracketSequence(const std::string_view &);
 

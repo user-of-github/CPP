@@ -3,7 +3,7 @@
 
 namespace Calculator::Utils
 {
-    const std::string_view ExtractNumber(const std::string_view &source, const std::size_t extract_from)
+    const std::string_view ExtractDoubleNumberDefault(const std::string_view &source, std::size_t &extract_from)
     {
         std::size_t commas_counter{0};
         std::size_t total_length{source.size()};
@@ -28,14 +28,17 @@ namespace Calculator::Utils
             ++index;
         }
 
-        if (extract_from == index)
-            throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
+        if (extract_from == index) throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
 
-        return std::string_view{source.substr(extract_from, index - extract_from)};
+        const auto response{std::string_view{source.substr(extract_from, index - extract_from)}};
+
+        extract_from = index;
+
+        return response;
     }
 
 
-    const double StringToDouble(const std::string_view &source)
+    const double StringToDoubleConverterDefault(const std::string_view &source)
     {
         try
         {

@@ -23,8 +23,17 @@ _Different types of brackets. Spaces between characters for comfortable input_
 4. _`rm -rf ./build`_  
 5. _`cmake -S . -B build -G "MinGW Makefiles"`_  
 6. _`cmake --build build`_  
-7. _`cd build && ctest`_
+7. _`cd build && ctest`_   
 
+
+### Cases to implement:   
+* [ ] Minus (as sign and for numbers) (`-2` and `6 - (5 + 6)`)  
+* [ ] Chain of pows (2^2^2^2)   
+* [ ] Brackets  
+* [ ] Converters for different types of numbers (one default and other can be for my custom types)  
+* [ ] Extractors for different types of numbers  
+* [ ] Write about extractors and converters concept to this Readme
+ 
 &nbsp;
 
 ###### Copyright © 2022 | All rights reserved
