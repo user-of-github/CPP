@@ -81,4 +81,12 @@ namespace Calculator::Utils
 
         return brackets.empty();
     }
+
+    void RemoveSpaceSymbolsFromString(std::string &source)
+    {
+        const auto check_if_space_symbol{[](char symbol) -> bool { return Utils::kSpaceSymbols.contains(symbol); }};
+        const auto new_end{std::remove_if(std::begin(source), std::end(source), check_if_space_symbol)};
+        source.erase(new_end, std::end(source));
+        source.shrink_to_fit();
+    }
 }

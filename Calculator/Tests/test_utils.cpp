@@ -44,3 +44,13 @@ TEST(Utils, CheckingCorrectBracketSequenceInvalid)
     for (const auto &sequence : invalid_sequences_with_brackets)
         EXPECT_FALSE(Calculator::Utils::CheckForCorrectBracketSequence(sequence));
 }
+
+TEST(Utils, RemovingSpaceSymbols)
+{
+    for (const auto &[source, response] : sentences_with_space_symbols)
+    {
+        auto copy{source};
+        Calculator::Utils::RemoveSpaceSymbolsFromString(copy);
+        EXPECT_STREQ(copy.c_str(), response.c_str());
+    }
+}

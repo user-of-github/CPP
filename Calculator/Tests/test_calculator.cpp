@@ -1,5 +1,6 @@
 #include <gtest/gtest.h>
 #include "../Library/Calculator/calculator.hpp"
+#include "../Library/Calculator/calculator.cpp"
 
 
 TEST(Calculator, baseConstructors)

@@ -2,8 +2,10 @@
 #define CALCULATOR_CALCULATOR_H
 
 #include <stack>
+#include <map>
 #include <functional>
 #include <cmath>
+#include "../Utils/utils.hpp"
 
 
 namespace Calculator
@@ -12,7 +14,7 @@ namespace Calculator
     class Calculator
     {
     public:
-        Calculator(const std::string &) noexcept;
+        explicit Calculator(std::string ) noexcept;
 
         void Compute();
 
@@ -22,15 +24,6 @@ namespace Calculator
         std::stack<char> arithmetic_signs_;
         std::stack<ValueType> numbers_;
     };
-
-    template<typename ValueType>
-    Calculator<ValueType>::Calculator(const std::string &source) noexcept: source_{source} {}
-
-    template<typename ValueType>
-    void Calculator<ValueType>::Compute()
-    {
-
-    }
 }
 
 

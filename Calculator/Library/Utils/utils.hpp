@@ -22,6 +22,8 @@ namespace Calculator::Utils
     const double StringToDouble(const std::string_view &);
 
     const bool CheckForCorrectBracketSequence(const std::string_view &);
+
+    void RemoveSpaceSymbolsFromString(std::string &);
 }
 
 

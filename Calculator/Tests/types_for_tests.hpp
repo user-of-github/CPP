@@ -22,4 +22,11 @@ public:
 };
 
 
+struct TestRemovingSpaces
+{
+    std::string source;
+    std::string result;
+};
+
+
 #endif //TEST_CALCULATOR_TYPES_FOR_TESTS_HPP

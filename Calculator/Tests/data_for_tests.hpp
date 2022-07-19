@@ -73,4 +73,14 @@ const std::string invalid_sequences_with_brackets[] {
         "(())(((((<>{}[]))))[[[]]]"
 };
 
+
+const TestRemovingSpaces sentences_with_space_symbols[] {
+        {"some string without spaces", "somestringwithoutspaces"},
+        {"    some string without spaces", "somestringwithoutspaces"},
+        {"some string    without spaces", "somestringwithoutspaces"},
+        {"   some    string without    spaces    ", "somestringwithoutspaces"},
+        {"   1  + 2   + 3   +   4 + 5 + (((5) + 5 ))", "1+2+3+4+5+(((5)+5))"},
+        {"1+2+3+4+5+(((5)+5))", "1+2+3+4+5+(((5)+5))"},
+        {"1 +2+ 3+4+5 +(((5\n)+\t5))", "1+2+3+4+5+(((5)+5))"},
+};
 #endif //TEST_CALCULATOR_DATA_FOR_TESTS_HPP
