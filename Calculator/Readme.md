@@ -30,9 +30,12 @@ _Different types of brackets. Spaces between characters for comfortable input_
 * [ ] Minus (as sign and for numbers) (`-2` and `6 - (5 + 6)`)  
 * [ ] Chain of pows (2^2^2^2)   
 * [ ] Brackets  
-* [ ] Converters for different types of numbers (one default and other can be for my custom types)  
-* [ ] Extractors for different types of numbers  
-* [ ] Write about extractors and converters concept to this Readme
+* [ ] The idea of converters for different types of numbers (one default and other can be for my custom types)  
+* [ ] The idea of extractors for different types of numbers
+* [ ] Make it work as template or constructor params
+* [ ] Copy constructor, Move Constructor, operators   
+* [ ] Write about extractors and converters concept to this Readme  
+
  
 &nbsp;
 

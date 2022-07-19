@@ -19,7 +19,7 @@ namespace Calculator
         void Compute();
 
         void SetConverter(const std::function<const ValueType(const std::string_view)> &);
-
+        // temp
         void SetExtractor(const std::function<const std::string(const std::string_view &, std::size_t &)> &);
 
     private:
@@ -31,10 +31,12 @@ namespace Calculator
         };
 
         std::string source_;
-        std::stack<char> arithmetic_signs_;
-        std::stack<ValueType> numbers_;
+
         std::function<const ValueType(const std::string_view)> converter_ {Utils::StringToDoubleConverterDefault};
         std::function<const std::string_view(const std::string_view &, std::size_t &)> extractor_ {Utils::ExtractDoubleNumberDefault};
+
+        std::stack<char> arithmetic_signs_;
+        std::stack<ValueType> numbers_;
     };
 }
 
