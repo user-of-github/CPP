@@ -6,6 +6,7 @@ _A type of Calculator app, which can compute provided string with arithmetic exp
 work with brackets and variable operators with different priorities.
 Uses __[reversal polish notation](https://en.wikipedia.org/wiki/Reverse_Polish_notation)__._
 
+_Different types of brackets. Spaces between characters for comfortable input_
 ### Used:
 
 * _C++ 17_
