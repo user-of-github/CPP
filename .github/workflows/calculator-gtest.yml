@@ -1,6 +1,11 @@
 name: Calculator Google Tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'Calculator/*'
 
 jobs:
   build:
