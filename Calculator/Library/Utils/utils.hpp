@@ -16,7 +16,7 @@ namespace Calculator::Utils
     const std::set kSpaceSymbols{' ', '\t', '\r', '\n'};
     const std::array kBrackets{'(', ')', '<', '>', '[', ']', '{', '}'};
     const std::set<char> kBracketsSet{std::cbegin(kBrackets), std::cend(kBrackets)};
-    const std::set<char> kOperators {'+', '-', '*', '/', '^', '%'};
+    const std::set kOperators {'+', '-', '*', '/', '^', '%'};
 
     const std::string_view ExtractDoubleNumberDefault(const std::string_view &, std::size_t &);
 

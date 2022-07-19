@@ -11,10 +11,8 @@ namespace Calculator::Utils
 
         const auto check_conditions{[&]() -> bool {
             if (index >= total_length) return false;
-            const auto &curr{source.at(index)};
-            return std::find(std::cbegin(kBrackets), std::cend(kBrackets), curr) == std::cend(kBrackets)
-                   && std::find(std::cbegin(kOperators), std::cend(kOperators), curr) == std::cend(kOperators)
-                   && std::find(std::cbegin(kSpaceSymbols), std::cend(kSpaceSymbols), curr) == std::cend(kSpaceSymbols);
+            const auto &current{source.at(index)};
+            return !kBracketsSet.contains(current) && !kOperators.contains(current) && !kSpaceSymbols.contains(current);
         }};
 
         while (check_conditions())
