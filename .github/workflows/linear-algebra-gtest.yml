@@ -1,6 +1,11 @@
 name: Linear Algebra Google Tests
 
-on: [push]
+on:
+  push:
+    branches:
+      - 'master'
+    paths:
+      - 'LinearAlgebra/*'
 
 jobs:
   build:
