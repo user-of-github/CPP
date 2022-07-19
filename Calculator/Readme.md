@@ -15,14 +15,15 @@ _Different types of brackets. Spaces between characters for comfortable input_
 * _[GitHub Actions CI](https://github.com/features/actions)_
 
 
-### _To run tests:_  
-0. Move to `Tests` folder `cd Tests`  
-1. You may just run a script `test.sh`  
-2. Or do everything manually 
-3. `rm -rf ./build`  
-4. `cmake -S . -B build -G "MinGW Makefiles"`  
-5. `cmake --build build`  
-6. `cd build && ctest`
+### _To run tests:_ 
+0. _You must have GNU 10+ installed_  
+1. _Move to `Tests` folder `cd Tests`_  
+2. _You may just run a script `test.sh`_  
+3. _Or do everything manually_ 
+4. _`rm -rf ./build`_  
+5. _`cmake -S . -B build -G "MinGW Makefiles"`_  
+6. _`cmake --build build`_  
+7. _`cd build && ctest`_
 
 &nbsp;
 
