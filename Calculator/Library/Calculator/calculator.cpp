@@ -1,12 +1,12 @@
 #include "calculator.hpp"
 
-#include <utility>
 
 namespace Calculator
 {
     template<typename ValueType>
-    Calculator<ValueType>::Calculator(std::string source) noexcept: source_{std::move(source)}
-    {}
+    Calculator<ValueType>::Calculator(const ExtractorFunctionType &extractor, const ConverterFunctionType &converter)
+            : extractor_{extractor}, converter_{converter}
+    {};
 
     template<typename ValueType>
     void Calculator<ValueType>::Compute()
@@ -21,29 +21,43 @@ namespace Calculator
         const auto is_digit{[](const auto symbol) -> bool const { return symbol >= '0' && symbol <= '9'; }};
         const auto is_bracket{[](const auto symbol) -> bool const { return Utils::kBracketsSet.contains(symbol); }};
         const auto is_operator{[](const auto symbol) -> bool const { return Utils::kOperators.contains(symbol); }};
+        const auto get_bracket_index{[](const auto symbol) -> std::size_t const {
+            return std::distance(std::cbegin(Utils::kBrackets), Utils::FindInCollection(Utils::kBrackets, symbol));
+        }};
 
         while (counter < length)
         {
-            if (const auto &current_symbol{this->source_.at(counter)}; is_digit(current_symbol))
+            const auto &current_symbol{this->source_.at(counter)};
+            if (is_digit(current_symbol))
             {
                 const auto extracted_string{this->extractor_(this->source_, counter)};
-                const auto value{this->converter_(extracted_string)}; // LINK TO TEMPLATES (FOR FUTURE)
-                std::cout << value << '\n';
+                const auto value{this->converter_(extracted_string)};
+                std::cout <<"Number " << value << '\n';
                 this->numbers_.push(value);
             }
-            ++counter;
+            else if (is_bracket(current_symbol))
+            {
+                if (get_bracket_index(current_symbol) % 2 == 0) // opening
+                {
+                    std::cout << "Opening bracket: " << current_symbol << '\n';
+                }
+                else // closing
+                {
+                    std::cout << "Closing bracket: " << current_symbol << '\n';
+                }
+                ++counter;
+            }
+            else if (is_operator(current_symbol))
+            {
+                std::cout << "Operator: " << current_symbol << '\n';
+                ++counter;
+            }
         }
     }
 
     template<typename ValueType>
-    void Calculator<ValueType>::SetConverter(const std::function<const ValueType(const std::string_view)> &new_converter)
+    void Calculator<ValueType>::SetExpression(const std::string_view &source)
     {
-        this->converter_ = new_converter;
-    }
-
-    template<typename ValueType>
-    void Calculator<ValueType>::SetExtractor(const std::function<const std::string(const std::string_view &, std::size_t &)> &new_extractor)
-    {
-        this->extractor_ = new_extractor;
+        this->source_ = std::string{source};
     }
 }

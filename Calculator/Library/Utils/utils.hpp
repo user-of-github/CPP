@@ -7,7 +7,7 @@
 #include <stack>
 #include <iostream>
 #include <algorithm>
-
+#include <variant>
 
 namespace Calculator::Utils
 {
@@ -25,6 +25,9 @@ namespace Calculator::Utils
     const bool CheckForCorrectBracketSequence(const std::string_view &);
 
     void RemoveSpaceSymbolsFromString(std::string &);
+
+    template<typename CollectionType, typename ValueType>
+    const auto FindInCollection(const CollectionType &, const ValueType);
 }
 
 

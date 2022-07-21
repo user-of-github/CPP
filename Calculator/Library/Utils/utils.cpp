@@ -26,7 +26,8 @@ namespace Calculator::Utils
             ++index;
         }
 
-        if (extract_from == index) throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
+        if (extract_from == index)
+            throw std::invalid_argument{"Invalid float number. Provided range doesn't start with a digit"};
 
         const auto response{std::string_view{source.substr(extract_from, index - extract_from)}};
 
@@ -89,5 +90,19 @@ namespace Calculator::Utils
         const auto new_end{std::remove_if(std::begin(source), std::end(source), check_if_space_symbol)};
         source.erase(new_end, std::end(source));
         source.shrink_to_fit();
+    }
+
+    template<typename ValueType, typename Count>
+    const auto FindInCollection(const std::variant<std::set<ValueType>, std::array<ValueType, Count>> &collection, const ValueType &what_to_find)
+    {
+        try
+        {
+            return std::find(std::cbegin(collection), std::cend(collection), what_to_find);
+        }
+        catch (const std::exception &exception)
+        {
+            std::cout << exception.what();
+            throw std::runtime_error(std::string{"Error in FindInCollection. "} + exception.what());
+        }
     }
 }

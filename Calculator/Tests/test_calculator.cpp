@@ -5,9 +5,9 @@
 
 TEST(Calculator, baseConstructors)
 {
-    Calculator::Calculator test {"1 + 2 + 69853 + 448"};
+    Calculator::Calculator test {};
 
-    test.SetConverter(Calculator::Utils::StringToDoubleConverterDefault);
+    test.SetExpression("1 + 2 + 69853 + 448");
 
     test.Compute();
 }

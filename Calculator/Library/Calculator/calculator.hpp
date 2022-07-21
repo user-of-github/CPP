@@ -10,17 +10,19 @@
 
 namespace Calculator
 {
-    template<typename ValueType = int>
+    template<typename ValueType = double>
     class Calculator
     {
+        using ConverterFunctionType = std::function<const ValueType(const std::string_view)>;
+        using ExtractorFunctionType = std::function<const std::string_view(const std::string_view &, std::size_t &)>;
+
     public:
-        explicit Calculator(std::string) noexcept;
+        Calculator(const ExtractorFunctionType & = Utils::ExtractDoubleNumberDefault,
+                   const ConverterFunctionType & = Utils::StringToDoubleConverterDefault);
+
+        void SetExpression(const std::string_view &);
 
         void Compute();
-
-        void SetConverter(const std::function<const ValueType(const std::string_view)> &);
-        // temp
-        void SetExtractor(const std::function<const std::string(const std::string_view &, std::size_t &)> &);
 
     private:
         const std::map<const char, const std::function<const ValueType(const ValueType, const ValueType)>> kOperations{
@@ -30,10 +32,10 @@ namespace Calculator
                 {'/', [](const ValueType a, const ValueType b) -> ValueType const { return a / b; }},
         };
 
-        std::string source_;
+        ConverterFunctionType converter_;
+        ExtractorFunctionType extractor_;
 
-        std::function<const ValueType(const std::string_view)> converter_ {Utils::StringToDoubleConverterDefault};
-        std::function<const std::string_view(const std::string_view &, std::size_t &)> extractor_ {Utils::ExtractDoubleNumberDefault};
+        std::string source_;
 
         std::stack<char> arithmetic_signs_;
         std::stack<ValueType> numbers_;
