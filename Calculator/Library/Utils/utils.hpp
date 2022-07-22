@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <variant>
 
+
 namespace Calculator::Utils
 {
     const std::set kDigits{'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
@@ -26,8 +27,17 @@ namespace Calculator::Utils
 
     void RemoveSpaceSymbolsFromString(std::string &);
 
-    template<typename CollectionType, typename ValueType>
-    const auto FindInCollection(const CollectionType &, const ValueType);
+    const auto is_digit{[](const auto symbol) -> bool const { return symbol >= '0' && symbol <= '9'; }};
+    const auto is_bracket{[](const auto symbol) -> bool const { return kBracketsSet.contains(symbol); }};
+    const auto is_operator{[](const auto symbol) -> bool const { return kOperators.contains(symbol); }};
+    const auto get_bracket_index{[](const auto symbol) -> std::size_t const {
+        return std::distance(std::cbegin(kBrackets), std::find(std::cbegin(kBrackets), std::cend(kBrackets), symbol));
+    }};
+
+    //template <typename ValueType, std::size_t Size>
+    //using CollectionsType = std::variant<std::set<ValueType>, std::array<ValueType, Size>, std::set<ValueType>>;
+    //template <typename ValueType, std::size_t Size>
+    //auto FindInCollection(const CollectionsType<ValueType, Size> &, const ValueType);
 }
 
 

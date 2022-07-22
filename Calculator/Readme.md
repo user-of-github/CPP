@@ -51,6 +51,7 @@ _Different types of brackets. Spaces between characters for comfortable input_
 * [x] Make it work as template or constructor params
 * [ ] Copy constructor, Move Constructor, operators
 * [x] Write about extractors and converters concept to this Readme
+* [ ] Refactor
 
 &nbsp;
 

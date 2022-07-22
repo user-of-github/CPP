@@ -24,8 +24,14 @@ public:
 
 struct TestRemovingSpaces
 {
-    std::string source;
-    std::string result;
+    const std::string source;
+    const std::string result;
+};
+
+struct TestCalculatorComputings
+{
+    const std::string source;
+    const double result;
 };
 
 

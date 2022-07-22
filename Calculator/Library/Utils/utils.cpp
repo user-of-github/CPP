@@ -91,18 +91,4 @@ namespace Calculator::Utils
         source.erase(new_end, std::end(source));
         source.shrink_to_fit();
     }
-
-    template<typename ValueType, typename Count>
-    const auto FindInCollection(const std::variant<std::set<ValueType>, std::array<ValueType, Count>> &collection, const ValueType &what_to_find)
-    {
-        try
-        {
-            return std::find(std::cbegin(collection), std::cend(collection), what_to_find);
-        }
-        catch (const std::exception &exception)
-        {
-            std::cout << exception.what();
-            throw std::runtime_error(std::string{"Error in FindInCollection. "} + exception.what());
-        }
-    }
 }

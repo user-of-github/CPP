@@ -83,4 +83,11 @@ const TestRemovingSpaces sentences_with_space_symbols[] {
         {"1+2+3+4+5+(((5)+5))", "1+2+3+4+5+(((5)+5))"},
         {"1 +2+ 3+4+5 +(((5\n)+\t5))", "1+2+3+4+5+(((5)+5))"},
 };
+
+const TestCalculatorComputings tasks[] {
+        {"6 + 5 + 4 + 3 + 2 + 1", 21},
+        {"6 + 5 + 4 + 3 + 2 * 2", 22},
+        {"6 + (5 * 4) + 3 - 2 - 1", 26},
+        {"6 + 5 + 4 + 3 + 2 + 1", 21},
+};
 #endif //TEST_CALCULATOR_DATA_FOR_TESTS_HPP
