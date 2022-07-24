@@ -1,11 +1,6 @@
 name: Calculator Google Tests
 
-on:
-  push:
-    paths:
-      - 'Calculator/*'
-      - 'Calculator/'
-      - 'Calculator'
+on: [push]
 
 jobs:
   build:
