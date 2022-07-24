@@ -10,7 +10,8 @@ namespace Calculator
                                                                               {'/', 2}};
 
     template<typename ValueType>
-    Calculator<ValueType>::Calculator(const std::string_view &source, const ExtractorFunctionType &extractor, const ConverterFunctionType &converter)
+    Calculator<ValueType>::Calculator(const std::string_view &source, const ExtractorFunctionType &extractor,
+                                      const ConverterFunctionType &converter)
             : source_{source}, extractor_{extractor}, converter_{converter}
     {};
 
@@ -47,6 +48,8 @@ namespace Calculator
     template<typename ValueType>
     void Calculator<ValueType>::ComputeBracket(const char bracket, std::size_t &index)
     {
+        //std::cout << "BRACKET " << bracket << '\n';
+
         if (Utils::get_bracket_index(bracket) % 2 == 0) // opening
         {
             this->arithmetic_signs_.push(bracket);
@@ -67,6 +70,7 @@ namespace Calculator
     {
         const auto extracted_string{this->extractor_(this->source_, index)};
         const auto value{this->converter_(extracted_string)};
+        //std::cout << "NUMBER " << value << '\n';
         this->numbers_.push(value);
     }
 
@@ -74,9 +78,11 @@ namespace Calculator
     void Calculator<ValueType>::ComputeOperator(const char symbol, size_t &index)
     {
         //std::cout << "Operator: " << symbol << '\n';
+        //std::cout << "OPERATOR " << symbol << '\n';
 
-        if (symbol == '-' && this->numbers_.empty())
-            this->numbers_.push(ValueType(0));
+        if (symbol == '-')
+            if (this->numbers_.empty() ||(!this->arithmetic_signs_.empty() && Utils::is_bracket(this->arithmetic_signs_.top()) && Utils::get_bracket_index(this->arithmetic_signs_.top()) % 2 == 0))
+                this->numbers_.push(ValueType(0));
 
         if (this->arithmetic_signs_.empty())
         {
@@ -87,18 +93,19 @@ namespace Calculator
 
         const auto &current_top_operator{this->arithmetic_signs_.top()};
         const auto current_operator_priority{Calculator::kPriorities.at(symbol)};
-        const auto current_top_priority{Calculator::kPriorities.at(current_top_operator)};
 
-        if (current_operator_priority > current_top_priority)
+        if (Utils::is_bracket(current_top_operator))
         {
+            // ?? if (const auto index{Utils::get_bracket_index(current_top_operator)}; index % 2 == 0) // opening
             this->arithmetic_signs_.push(symbol);
             ++index;
             return;
         }
 
-        if (Utils::is_bracket(current_top_operator))
+        const auto current_top_priority{Calculator::kPriorities.at(current_top_operator)};
+
+        if (current_operator_priority > current_top_priority)
         {
-            // ?? if (const auto index{Utils::get_bracket_index(current_top_operator)}; index % 2 == 0) // opening
             this->arithmetic_signs_.push(symbol);
             ++index;
             return;
