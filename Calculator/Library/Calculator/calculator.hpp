@@ -10,7 +10,7 @@
 
 namespace Calculator
 {
-    template<typename ValueType = double>
+    template<typename ValueType = int>
     class Calculator
     {
         using ConverterFunctionType = std::function<const ValueType(const std::string_view)>;

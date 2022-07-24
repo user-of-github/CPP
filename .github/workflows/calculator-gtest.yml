@@ -2,10 +2,10 @@ name: Calculator Google Tests
 
 on:
   push:
-    branches:
-      - 'master'
     paths:
       - 'Calculator/*'
+      - 'Calculator/'
+      - 'Calculator'
 
 jobs:
   build:
