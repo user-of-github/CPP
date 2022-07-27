@@ -16,6 +16,8 @@ namespace Calculator
         using ConverterFunctionType = std::function<const ValueType(const std::string_view)>;
         using ExtractorFunctionType = std::function<const std::string_view(const std::string_view &, std::size_t &)>;
 
+        enum class TokenType {kNumber, kOpeningBracket, kClosingBracket, kOperator};
+
     public:
         Calculator(const std::string_view &, const ExtractorFunctionType & = Utils::ExtractDoubleNumberDefault,
                    const ConverterFunctionType & = Utils::StringToDoubleConverterDefault);
@@ -40,11 +42,19 @@ namespace Calculator
         std::stack<char> arithmetic_signs_;
         std::stack<ValueType> numbers_;
 
+        TokenType last_computed_token_;
+
         void ComputeBracket(const char, std::size_t &);
+
         void ComputeNumber(std::size_t &);
+
         void ComputeOperator(const char, std::size_t &);
+
         void ExecutePriorityOperators(const char = 0);
+
         void PerformSingleOperation();
+
+        const bool DefineIfMinusRefersToNegativeNumber() const;
     };
 }
 
