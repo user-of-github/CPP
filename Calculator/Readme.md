@@ -14,7 +14,8 @@ _Different types of brackets. Spaces between characters for comfortable input_
 * _C++ 17_
 * _[CMake](https://cmake.org/)_
 * _[Google Tests](https://github.com/google/googletest)_
-* _[GitHub Actions CI](https://github.com/features/actions)_
+* _[GitHub Actions CI](https://github.com/features/actions)_  
+* _[Google C++ CodeStyle](https://google.github.io/styleguide/cppguide.html)_
 
 ### _To run tests:_
 
