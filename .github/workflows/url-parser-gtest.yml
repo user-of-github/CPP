@@ -3,8 +3,11 @@ name: URL Parser Google Tests
 on: [push]
 
 jobs:
-  build:
-    runs-on: windows-2022
+   build:
+    runs-on: ubuntu-20.04
+    
+    env:
+      CXX: g++-10
     
 
     steps:
