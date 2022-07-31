@@ -67,7 +67,7 @@ std::string Url::DomainZone() const
     return this->domain_zone_;
 }
 
-std::variant<std::string, unsigned short> Url::Port() const
+std::variant<std::string, int> Url::Port() const
 {
     return this->port_;
 }
@@ -136,7 +136,7 @@ std::ostream &operator<<(std::ostream &stream, const Url &url)
     if (url.port_.index() == 0)
         stream << std::get<std::string>(url.port_);
     else
-        stream << std::get<unsigned short>(url.port_);
+        stream << std::get<int>(url.port_);
     stream << '\n';
     stream << '\t' << "Path: " << url.path_ << '\n';
     stream << '\t' << "Query: " << url.whole_query_ << '\n';

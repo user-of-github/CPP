@@ -7,7 +7,7 @@ struct UrlForTest
     const std::string protocol;
     const std::string host;
     const std::string domain_zone;
-    const std::variant<std::string, unsigned short> port;
+    const std::variant<std::string, int> port;
     const std::string path;
     const std::string query;
     const std::string hash;

@@ -29,7 +29,7 @@ public:
 
     std::string DomainZone() const;
 
-    std::variant<std::string, unsigned short> Port() const;
+    std::variant<std::string, int> Port() const;
 
     std::string Path() const;
 
@@ -69,7 +69,7 @@ private:
     std::string protocol_;
     std::string host_;
     std::string domain_zone_;
-    std::variant<std::string, unsigned short> port_;
+    std::variant<std::string, int> port_;
     std::string path_;
     std::string whole_query_;
     std::string hash_;
