@@ -36,7 +36,7 @@ _Different types of brackets. Spaces between characters for comfortable input_
 * [x] The idea of extractors for different types of numbers
 * [x] Make it work as template or constructor params
 * [ ] Copy constructor, Move Constructor, operators
-* [ ] Refactor  
+* [x] Refactor  
 * [ ] Learn to build and use static library
 
 &nbsp;

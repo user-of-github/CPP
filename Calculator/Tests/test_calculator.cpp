@@ -31,5 +31,5 @@ TEST(Calculator, TasksPack4ComplexExpressions)
 TEST(Calculator, TasksPack5)
 {
     for (const auto &[source, result] : test_pack_5)
-        EXPECT_EQ(Calculator::Calculator<long long>{source}.Compute(), result);
+        EXPECT_EQ(Calculator::Calculator{source}.Compute(), result);
 }

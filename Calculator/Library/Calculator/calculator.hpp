@@ -5,6 +5,7 @@
 #include <map>
 #include <functional>
 #include <cmath>
+#include <ostream>
 #include "../Utils/utils.hpp"
 
 

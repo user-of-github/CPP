@@ -83,7 +83,8 @@ namespace Calculator
     {
         ++index;
 
-        if (symbol == '-' && this->DefineIfMinusRefersToNegativeNumber()) this->numbers_.push(ValueType(0));
+        if (const char kMinus{'-'}; symbol == kMinus && this->DefineIfMinusRefersToNegativeNumber())
+            this->numbers_.push(ValueType(0));
 
         this->last_computed_token_ = TokenType::kOperator;
 
@@ -165,9 +166,9 @@ namespace Calculator
 
 
     template<typename ValueType>
-    std::ostream &operator<<(std::ostream &stream, Calculator<ValueType> &rhs)
+    std::ostream &operator<<(std::ostream &stream, const Calculator<ValueType> &rhs)
     {
-        stream << rhs.raw_source_ << " = ";
+        stream << rhs.raw_source_ << " = " << rhs.response_;
         return stream;
     }
 }
