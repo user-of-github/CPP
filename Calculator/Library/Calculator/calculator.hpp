@@ -10,10 +10,10 @@
 
 namespace Calculator
 {
-    template<typename ValueType = int>
+    template<typename ValueType = long long>
     class Calculator
     {
-        enum class TokenType {kNumber, kOpeningBracket, kClosingBracket, kOperator, kExpressionBeginning};
+        enum class TokenType{kNumber, kOpeningBracket, kClosingBracket, kOperator, kExpressionBeginning};
 
     public:
         Calculator(const std::string_view &);

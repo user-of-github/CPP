@@ -4,8 +4,14 @@
 #include "../Library/Calculator/calculator.cpp"
 
 
-TEST(Calculator, baseConstructors)
+TEST(Calculator, tasksPack1)
 {
-    for (const auto &[source, result] : tasks)
+    for (const auto &[source, result] : tasks_pack_1)
+        EXPECT_DOUBLE_EQ(Calculator::Calculator{source}.Compute(), result);
+}
+
+TEST(Calculator, tasksPack2)
+{
+    for (const auto &[source, result] : tasks_pack_2)
         EXPECT_DOUBLE_EQ(Calculator::Calculator{source}.Compute(), result);
 }

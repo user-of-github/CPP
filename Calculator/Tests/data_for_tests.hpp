@@ -85,7 +85,7 @@ const TestRemovingSpaces sentences_with_space_symbols[] {
 };
 
 
-const TestCalculatorComputings tasks[] {
+const TestCalculatorComputings tasks_pack_1[] {
         {"6 + 5 + 4 + 3 + 2 + 1", 21},
         {"6 + 5 + 4 + 3 + 2 * 2", 22},
         {"6 + 5 * 4 + 3 - 2 - 1", 26},
@@ -103,6 +103,18 @@ const TestCalculatorComputings tasks[] {
         {"  482 / (  31 - 29  )", 241},
         {"  480 / (  -31 - 29  )", -8},
         {"  - 480 / (  -31 - 29  )", 8},
+        {"(-5)", -5},
+        {"-(-5)", 5},
+        {"-(-(-(-5)))", 5},
+        {"((((-5))))", -5},
+};
+
+
+const TestCalculatorComputings tasks_pack_2[]{
+        {"50 * 60 * 70 * 80 * 90 / 90 / 80 / 70 / 60 / 50", 1},
+        {"5 * 6 * 7 * 8 * 9 / 9 / 8 / 7 / 6 / 5 - 1", 0 },
+        {"1 - 5 * 6 * 7 * 8 * 9 / 9 / 8 / 7 / 6 / 5",0 },
+        {"(1 - 5) * 6 * 7 * 8 * 9 / 9 / 8 / 7 / 6 / 4",-1 },
 };
 
 
