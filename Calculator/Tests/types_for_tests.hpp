@@ -5,20 +5,20 @@
 class TestNumberExtractingBase
 {
 public:
-    std::string source {};
-    std::size_t extract_from {};
+    std::string source{};
+    std::size_t extract_from{};
 };
 
 class TestNumberExtractingValid : public TestNumberExtractingBase
 {
 public:
-    std::string right_response {};
+    std::string right_response{};
 };
 
 class TestNumberConvertingValid : public TestNumberExtractingBase
 {
 public:
-    double right_response {};
+    double right_response{};
 };
 
 

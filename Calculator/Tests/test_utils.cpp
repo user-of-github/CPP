@@ -17,7 +17,7 @@ TEST(Utils, ExtractingNumberValid)
 
 TEST(Utils, ExtractingNumberInvalid)
 {
-    for (auto [source, from] : invalid_strings_for_extracting_numbers)
+    for (auto[source, from] : invalid_strings_for_extracting_numbers)
         EXPECT_THROW(Calculator::Utils::ExtractDoubleNumberDefault(source, from), std::invalid_argument);
 }
 

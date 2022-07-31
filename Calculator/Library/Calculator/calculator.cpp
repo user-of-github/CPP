@@ -15,48 +15,43 @@ namespace Calculator
     const std::string Calculator<ValueType>::kInvalidExpressionException{"Error. Provided exception is invalid"};
 
     template<typename ValueType>
-    Calculator<ValueType>::Calculator(const std::string_view &source): source_{source}
+    Calculator<ValueType>::Calculator(const std::string_view &source): raw_source_{source}, source_{source}
     {}
 
     template<typename ValueType>
-    const ValueType Calculator<ValueType>::Compute()
+    ValueType Calculator<ValueType>::Compute()
     {
         if (!Utils::CheckForCorrectBracketSequence(this->source_))
             throw std::invalid_argument(Calculator::kInvalidExpressionException);
 
         Utils::RemoveSpaceSymbolsFromString(this->source_);
 
-        const auto &length{this->source_.size()};
-        std::size_t counter{0};
-
+        const auto &total_length{this->source_.size()};
+        std::size_t index{0};
         this->last_computed_token_ = TokenType::kExpressionBeginning;
 
-        while (counter < length)
+        while (index < total_length)
         {
-            //std::cout << "index: " << counter << '\n';
-            const auto &current_symbol{this->source_.at(counter)};
-            if (Utils::is_digit(current_symbol))
-                this->ComputeNumber(counter);
+            if (const auto &current_symbol{this->source_.at(index)}; Utils::is_digit(current_symbol))
+                this->ComputeNumber(index);
             else if (Utils::is_bracket(current_symbol))
-                this->ComputeBracket(current_symbol, counter);
+                this->ComputeBracket(current_symbol, index);
             else if (Utils::is_operator(current_symbol))
-                this->ComputeOperator(current_symbol, counter);
+                this->ComputeOperator(current_symbol, index);
             else
                 throw std::runtime_error(Calculator::kInvalidExpressionException);
         }
-        //std::cout << "STACKS NUMBERS SIZE " << this->numbers_.size() << '\n';
-        //std::cout << "STACKS OPERATORS SIZE " << this->arithmetic_signs_.size() << '\n';
 
         this->ExecutePriorityOperators();
 
-        return this->numbers_.top();
+        this->response_ = this->numbers_.top();
+
+        return this->response_;
     }
 
     template<typename ValueType>
     void Calculator<ValueType>::ComputeBracket(const char bracket, std::size_t &index)
     {
-        //std::cout << "BRACKET: " << bracket << '\n';
-
         if (Utils::get_bracket_index(bracket) % 2 == 0) // opening
         {
             this->last_computed_token_ = TokenType::kOpeningBracket;
@@ -80,17 +75,15 @@ namespace Calculator
         this->last_computed_token_ = TokenType::kNumber;
         const auto extracted_string{Utils::ExtractDoubleNumberDefault(this->source_, index)};
         const auto value{(ValueType) Utils::StringToDoubleConverterDefault(extracted_string)};
-        //std::cout << "NUMBER: " << value << '\n';
         this->numbers_.push(value);
     }
 
     template<typename ValueType>
     void Calculator<ValueType>::ComputeOperator(const char symbol, size_t &index)
     {
-        //std::cout << "OPERATOR: " << symbol << '\n';
         ++index;
-        // is minus referred to number (negative) or just operator
-        if (symbol == '-') if (this->DefineIfMinusRefersToNegativeNumber()) this->numbers_.push(ValueType(0));
+
+        if (symbol == '-' && this->DefineIfMinusRefersToNegativeNumber()) this->numbers_.push(ValueType(0));
 
         this->last_computed_token_ = TokenType::kOperator;
 
@@ -117,15 +110,14 @@ namespace Calculator
             return;
         }
 
-        this->ExecutePriorityOperators();
+        this->ExecutePriorityOperators(Calculator::kPriorities.at(symbol));
         this->arithmetic_signs_.push(symbol);
     }
 
     template<typename ValueType>
     void Calculator<ValueType>::ExecutePriorityOperators(const char priority)
     {
-
-        const auto default_conditions{[&]() -> bool const {
+        const auto default_conditions{[&]() -> bool {
             return !this->arithmetic_signs_.empty()
                    && !Utils::is_bracket(this->arithmetic_signs_.top())
                    && priority <= Calculator::kPriorities.at(this->arithmetic_signs_.top());
@@ -138,8 +130,6 @@ namespace Calculator
     template<typename ValueType>
     void Calculator<ValueType>::PerformSingleOperation()
     {
-        //std::cout << "<Performing single operation>\n";
-        //std::cout << "Operations stack size: " << this->arithmetic_signs_.size() << '\n';
         try
         {
             const auto second{this->numbers_.top()};
@@ -154,27 +144,30 @@ namespace Calculator
             const auto result{this->kOperations.at(operation)(first, second)};
 
             this->numbers_.push(result);
-
-            //std::cout << first << " " << operation << " " << second << " = " << result << '\n';
         }
         catch (const std::exception &exception)
         {
             std::cout << exception.what() << '\n';
             throw std::runtime_error("Some troubles in 'PerformSingleOperation' function");
         }
-        //std::cout << "Operations stack size: " << this->arithmetic_signs_.size() << '\n';
-        //std::cout << "</Performing single operation>\n";
     }
 
     template<typename ValueType>
-    const bool Calculator<ValueType>::DefineIfMinusRefersToNegativeNumber() const
+    bool Calculator<ValueType>::DefineIfMinusRefersToNegativeNumber() const
     {
         if (this->last_computed_token_ == Calculator::TokenType::kExpressionBeginning) return true;
-        if (this->last_computed_token_ == Calculator::TokenType::kNumber) return false;
         if (this->last_computed_token_ == Calculator::TokenType::kOpeningBracket) return true;
+        if (this->last_computed_token_ == Calculator::TokenType::kNumber) return false;
         if (this->last_computed_token_ == Calculator::TokenType::kClosingBracket) return false;
 
-        //std::cout << this->source_ << '\n';
         throw std::invalid_argument(Calculator::kInvalidExpressionException);
+    }
+
+
+    template<typename ValueType>
+    std::ostream &operator<<(std::ostream &stream, Calculator<ValueType> &rhs)
+    {
+        stream << rhs.raw_source_ << " = ";
+        return stream;
     }
 }

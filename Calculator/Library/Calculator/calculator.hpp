@@ -16,9 +16,9 @@ namespace Calculator
         enum class TokenType{kNumber, kOpeningBracket, kClosingBracket, kOperator, kExpressionBeginning};
 
     public:
-        Calculator(const std::string_view &);
+        explicit Calculator(const std::string_view &);
 
-        const ValueType Compute();
+        ValueType Compute();
 
     private:
         const static std::map<const char, const char> kPriorities;
@@ -26,18 +26,20 @@ namespace Calculator
         const static std::string kInvalidExpressionException;
 
         const std::map<const char, const std::function<const ValueType(const ValueType, const ValueType)>> kOperations{
-                {'+', [](const ValueType a, const ValueType b) -> ValueType const { return a + b; }},
-                {'-', [](const ValueType a, const ValueType b) -> ValueType const { return a - b; }},
-                {'*', [](const ValueType a, const ValueType b) -> ValueType const { return a * b; }},
-                {'/', [](const ValueType a, const ValueType b) -> ValueType const { return a / b; }},
+                {'+', [](const ValueType a, const ValueType b) -> ValueType { return a + b; }},
+                {'-', [](const ValueType a, const ValueType b) -> ValueType { return a - b; }},
+                {'*', [](const ValueType a, const ValueType b) -> ValueType { return a * b; }},
+                {'/', [](const ValueType a, const ValueType b) -> ValueType { return a / b; }},
         };
 
+        std::string raw_source_;
         std::string source_;
 
         std::stack<char> arithmetic_signs_;
         std::stack<ValueType> numbers_;
-
         TokenType last_computed_token_;
+
+        ValueType response_;
 
         void ComputeBracket(const char, std::size_t &);
 
@@ -49,7 +51,10 @@ namespace Calculator
 
         void PerformSingleOperation();
 
-        const bool DefineIfMinusRefersToNegativeNumber() const;
+        bool DefineIfMinusRefersToNegativeNumber() const;
+
+        template <typename Type>
+        friend std::ostream & operator << (std::ostream &, const Calculator<Type> &);
     };
 }
 

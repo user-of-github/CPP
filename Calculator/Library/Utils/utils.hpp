@@ -6,8 +6,7 @@
 #include <set>
 #include <stack>
 #include <iostream>
-#include <algorithm>
-#include <variant>
+#include <array>
 
 
 namespace Calculator::Utils
@@ -17,27 +16,22 @@ namespace Calculator::Utils
     const std::set kSpaceSymbols{' ', '\t', '\r', '\n'};
     const std::array kBrackets{'(', ')', '<', '>', '[', ']', '{', '}'};
     const std::set<char> kBracketsSet{std::cbegin(kBrackets), std::cend(kBrackets)};
-    const std::set kOperators {'+', '-', '*', '/', '^', '%'};
+    const std::set kOperators{'+', '-', '*', '/', '^', '%'};
 
-    const std::string_view ExtractDoubleNumberDefault(const std::string_view &, std::size_t &);
+    std::string ExtractDoubleNumberDefault(const std::string_view &, std::size_t &);
 
-    const double StringToDoubleConverterDefault(const std::string_view &);
+    long double StringToDoubleConverterDefault(const std::string_view &);
 
-    const bool CheckForCorrectBracketSequence(const std::string_view &);
+    bool CheckForCorrectBracketSequence(const std::string_view &);
 
     void RemoveSpaceSymbolsFromString(std::string &);
 
-    const auto is_digit{[](const auto symbol) -> bool const { return symbol >= '0' && symbol <= '9'; }};
-    const auto is_bracket{[](const auto symbol) -> bool const { return kBracketsSet.contains(symbol); }};
-    const auto is_operator{[](const auto symbol) -> bool const { return kOperators.contains(symbol); }};
-    const auto get_bracket_index{[](const auto symbol) -> std::size_t const {
+    const auto is_digit{[](const auto symbol) -> bool { return symbol >= '0' && symbol <= '9'; }};
+    const auto is_bracket{[](const auto symbol) -> bool { return kBracketsSet.contains(symbol); }};
+    const auto is_operator{[](const auto symbol) -> bool { return kOperators.contains(symbol); }};
+    const auto get_bracket_index{[](const auto symbol) -> std::size_t {
         return std::distance(std::cbegin(kBrackets), std::find(std::cbegin(kBrackets), std::cend(kBrackets), symbol));
     }};
-
-    //template <typename ValueType, std::size_t Size>
-    //using CollectionsType = std::variant<std::set<ValueType>, std::array<ValueType, Size>, std::set<ValueType>>;
-    //template <typename ValueType, std::size_t Size>
-    //auto FindInCollection(const CollectionsType<ValueType, Size> &, const ValueType);
 }
 
 
