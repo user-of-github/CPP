@@ -15,7 +15,7 @@ jobs:
 
     - name: Configure CMake 
       working-directory: URLParser/Tests
-      run: cmake . -B
+      run: cmake . -B build
 
     - name: Build
       working-directory: URLParser/Tests
