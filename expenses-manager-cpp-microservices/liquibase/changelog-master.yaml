@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: migrations/2026-09-19-01_create-base-classificators.sql
+      relativeToChangelogFile: true
+  - include:
+      file: migrations/2026-09-19-02_create-base-entities.sql
+      relativeToChangelogFile: true

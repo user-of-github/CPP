@@ -27,6 +27,7 @@ services:
         condition: service_healthy
     volumes:
       - ./liquibase:/liquibase/changelog
+    working_dir: /liquibase/changelog
     command: >
       --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-expense_db_default}
       --changelog-file=changelog-master.yaml
