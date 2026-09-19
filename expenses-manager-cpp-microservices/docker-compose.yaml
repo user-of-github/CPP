@@ -1,0 +1,39 @@
+version: '3.8'
+
+services:
+  # database
+  postgres:
+    image: postgres:17-alpine
+    container_name: expense_postgres
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-expense_db_default}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    ports:
+      - "${POSTGRES_PORT:-5432}:5432"
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-expense_db_default}"]
+      interval: 3s
+      timeout: 4s
+      retries: 4
+
+  # Liquibase migrations
+  migration-job:
+    image: liquibase/liquibase:4.29
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - ./liquibase:/liquibase/changelog
+    command: >
+      --url=jdbc:postgresql://postgres:5432/${POSTGRES_DB:-expense_db_default}
+      --changelog-file=changelog-master.yaml
+      --username=${POSTGRES_USER:-postgres}
+      --password=${POSTGRES_PASSWORD}
+      update
+
+    
+volumes:
+  postgres-data:
