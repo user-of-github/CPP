@@ -18,6 +18,9 @@ services:
       interval: 3s
       timeout: 4s
       retries: 4
+    networks:
+      - receipts_network
+
 
   # Liquibase migrations
   migration-job:
@@ -34,7 +37,36 @@ services:
       --username=${POSTGRES_USER:-postgres}
       --password=${POSTGRES_PASSWORD}
       update
+    networks:
+      - receipts_network
+
+
+  receipt-service:
+    build:
+      context: ./receipt-service
+      dockerfile: Dockerfile
+    container_name: receipt_service_app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      # !!! Inside docker network host === docker service name
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    ports:
+      - "${APP_PORT:-4000}:${APP_PORT:-4000}"
+    depends_on:
+      postgres:
+        condition: service_healthy 
+      migration-job:
+        condition: service_completed_successfully
+    networks:
+      - receipts_network
 
     
 volumes:
   postgres-data:
+
+networks:
+  receipts_network:
+    driver: bridge

@@ -1,0 +1,13 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/main/docs/vcpkg.schema.json",
+  "name": "receipt-service",
+  "version-string": "0.0.1",
+  "description": "Core REST API service for expense and receipt management",
+  "maintainers": ["@user-of-github"],
+  "homepage": "https://github.com/user-of-github/expenses-manager-cpp-microservices",
+  "license": "MIT",
+  "dependencies": [
+    { "name": "drogon", "features": ["postgres"] },
+    "nlohmann-json"
+  ]
+}
