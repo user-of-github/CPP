@@ -13,6 +13,9 @@ namespace expenses::classificators {
     drogon::Task<std::vector<CategoryDto> > get_categories() const;
 
     ClassificatorRepository() = default;
+
+  private:
+    drogon::orm::DbClientPtr get_db_client() const;
   };
 }
 #endif //RECEIPT_SERVICE_CLASSIFICATOR_REPOSITORY_HPP

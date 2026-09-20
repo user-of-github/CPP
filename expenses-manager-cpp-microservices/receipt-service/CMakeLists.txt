@@ -21,7 +21,8 @@ add_executable(receipt_service src/main.cpp
         src/modules/classificator/classificator_repository.cpp
         src/modules/classificator/classificator_repository.hpp
         src/common/env.hpp
-        src/common/env_config_type.hpp)
+        src/common/env_config_type.hpp
+        src/common/drogon_db_config.hpp)
 
 # Linking libs to my file
 target_link_libraries(

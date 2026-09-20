@@ -1,10 +1,13 @@
-#include "classificator_repository.hpp"
-
-#include <utility>
+#include "./classificator_repository.hpp"
+#include "../../common/drogon_db_config.hpp"
 
 namespace expenses::classificators {
+  drogon::orm::DbClientPtr ClassificatorRepository::get_db_client() const {
+    return drogon::app().getDbClient(common::kDbClientName);
+  }
+
   drogon::Task<std::vector<PaymentMethodDto> > ClassificatorRepository::get_payment_methods() const {
-    const auto db_client = drogon::app().getDbClient("default");
+    const auto db_client = this->get_db_client();
 
     const std::string sql{"SELECT ID, NAME FROM PAYMENT_METHODS WHERE IS_ACTIVE=TRUE"};
     const auto result{co_await db_client->execSqlCoro(sql)};
@@ -23,7 +26,7 @@ namespace expenses::classificators {
   }
 
   drogon::Task<std::vector<CategoryDto> > ClassificatorRepository::get_categories() const {
-    const auto db_client = drogon::app().getDbClient("default");
+    const auto db_client = this->get_db_client();
 
     const std::string sql{"SELECT ID, NAME FROM CATEGORIES WHERE IS_ACTIVE=TRUE"};
     const auto result{co_await db_client->execSqlCoro(sql)};
