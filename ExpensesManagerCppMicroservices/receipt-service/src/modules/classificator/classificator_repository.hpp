@@ -2,10 +2,11 @@
 #define RECEIPT_SERVICE_CLASSIFICATOR_REPOSITORY_HPP
 
 #include <drogon/drogon.h>
+#include <optional>
 #include "../../db/__generated__/PaymentMethods.h"
 #include "../../db/__generated__/Categories.h"
 #include "../../db/__generated__/RetailChains.h"
-
+#include "../../db/__generated__/ConcreteShops.h"
 
 
 namespace expenses::classificators {
@@ -19,7 +20,9 @@ namespace expenses::classificators {
 
     drogon::Task<std::vector<RetailChains> > get_retail_chains() const;
 
-    drogon::Task<std::vector<RetailChains> > get_retail_shops(const int shop_id) const;
+    drogon::Task<std::vector<ConcreteShops> > get_retail_shops(const int retail_id) const;
+
+    drogon::Task<std::optional<ConcreteShops>> get_shop_by_id(const int shop_id) const;
 
     ClassificatorRepository() = default;
 

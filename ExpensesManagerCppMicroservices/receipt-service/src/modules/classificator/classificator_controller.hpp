@@ -5,6 +5,7 @@
 #include <nlohmann/json.hpp>
 #include "./classificator_repository.hpp"
 #include "../../common/utils.hpp"
+#include "../../common/exceptions.hpp"
 
 
 namespace expenses::classificators {
@@ -14,7 +15,8 @@ namespace expenses::classificators {
       ADD_METHOD_TO(ClassificatorController::get_payment_methods, "/payment-methods", drogon::Get);
       ADD_METHOD_TO(ClassificatorController::get_categories, "/categories", drogon::Get);
       ADD_METHOD_TO(ClassificatorController::get_retails_chains, "/retail-chains", drogon::Get);
-      //ADD_METHOD_TO(ClassificatorController::get_retail_shops, "/shops/retail-chain-id={1}", drogon::Get);
+      ADD_METHOD_TO(ClassificatorController::get_retail_shops, "/shops?retail_chain_id={1}", drogon::Get);
+      ADD_METHOD_TO(ClassificatorController::get_shop_by_id, "/shops/{1}", drogon::Get);
 
     METHOD_LIST_END
 
@@ -25,6 +27,8 @@ namespace expenses::classificators {
     drogon::Task<drogon::HttpResponsePtr> get_retails_chains(drogon::HttpRequestPtr req) const;
 
     drogon::Task<drogon::HttpResponsePtr> get_retail_shops(drogon::HttpRequestPtr req, const int &retail_chain_id) const;
+
+    drogon::Task<drogon::HttpResponsePtr> get_shop_by_id(drogon::HttpRequestPtr req, const int &shop_id) const;
 
     ClassificatorController() = default;
 

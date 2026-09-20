@@ -32,6 +32,7 @@ add_executable(receipt_service src/main.cpp
         src/common/drogon_db_config.hpp
         src/common/utils.hpp
         ${GENERATED_DROGON_SOURCES}
+        src/common/exceptions.hpp
 )
 
 # Linking libs to my file

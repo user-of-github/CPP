@@ -20,4 +20,18 @@ namespace expenses::classificators {
     const auto shops{co_await this->repository_.get_retail_shops(retail_chain_id)};
     co_return common::to_json_response(shops);
   }
+
+  drogon::Task<drogon::HttpResponsePtr> ClassificatorController::get_shop_by_id(drogon::HttpRequestPtr req, const int &shop_id) const {
+    if (shop_id <= 0) {
+      throw common::exceptions::BadRequestException("Shop ID must be a positive integer");
+    }
+
+    const auto shop = co_await this->repository_.get_shop_by_id(shop_id);
+
+    if (!shop.has_value()) {
+      throw common::exceptions::NotFoundException("Shop with id " + std::to_string(shop_id) + " not found");
+    }
+
+    co_return common::to_json_response(*shop);
+  }
 }
