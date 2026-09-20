@@ -6,6 +6,7 @@
 #include <set>
 #include <stack>
 #include <iostream>
+#include <algorithm>
 #include <array>
 
 
