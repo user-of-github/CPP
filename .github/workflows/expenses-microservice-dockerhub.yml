@@ -1,4 +1,4 @@
-name: Build docker image and push to Docker Hub
+name: Expenses CPP microservices --> DockerHub
 
 on:
   push:
@@ -8,7 +8,7 @@ on:
 
 jobs:
   build-and-push:
-    name: Push CPP-microservices to DockerHub
+    name: Build & Push
     runs-on: ubuntu-latest
 
     steps:
