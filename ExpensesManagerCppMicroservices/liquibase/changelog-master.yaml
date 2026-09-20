@@ -9,5 +9,5 @@ databaseChangeLog:
       file: seeds/2026-09-19-01_seed-initial-classificators-data.sql
       relativeToChangelogFile: true
   - include:
-      file: seeds/2026-09-19-01_seed-initial-classificators-data.sql
+      file: seeds/2026-09-20-01_seed-cheques-for-testing.sql
       relativeToChangelogFile: true

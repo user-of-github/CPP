@@ -11,7 +11,7 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Searching of libs, which I installed via apt-get or via cloning&building (like Drogon)
 find_package(Drogon REQUIRED)
 find_package(Jsoncpp REQUIRED)
-find_package(nlohmann_json REQUIRED)
+# find_package(nlohmann_json REQUIRED)
 
 # Automatic finding generated models from Drogon
 file(GLOB_RECURSE GENERATED_DROGON_SOURCES
@@ -33,6 +33,10 @@ add_executable(receipt_service src/main.cpp
         src/common/utils.hpp
         ${GENERATED_DROGON_SOURCES}
         src/common/exceptions.hpp
+        src/modules/cheque/cheque_controller.cpp
+        src/modules/cheque/cheque_controller.hpp
+        src/modules/cheque/cheque_repository.cpp
+        src/modules/cheque/cheque_repository.hpp
 )
 
 # Linking libs to my file
@@ -40,5 +44,5 @@ target_link_libraries(
         receipt_service PRIVATE
         Drogon::Drogon
         Jsoncpp_lib
-        nlohmann_json::nlohmann_json
+#        nlohmann_json::nlohmann_json
 )
