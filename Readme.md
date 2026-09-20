@@ -7,5 +7,5 @@
 5. _following best principles of **Google C++ Style Guide**_ 
 
 &nbsp;  
-###### Copyright © 2022 &nbsp;   | &nbsp;   All Rights Reserved
+###### Copyright © 2022 ,  © 2026 &nbsp;   | &nbsp;   All Rights Reserved
 

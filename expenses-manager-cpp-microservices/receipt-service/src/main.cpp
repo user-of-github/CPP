@@ -1,7 +1,7 @@
 #include <drogon/drogon.h>
 #include <trantor/utils/Logger.h>
 #include "./common/env.hpp"
-#include "common/drogon_db_config.hpp"
+#include "./common/drogon_db_config.hpp"
 
 int main() {
   trantor::Logger::setLogLevel(trantor::Logger::kTrace);

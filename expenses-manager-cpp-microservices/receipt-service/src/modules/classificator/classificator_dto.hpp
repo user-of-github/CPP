@@ -30,9 +30,10 @@ namespace expenses::classificators {
   };
 
   // automatically generates to_json function for (de)serialization
-  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PaymentMethodDto, id, name, is_active)
-  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CategoryDto, id, name, description)
-  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ConcreteShopDto, id, retail_chain_id, address, is_active)
+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(PaymentMethodDto, id, name, is_active);
+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(CategoryDto, id, name, description);
+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(RetailChainDto, id, name);
+  NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(ConcreteShopDto, id, retail_chain_id, address, is_active);
 }
 
 #endif //RECEIPT_SERVICE_CLASSIFICATOR_DTO_HPP

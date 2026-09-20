@@ -13,6 +13,13 @@ find_package(Drogon REQUIRED)
 find_package(Jsoncpp REQUIRED)
 find_package(nlohmann_json REQUIRED)
 
+# Automatic finding generated models from Drogon
+file(GLOB_RECURSE GENERATED_DROGON_SOURCES
+        "src/db/*.h"
+        "src/db/*.cc"
+)
+
+
 # declaring executable file
 add_executable(receipt_service src/main.cpp
         src/modules/classificator/classificator_dto.hpp
@@ -22,7 +29,10 @@ add_executable(receipt_service src/main.cpp
         src/modules/classificator/classificator_repository.hpp
         src/common/env.hpp
         src/common/env_config_type.hpp
-        src/common/drogon_db_config.hpp)
+        src/common/drogon_db_config.hpp
+        src/common/utils.hpp
+        ${GENERATED_DROGON_SOURCES}
+)
 
 # Linking libs to my file
 target_link_libraries(
