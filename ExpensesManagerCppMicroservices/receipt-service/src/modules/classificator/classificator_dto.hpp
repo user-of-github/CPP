@@ -2,7 +2,7 @@
 #define RECEIPT_SERVICE_CLASSIFICATOR_DTO_HPP
 
 #include <string>
-#include <nlohmann/json.hpp>
+
 
 namespace expenses::classificators {
   struct PaymentMethodDto {

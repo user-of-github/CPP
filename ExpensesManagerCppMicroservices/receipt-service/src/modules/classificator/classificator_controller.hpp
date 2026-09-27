@@ -2,9 +2,8 @@
 #define RECEIPT_SERVICE_CLASSIFICATOR_CONTROLLER_HPP
 
 #include <drogon/drogon.h>
-#include <nlohmann/json.hpp>
 #include "./classificator_repository.hpp"
-#include "../../common/utils.hpp"
+#include "../../common/utils.hpp" // for common::to_json_response()
 #include "../../common/exceptions.hpp"
 
 

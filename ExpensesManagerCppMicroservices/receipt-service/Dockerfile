@@ -14,7 +14,6 @@ RUN apt-get update && apt-get install -y \
     uuid-dev \
     zlib1g-dev \
     libpq-dev \
-    nlohmann-json3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 # 2. Installing official CMake (apt-get provides old version??)
