@@ -37,6 +37,7 @@ add_executable(receipt_service src/main.cpp
         src/modules/cheque/cheque_controller.hpp
         src/modules/cheque/cheque_repository.cpp
         src/modules/cheque/cheque_repository.hpp
+        src/modules/cheque/cheque_dto.hpp
 )
 
 # Linking libs to my file

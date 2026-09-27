@@ -24,10 +24,13 @@ namespace expenses::cheques {
       Cheques cheque = co_await cheque_mapper.findByPrimaryKey(id);
       const auto items{
         co_await items_mapper.findBy(drogon::orm::Criteria(
-          ChequeItems::Cols::_cheque_id, drogon::orm::CompareOperator::EQ, id))
+          ChequeItems::Cols::_cheque_id,
+          drogon::orm::CompareOperator::EQ,
+          static_cast<int64_t>(id)
+          ))
       };
 
-      co_return ChequeAggregate{std::move(cheque), std::move(items)};
+      co_return ChequeAggregate{.cheque=std::move(cheque), .items=std::move(items)};
     } catch (const drogon::orm::UnexpectedRows &) {
       co_return std::nullopt;
     }
@@ -45,7 +48,7 @@ namespace expenses::cheques {
     std::vector<ChequeItems> saved_items;
     saved_items.reserve(items.size());
 
-    for (const auto &item: items) {
+    for (auto item: items) {
       item.setChequeId(cheque_id);
       saved_items.push_back(co_await items_mapper.insert(item));
     }
@@ -57,7 +60,11 @@ namespace expenses::cheques {
     drogon::orm::CoroMapper<Cheques> mapper{this->get_db_client()};
 
     const auto deleted_count{
-      co_await mapper.deleteBy(drogon::orm::Criteria(Cheques::Cols::_id, drogon::orm::CompareOperator::EQ, id))
+      co_await mapper.deleteBy(drogon::orm::Criteria(
+        Cheques::Cols::_id,
+        drogon::orm::CompareOperator::EQ,
+        static_cast<int64_t>(id)
+        ))
     };
 
     co_return deleted_count > 0;

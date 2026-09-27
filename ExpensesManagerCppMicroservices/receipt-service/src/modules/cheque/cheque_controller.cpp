@@ -31,7 +31,7 @@ namespace expenses::cheques {
     co_return common::to_json_response(cheques);
   }
 
-  drogon::Task<drogon::HttpResponsePtr> ChequeController::get_one(drogon::HttpRequestPtr req, const int id) const {
+  drogon::Task<drogon::HttpResponsePtr> ChequeController::get(drogon::HttpRequestPtr req, const int64_t id) const {
     if (id <= 0) {
       throw common::exceptions::BadRequestException("Cheque ID must be a positive integer");
     }
@@ -45,34 +45,42 @@ namespace expenses::cheques {
   }
 
   drogon::Task<drogon::HttpResponsePtr> ChequeController::create(drogon::HttpRequestPtr req) const {
-    const auto json {req->getJsonObject()};
-    if (!json || !json->isObject()) {
+    const auto json = req->getJsonObject();
+
+    if (!json) {
       throw common::exceptions::BadRequestException("Invalid JSON body");
     }
 
-    Cheques cheque(*json);
+    const auto dto {CreateChequeDto::parse(*json)};
 
-    std::vector<ChequeItems> items{};
-    if (json->isMember("items") && (*json)["items"].isArray()) {
-      const auto &items_array = (*json)["items"];
-      items.reserve(items_array.size());
-      for (const auto &item_json: items_array) {
-        items.emplace_back(item_json);
-      }
+    Cheques cheque;
+    cheque.setConcreteStoreId(dto.concrete_store_id);
+    cheque.setPaymentMethodId(dto.payment_method_id);
+    cheque.setTotalAmount(std::format("{:.2f}", dto.total_amount));
+
+    std::vector<ChequeItems> items;
+    items.reserve(dto.items.size());
+
+    for (const auto& dto_item : dto.items) {
+      ChequeItems item;
+      item.setCategoryId(dto_item.category_id);
+      item.setProductName(dto_item.product_name);
+      item.setQuantity(std::format("{:.3f}", dto_item.quantity));
+      item.setUnitPrice(std::format("{:.2f}", dto_item.unit_price));
+      item.setTotalPrice(std::format("{:.2f}", dto_item.total_price));
+
+      items.push_back(std::move(item));
     }
 
-    if (items.empty()) {
-      throw common::exceptions::BadRequestException("Cheque must contain at least one item");
-    }
+    const auto created{co_await repository_.create(std::move(cheque),std::move(items))};
 
-    const auto created {co_await this->repository_.create(std::move(cheque), std::move(items))};
+    const auto response {drogon::HttpResponse::newHttpJsonResponse(aggregate_to_json(created))};
+    response->setStatusCode(drogon::k201Created);
 
-    auto resp = drogon::HttpResponse::newHttpJsonResponse(this->aggregate_to_json(created));
-    resp->setStatusCode(drogon::k201Created);
-    co_return resp;
+    co_return response;
   }
 
-  drogon::Task<drogon::HttpResponsePtr> ChequeController::remove(drogon::HttpRequestPtr req, const int id) const {
+  drogon::Task<drogon::HttpResponsePtr> ChequeController::remove(drogon::HttpRequestPtr req, const int64_t id) const {
     if (id <= 0) {
       throw common::exceptions::BadRequestException("Cheque ID must be a positive integer");
     }
