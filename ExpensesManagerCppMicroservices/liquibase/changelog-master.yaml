@@ -11,3 +11,12 @@ databaseChangeLog:
   - include:
       file: seeds/2026-09-20-01_seed-cheques-for-testing.sql
       relativeToChangelogFile: true
+  - include:
+      file: migrations/2026-10-04-01_add-reports-table.sql
+      relativeToChangelogFile: true
+  - include:
+      file: migrations/2026-10-04-02_add-first-report-plsql.sql
+      relativeToChangelogFile: true
+  - include:
+      file: seeds/2026-10-04-01_save-new-report-proc-to-table.sql
+      relativeToChangelogFile: true
