@@ -63,6 +63,29 @@ services:
     networks:
       - receipts_network
 
+
+  reports-service:
+    build:
+      context: ./reports-service
+      dockerfile: Dockerfile
+    container_name: reports_service_app
+    restart: always
+    env_file:
+      - .env
+    environment:
+      # !!! Inside docker network host === docker service name
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+    ports:
+      - "${REPORTS_SERVICE_APP_PORT:-4001}:${REPORTS_SERVICE_APP_PORT:-4001}"
+    depends_on:
+      postgres:
+        condition: service_healthy 
+      migration-job:
+        condition: service_completed_successfully
+    networks:
+      - receipts_network
+
     
 volumes:
   postgres-data:
